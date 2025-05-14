@@ -1,0 +1,1 @@
+/usr/bin/c++  -g -g CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o -o PbcBendmarkingCmake   -L/home/ubuntu22/projects/PbcBendmarkingCmake/lib  -Wl,-rpath,/home/ubuntu22/projects/PbcBendmarkingCmake/lib -Wl,-Bstatic -lpbc -lgmp -Wl,-Bdynamic 

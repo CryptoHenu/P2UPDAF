@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/ubuntu22/projects/PbcBendmarkingCmake/build",
+  "command": "/usr/bin/c++  -I/home/ubuntu22/projects/PbcBendmarkingCmake/include  -g -g -std=gnu++20 -o CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o -c /home/ubuntu22/projects/PbcBendmarkingCmake/main.cpp",
+  "file": "/home/ubuntu22/projects/PbcBendmarkingCmake/main.cpp"
+}
+]
