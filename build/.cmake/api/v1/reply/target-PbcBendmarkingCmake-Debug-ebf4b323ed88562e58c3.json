@@ -66,7 +66,7 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "/home/ubuntu22/projects/PbcBendmarkingCmake/include"
+					"path" : "/home/ubuntu22/projects/PBC-IBTRPRE/include"
 				}
 			],
 			"language" : "CXX",
@@ -99,11 +99,11 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-L/home/ubuntu22/projects/PbcBendmarkingCmake/lib",
+				"fragment" : "-L/home/ubuntu22/projects/PBC-IBTRPRE/lib",
 				"role" : "libraryPath"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/home/ubuntu22/projects/PbcBendmarkingCmake/lib",
+				"fragment" : "-Wl,-rpath,/home/ubuntu22/projects/PBC-IBTRPRE/lib",
 				"role" : "libraries"
 			},
 			{

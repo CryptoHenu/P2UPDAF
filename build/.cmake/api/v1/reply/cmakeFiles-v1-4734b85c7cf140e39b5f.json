@@ -21,7 +21,7 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/usr/share/cmake-3.22/Modules/CMakeUnixFindMake.cmake"
+			"path" : "/usr/share/cmake-3.22/Modules/CMakeNinjaFindMake.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -713,8 +713,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/home/ubuntu22/projects/PbcBendmarkingCmake/build",
-		"source" : "/home/ubuntu22/projects/PbcBendmarkingCmake"
+		"build" : "/home/ubuntu22/projects/PBC-IBTRPRE/build",
+		"source" : "/home/ubuntu22/projects/PBC-IBTRPRE"
 	},
 	"version" : 
 	{

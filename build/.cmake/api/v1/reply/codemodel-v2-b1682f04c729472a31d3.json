@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "PbcBendmarkingCmake::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-PbcBendmarkingCmake-Debug-d1f2ea9680308c7fc220.json",
+					"jsonFile" : "target-PbcBendmarkingCmake-Debug-ebf4b323ed88562e58c3.json",
 					"name" : "PbcBendmarkingCmake",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/ubuntu22/projects/PbcBendmarkingCmake/build",
-		"source" : "/home/ubuntu22/projects/PbcBendmarkingCmake"
+		"build" : "/home/ubuntu22/projects/PBC-IBTRPRE/build",
+		"source" : "/home/ubuntu22/projects/PBC-IBTRPRE"
 	},
 	"version" : 
 	{

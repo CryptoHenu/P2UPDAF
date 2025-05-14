@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: Project
+# Project: PbcBendmarkingCmake
 # Configurations: Debug
 # =============================================================================
 
@@ -39,13 +39,50 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /home/ubuntu22/projects/PbcBendmarkingCmake/build/
+cmake_ninja_workdir = /home/ubuntu22/projects/PBC-IBTRPRE/build/
+# =============================================================================
+# Object build statements for EXECUTABLE target PbcBendmarkingCmake
+
+
+#############################################
+# Order-only phony target for PbcBendmarkingCmake
+
+build cmake_object_order_depends_target_PbcBendmarkingCmake: phony || CMakeFiles/PbcBendmarkingCmake.dir
+
+build CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o: CXX_COMPILER__PbcBendmarkingCmake_Debug /home/ubuntu22/projects/PBC-IBTRPRE/main.cpp || cmake_object_order_depends_target_PbcBendmarkingCmake
+  DEP_FILE = CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o.d
+  FLAGS = -g -g -std=gnu++20
+  INCLUDES = -I/home/ubuntu22/projects/PBC-IBTRPRE/include
+  OBJECT_DIR = CMakeFiles/PbcBendmarkingCmake.dir
+  OBJECT_FILE_DIR = CMakeFiles/PbcBendmarkingCmake.dir
+  TARGET_COMPILE_PDB = CMakeFiles/PbcBendmarkingCmake.dir/
+  TARGET_PDB = PbcBendmarkingCmake.pdb
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target PbcBendmarkingCmake
+
+
+#############################################
+# Link the executable PbcBendmarkingCmake
+
+build PbcBendmarkingCmake: CXX_EXECUTABLE_LINKER__PbcBendmarkingCmake_Debug CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o
+  FLAGS = -g -g
+  LINK_LIBRARIES = -Wl,-rpath,/home/ubuntu22/projects/PBC-IBTRPRE/lib  -Wl,-Bstatic  -lpbc  -lgmp  -Wl,-Bdynamic
+  LINK_PATH = -L/home/ubuntu22/projects/PBC-IBTRPRE/lib
+  OBJECT_DIR = CMakeFiles/PbcBendmarkingCmake.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/PbcBendmarkingCmake.dir/
+  TARGET_FILE = PbcBendmarkingCmake
+  TARGET_PDB = PbcBendmarkingCmake.pdb
+
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/ubuntu22/projects/PbcBendmarkingCmake/build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /home/ubuntu22/projects/PBC-IBTRPRE/build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -56,7 +93,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/ubuntu22/projects/PbcBendmarkingCmake/build && /usr/bin/cmake --regenerate-during-build -S/home/ubuntu22/projects/PbcBendmarkingCmake -B/home/ubuntu22/projects/PbcBendmarkingCmake/build
+  COMMAND = cd /home/ubuntu22/projects/PBC-IBTRPRE/build && /usr/bin/cmake --regenerate-during-build -S/home/ubuntu22/projects/PBC-IBTRPRE -B/home/ubuntu22/projects/PBC-IBTRPRE/build
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -72,14 +109,9 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 
 #############################################
-# Folder: /home/ubuntu22/projects/PbcBendmarkingCmake/build
+# Folder: /home/ubuntu22/projects/PBC-IBTRPRE/build
 
-build all: phony
-
-# =============================================================================
-# Unknown Build Time Dependencies.
-# Tell Ninja that they may appear as side effects of build rules
-# otherwise ordered by order-only dependencies.
+build all: phony PbcBendmarkingCmake
 
 # =============================================================================
 # Built-in targets

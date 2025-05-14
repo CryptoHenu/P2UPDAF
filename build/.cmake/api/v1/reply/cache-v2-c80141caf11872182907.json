@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/ubuntu22/projects/PbcBendmarkingCmake/build"
+			"value" : "/home/ubuntu22/projects/PBC-IBTRPRE/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -92,22 +92,6 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "1"
-		},
-		{
-			"name" : "CMAKE_COLOR_MAKEFILE",
-			"properties" : 
-			[
-				{
-					"name" : "ADVANCED",
-					"value" : "1"
-				},
-				{
-					"name" : "HELPSTRING",
-					"value" : "Enable/Disable color output during build."
-				}
-			],
-			"type" : "BOOL",
-			"value" : "ON"
 		},
 		{
 			"name" : "CMAKE_COMMAND",
@@ -158,8 +142,8 @@
 					"value" : "CXX compiler"
 				}
 			],
-			"type" : "FILEPATH",
-			"value" : "/usr/bin/c++"
+			"type" : "STRING",
+			"value" : "/usr/bin/g++"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_AR",
@@ -286,8 +270,8 @@
 					"value" : "C compiler"
 				}
 			],
-			"type" : "FILEPATH",
-			"value" : "/usr/bin/cc"
+			"type" : "STRING",
+			"value" : "/usr/bin/gcc"
 		},
 		{
 			"name" : "CMAKE_C_COMPILER_AR",
@@ -543,7 +527,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "Unix Makefiles"
+			"value" : "Ninja"
 		},
 		{
 			"name" : "CMAKE_GENERATOR_INSTANCE",
@@ -591,7 +575,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/ubuntu22/projects/PbcBendmarkingCmake"
+			"value" : "/home/ubuntu22/projects/PBC-IBTRPRE"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -643,11 +627,11 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "Path to a program."
+					"value" : "Program used to build from build.ninja files."
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/usr/bin/gmake"
+			"value" : "/usr/bin/ninja"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -1127,7 +1111,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/ubuntu22/projects/PbcBendmarkingCmake/build"
+			"value" : "/home/ubuntu22/projects/PBC-IBTRPRE/build"
 		},
 		{
 			"name" : "PbcBendmarkingCmake_IS_TOP_LEVEL",
@@ -1151,7 +1135,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/ubuntu22/projects/PbcBendmarkingCmake"
+			"value" : "/home/ubuntu22/projects/PBC-IBTRPRE"
 		}
 	],
 	"kind" : "cache",
