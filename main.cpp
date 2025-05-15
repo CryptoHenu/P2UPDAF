@@ -135,23 +135,28 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
 
     // C3
     element_neg(PCT.C3, pkg_params.g);
-    element_mul_zn(PCT.C3, PCT.C3, k1);
+    element_mul_zn(PCT.C3, PCT.C3, k2);
     element_mul_zn(PCT.C3, PCT.C3, user_Alice_Pub);
-    element_mul_zn(temp2, pkg_params.g1, k1);
+    element_mul_zn(temp2, pkg_params.g1, k2);
     element_add(PCT.C3, PCT.C3, temp2);
     element_printf("PCT.C3 in Enc = %B\n", PCT.C3); // 输出明文的x,y坐标
 
     // C4
-    element_mul(temp3, k1, User_Alice_Priv.r);
+    element_mul(temp3, k2, User_Alice_Priv.r);
     element_printf("temp3 = %B\n", temp3); // 输出明文的x,y坐标
     element_pow_zn(PCT.C4, pkg_params.e_g_g, temp3);
     element_printf("PCT.C4 in Enc = %B\n", PCT.C4); // 输出明文的x,y坐标
 
     // C5
-    element_pow_zn(temp4, ts_params.e_g_h, k1);
-    element_invert(temp4, temp4);
-    element_pow_zn(temp5, pkg_params.e_g_h, k1);
-    element_invert(temp5, temp5);
+    // element_t result;
+    // element_init_GT(result, pairing);
+
+    element_invert(temp4, ts_params.e_g_h);
+    element_pow_zn(temp4, temp4, k1);
+    
+    element_invert(temp5, pkg_params.e_g_h);
+    element_pow_zn(temp5, temp5, k2);
+    
     element_mul(PCT.C5, PT, temp4);
     element_mul(PCT.C5, PCT.C5, temp5);
     element_printf("PCT.C5 in Enc = %B\n", PCT.C5); // 输出明文的x,y坐标
@@ -163,6 +168,7 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
     element_clear(temp3);
     element_clear(temp4);
     element_clear(temp5);
+    // element_clear(result);
 
     cout << "加密成功:" << endl;
 }
