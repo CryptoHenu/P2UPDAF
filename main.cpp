@@ -14,10 +14,38 @@ typedef struct pkg_params
     element_t g, g1, h, e_g_g, e_g_h;
 } pkg_params;
 
+// 定义用户私钥结构体
+typedef struct TimeTrapDoor
+{
+    element_t r, K;
+} TimeTrapDoor;
+
+// 定义时间陷门结构体
+typedef struct UserPrivateKey
+{
+    element_t r, K;
+} UserPrivateKey;
+
+// 私钥生成函数
+void PrivatekeyGen(pairing_t pairing, element_t ts_priv, UserPrivateKey privatekey)
+{
+    element_init_Zr(privatekey.r, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
+    element_random(privatekey.r);           // priv_key ← 随机值 ∈ Zr
+}
+
+// 时间陷门生成函数
+void TimeTrapDoorGen(pairing_t pairing, element_t priv_key, element_t trapdoor)
+{
+    element_init_Zr(trapdoor, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
+    element_random(trapdoor);           // trapdoor ← 随机值 ∈ Zr
+}
+
 int main()
 {
     pairing_t pairing;           // 定义配对对象
     element_t ts_priv, pkg_priv; // 定义私钥对象
+    element_t user_Alice_Pub, user_Bob_Pub, user_Tom_Pub, user_Andy_Pub; // 定义用户公钥对象  
+    UserPrivateKey User_Alice_Priv, User_Bob_Priv, User_Tom_Priv, User_Andy_Priv; // 定义用户私钥对象
 
     // 1. 初始化配对参数（使用预定义的 Type A 参数）
     const char *param_str =
@@ -37,6 +65,22 @@ int main()
 
     element_init_Zr(ts_priv, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
     element_random(ts_priv);           // ts_priv ← 随机值 ∈ Zr
+
+    // 随机生成用户Alice公钥，暂不使用hash函数
+    element_init_Zr(user_Alice_Pub, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
+    element_random(user_Alice_Pub);           // ts_priv ← 随机值 ∈ Zr
+
+    // 随机生成用户Bob公钥，暂不使用hash函数
+    element_init_Zr(user_Bob_Pub, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
+    element_random(user_Bob_Pub);           // ts_priv ← 随机值 ∈ Zr
+
+    // 随机生成用户Tom公钥，暂不使用hash函数
+    element_init_Zr(user_Tom_Pub, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
+    element_random(user_Tom_Pub);           // ts_priv ← 随机值 ∈ Zr
+
+    // 随机生成用户Andy公钥，暂不使用hash函数
+    element_init_Zr(user_Andy_Pub, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
+    element_random(user_Andy_Pub);           // ts_priv ← 随机值 ∈ Zr
 
     element_init_Zr(pkg_priv, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
     element_random(pkg_priv);           // pks_priv ← 随机值 ∈ Zr
@@ -70,12 +114,14 @@ int main()
     printf("生成TS参数:\n");
     element_printf("ts_params.g = %B\n", ts_params.g); // 输出生成元的x,y坐标
     element_printf("ts_params.h = %B\n", ts_params.h);
+    element_printf("ts_params.g1 = %B\n", ts_params.g1);
     element_printf("ts_params.e_g_g = %B\n", ts_params.e_g_g);
     element_printf("ts_params.e_g_h = %B\n", ts_params.e_g_h);
 
     printf("生成PKG参数:\n");
     element_printf("pkg_params.g = %B\n", pkg_params.g); // 输出生成元的x,y坐标
     element_printf("pkg_params.h = %B\n", pkg_params.h);
+    element_printf("pkg_params.g1 = %B\n", pkg_params.g1);
     element_printf("pkg_params.e_g_g = %B\n", pkg_params.e_g_g);
     element_printf("pkg_params.e_g_h = %B\n", pkg_params.e_g_h);
 
