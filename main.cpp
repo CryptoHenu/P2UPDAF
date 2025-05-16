@@ -39,17 +39,32 @@ typedef struct Ciphertext
 void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey &privatekey)
 {
     element_t diff, inv;
-    element_init_Zr(privatekey.r, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
-    element_init_G1(privatekey.K, pairing);
-    element_random(privatekey.r); // priv_key ← 随机值 ∈ Zr
+    element_random(privatekey.r);
+
     element_init_Zr(diff, pairing);
     element_init_Zr(inv, pairing);
     element_sub(diff, pkg_priv, user_Alice_Pub); // diff ← a - b
     element_invert(inv, diff);
+
+    // element_t test;
+    // element_init_Zr(test, pairing);
+
     element_neg(privatekey.K, pkg_params.g);
-    element_mul_zn(privatekey.K, privatekey.K, privatekey.r);
-    element_add(privatekey.K, privatekey.K, pkg_params.h);
-    element_mul_zn(privatekey.K, privatekey.K, inv);
+    element_pow_zn(privatekey.K, privatekey.K, privatekey.r);
+    // element_printf("test privatekey.K = %B\n", privatekey.K); // 先求g的逆元，再数乘
+
+    
+    // element_mul_zn(privatekey.K, pkg_params.g, privatekey.r);
+    // element_neg(privatekey.K, privatekey.K);    
+    // element_printf("test privatekey.K = %B\n", privatekey.K);  // 先数乘再求整体的逆
+
+    // element_sub(privatekey.r, r, diff); // diff ← a - b
+    // element_mul_zn(privatekey.K, pkg_params.g, privatekey.r);
+    // element_printf("privatekey.K = %B\n", privatekey.K);  // 手动修复-r，再数乘
+
+
+    element_add(privatekey.K, privatekey.K, pkg_params.h);  // h  g -r
+    element_pow_zn(privatekey.K, privatekey.K, inv);
 
     if (inv == 0)
     {
@@ -57,32 +72,30 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
     }
     else
     {
-        printf("Modular inverse:\n");
+        printf("Modular inverse: ");
         element_printf("%B\n", inv);
     }
-    cout << "私钥生成成功:" << endl;
     element_printf("privatekey.r = %B\n", privatekey.r);
     element_printf("privatekey.K = %B\n", privatekey.K);
 
     element_clear(diff);
     element_clear(inv);
+    // element_clear(test);
 }
 
 // 时间陷门生成函数
 void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, element_t Time_Pub, TimeTrapDoor &Time_St)
 {
     element_t diff, inv;                 // 定义哈希值对象
-    element_init_Zr(Time_St.r, pairing); // Zr 是一个整数模 r 的环，r 是群的阶
-    element_init_G1(Time_St.K, pairing);
     element_random(Time_St.r); // priv_key ← 随机值 ∈ Zr
     element_init_Zr(diff, pairing);
     element_init_Zr(inv, pairing);
     element_sub(diff, ts_priv, Time_Pub); // diff ← a - b
     element_invert(inv, diff);
     element_neg(Time_St.K, ts_params.g);
-    element_mul_zn(Time_St.K, Time_St.K, Time_St.r);
+    element_pow_zn(Time_St.K, Time_St.K, Time_St.r);
     element_add(Time_St.K, Time_St.K, ts_params.h);
-    element_mul_zn(Time_St.K, Time_St.K, inv);
+    element_pow_zn(Time_St.K, Time_St.K, inv);
 
     if (inv == 0)
     {
@@ -90,7 +103,7 @@ void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, 
     }
     else
     {
-        printf("Modular inverse:\n");
+        printf("Modular inverse: ");
         element_printf("%B\n", inv);
     }
     cout << "时间陷门生成成功:" << endl;
@@ -105,39 +118,50 @@ void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, 
 void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, element_t Time_Pub, element_t PT, Ciphertext &PCT)
 {
 
-    element_t k1, k2, temp1, temp2, temp3, temp4, temp5;
+    element_t k1, k2, temp1, temp2, temp3, temp4, temp5, temp6, temp7;
 
     element_init_Zr(k1, pairing);
     element_init_Zr(k2, pairing);
 
     element_random(k1);
     element_random(k2);
-    element_printf("k1 = %B\n", k1); // 输出明文的x,y坐标
-    element_printf("k2 = %B\n", k2); // 输出明文的x,y坐标
 
     element_init_G1(temp1, pairing);
     element_init_G1(temp2, pairing);
     element_init_Zr(temp3, pairing);
     element_init_GT(temp4, pairing);
     element_init_GT(temp5, pairing);
+    element_init_Zr(temp6, pairing);
+    element_init_Zr(temp7, pairing);
+
 
     // C1
     element_neg(PCT.C1, ts_params.g);
-    element_mul_zn(PCT.C1, PCT.C1, k1);
-    element_mul_zn(PCT.C1, PCT.C1, Time_Pub);
-    element_mul_zn(temp1, ts_params.g1, k1);
+    element_pow_zn(PCT.C1, PCT.C1, k1);
+    element_pow_zn(PCT.C1, PCT.C1, Time_Pub);
+    element_pow_zn(temp1, ts_params.g1, k1);
     element_add(PCT.C1, PCT.C1, temp1);
-    element_printf("PCT.C1 in Enc = %B\n", PCT.C1); // 输出明文的x,y坐标
+    element_printf("test PCT.C1 in Enc = %B\n", PCT.C1); // 先求g的逆元，再分开求数乘
+
+    element_mul(temp6, k1, Time_Pub);
+    element_neg(PCT.C1, ts_params.g);
+    //element_mul_zn(PCT.C1, PCT.C1, k1);
+    //element_mul_zn(PCT.C1, PCT.C1, Time_Pub);
+    element_pow_zn(PCT.C1, PCT.C1, temp6);
+    element_add(PCT.C1, PCT.C1, temp1);
+    element_printf("test PCT.C1 in Enc = %B\n", PCT.C1); // 先求g的逆元，再合并求数乘
+
 
     // C2
     element_pow_zn(PCT.C2, ts_params.e_g_g, k1);
     element_printf("PCT.C2 in Enc = %B\n", PCT.C2); // 输出明文的x,y坐标
 
     // C3
+    element_mul(temp7, k2, user_Alice_Pub);
     element_neg(PCT.C3, pkg_params.g);
-    element_mul_zn(PCT.C3, PCT.C3, k2);
-    element_mul_zn(PCT.C3, PCT.C3, user_Alice_Pub);
-    element_mul_zn(temp2, pkg_params.g1, k2);
+    element_pow_zn(PCT.C3, PCT.C3, temp7);
+    //element_pow_zn(PCT.C3, PCT.C3, user_Alice_Pub);
+    element_pow_zn(temp2, pkg_params.g1, k2);
     element_add(PCT.C3, PCT.C3, temp2);
     element_printf("PCT.C3 in Enc = %B\n", PCT.C3); // 输出明文的x,y坐标
 
@@ -168,6 +192,8 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
     element_clear(temp3);
     element_clear(temp4);
     element_clear(temp5);
+    element_clear(temp6);
+    element_clear(temp7);
     // element_clear(result);
 
     cout << "加密成功:" << endl;
@@ -244,6 +270,7 @@ int main()
     element_init_Zr(pkg_priv, pairing);
     element_random(pkg_priv);
 
+    
     element_t user_Alice_Pub, user_Bob_Pub, user_Tom_Pub, user_Andy_Pub, Time_Pub; // 定义用户公钥对象
     // 随机生成用户Alice公钥，暂不使用hash函数
     element_init_Zr(user_Alice_Pub, pairing);
@@ -275,7 +302,7 @@ int main()
     element_init_GT(ts_params.e_g_h, pairing);
     element_random(ts_params.g);
     element_random(ts_params.h);
-    element_mul_zn(ts_params.g1, ts_params.g, ts_priv);
+    element_pow_zn(ts_params.g1, ts_params.g, ts_priv);
     pairing_apply(ts_params.e_g_g, ts_params.g, ts_params.g, pairing);
     pairing_apply(ts_params.e_g_h, ts_params.g, ts_params.h, pairing);
 
@@ -287,7 +314,7 @@ int main()
     element_init_GT(pkg_params.e_g_h, pairing);
     element_random(pkg_params.g);
     element_random(pkg_params.h);
-    element_mul_zn(pkg_params.g1, pkg_params.g, pkg_priv);
+    element_pow_zn(pkg_params.g1, pkg_params.g, pkg_priv);
     pairing_apply(pkg_params.e_g_g, pkg_params.g, pkg_params.g, pairing);
     pairing_apply(pkg_params.e_g_h, pkg_params.g, pkg_params.h, pairing);
 
@@ -323,10 +350,18 @@ int main()
     element_init_GT(PCT.C5, pairing);
 
     // 调用私钥生成函数
+    cout << "Alice私钥生成开始:" << endl;
     PrivatekeyGen(pairing, pkg_priv, pkg_params, user_Alice_Pub, User_Alice_Priv);
+    cout << "Alice私钥生成成功:" << endl;
+    cout << "Bob私钥生成开始:" << endl;
     PrivatekeyGen(pairing, pkg_priv, pkg_params, user_Bob_Pub, User_Bob_Priv);
+    cout << "Bob私钥生成成功:" << endl;
+    cout << "Tom私钥生成开始:" << endl;
     PrivatekeyGen(pairing, pkg_priv, pkg_params, user_Tom_Pub, User_Tom_Priv);
+    cout << "Tom私钥生成成功:" << endl;
+    cout << "Andy私钥生成开始:" << endl;
     PrivatekeyGen(pairing, pkg_priv, pkg_params, user_Andy_Pub, User_Andy_Priv);
+    cout << "Andy私钥生成成功:" << endl;
 
     // 调用时间陷门生成函数
     TimeTrapDoorGen(pairing, ts_priv, ts_params, Time_Pub, Time_St);
