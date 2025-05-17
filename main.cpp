@@ -137,17 +137,31 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
 
     // C1
     element_neg(PCT.C1, ts_params.g);
+    element_printf("test ts_params.g in Enc = %B\n", ts_params.g);
+    element_printf("test ts_params.g1 in Enc = %B\n", ts_params.g1);
+    element_printf("test k1 in Enc = %B\n", k1);
+    element_printf("test Time_Pub Enc = %B\n", Time_Pub);
     element_pow_zn(PCT.C1, PCT.C1, k1);
+    element_printf("test -PCT.C1 k1 Enc = %B\n", PCT.C1);
     element_pow_zn(PCT.C1, PCT.C1, Time_Pub);
+    element_printf("test temp1 Enc = %B\n", temp1);
     element_pow_zn(temp1, ts_params.g1, k1);
+    
+    element_printf("test PCT.C1 Enc = %B\n", PCT.C1);
     element_add(PCT.C1, PCT.C1, temp1);
     element_printf("test PCT.C1 in Enc = %B\n", PCT.C1); // 先求g的逆元，再分开求数乘
 
+    element_printf("test ts_params.g in Enc = %B\n", ts_params.g);
+    element_printf("test ts_params.g1 in Enc = %B\n", ts_params.g1);
+    element_printf("test k1 in Enc = %B\n", k1);
+    element_printf("test Time_Pub Enc = %B\n", Time_Pub);
+    element_printf("test temp1 Enc = %B\n", temp1);
     element_mul(temp6, k1, Time_Pub);
     element_neg(PCT.C1, ts_params.g);
     //element_mul_zn(PCT.C1, PCT.C1, k1);
     //element_mul_zn(PCT.C1, PCT.C1, Time_Pub);
     element_pow_zn(PCT.C1, PCT.C1, temp6);
+    element_printf("test PCT.C1 Enc = %B\n", PCT.C1);
     element_add(PCT.C1, PCT.C1, temp1);
     element_printf("test PCT.C1 in Enc = %B\n", PCT.C1); // 先求g的逆元，再合并求数乘
 
