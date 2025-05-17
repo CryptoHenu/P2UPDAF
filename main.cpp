@@ -42,21 +42,29 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
     element_random(privatekey.r);
 
     element_init_Zr(diff, pairing);
+    
     element_init_Zr(inv, pairing);
     element_sub(diff, pkg_priv, user_Alice_Pub); // diff ← a - b
+    element_printf("test pkg_priv       = %B\n", pkg_priv); // 验证正负分母的逆元
+    element_printf("test user_Alice_Pub = %B\n", user_Alice_Pub); // 验证正负分母的逆元
+    element_printf("test diff           = %B\n", diff); // 验证正负分母的逆元
     element_invert(inv, diff);
 
-    // element_t test;
-    // element_init_Zr(test, pairing);
+    element_t test;
+    element_init_Zr(test, pairing);
+    element_mul(test, inv, diff);
+    element_printf("test test           = %B\n", test); // 验证正负分母的逆元
 
     element_neg(privatekey.K, pkg_params.g);
     element_pow_zn(privatekey.K, privatekey.K, privatekey.r);
-    // element_printf("test privatekey.K = %B\n", privatekey.K); // 先求g的逆元，再数乘
+    element_add(privatekey.K, privatekey.K, pkg_params.h);
+    element_printf("test 55 privatekey.K = %B\n", privatekey.K); // 先求g的逆元，再数乘
 
     
-    // element_mul_zn(privatekey.K, pkg_params.g, privatekey.r);
-    // element_neg(privatekey.K, privatekey.K);    
-    // element_printf("test privatekey.K = %B\n", privatekey.K);  // 先数乘再求整体的逆
+    element_pow_zn(privatekey.K, pkg_params.g, privatekey.r);
+    element_neg(privatekey.K, privatekey.K);  
+    element_add(privatekey.K, privatekey.K, pkg_params.h);  
+    element_printf("test 61 privatekey.K = %B\n", privatekey.K);  // 先数乘再求整体的逆
 
     // element_sub(privatekey.r, r, diff); // diff ← a - b
     // element_mul_zn(privatekey.K, pkg_params.g, privatekey.r);
@@ -75,12 +83,12 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
         printf("Modular inverse: ");
         element_printf("%B\n", inv);
     }
-    element_printf("privatekey.r = %B\n", privatekey.r);
-    element_printf("privatekey.K = %B\n", privatekey.K);
+    //element_printf("privatekey.r = %B\n", privatekey.r);
+    //element_printf("privatekey.K = %B\n", privatekey.K);
 
     element_clear(diff);
     element_clear(inv);
-    // element_clear(test);
+    element_clear(test);
 }
 
 // 时间陷门生成函数
@@ -180,15 +188,32 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
     element_printf("PCT.C3 in Enc = %B\n", PCT.C3); // 输出明文的x,y坐标
 
     // C4
+    element_printf("PCT.C4 193-111 pkg_params.e_g_g Enc = %B\n", pkg_params.e_g_g);
+    element_printf("PCT.C4 193 k2 Enc = %B\n", k2);
+    element_printf("PCT.C4 193 PCT.C4 Enc = %B\n", PCT.C4);
+    element_printf("PCT.C4 193 User_Alice_Priv.r Enc = %B\n", User_Alice_Priv.r);
+    element_pow_zn(PCT.C4, pkg_params.e_g_g, k2);
+    element_pow_zn(PCT.C4, PCT.C4, User_Alice_Priv.r);
+    element_printf("PCT.C4 193--- in Enc = %B\n", PCT.C4); // 输出明文的x,y坐标
+
+    element_printf("PCT.C4 193 pkg_params.e_g_g Enc = %B\n", pkg_params.e_g_g);
+    element_printf("PCT.C4 193 k2 Enc = %B\n", k2);
+    element_printf("PCT.C4 193 PCT.C4 Enc = %B\n", PCT.C4);
+    element_printf("PCT.C4 193 User_Alice_Priv.r Enc = %B\n", User_Alice_Priv.r);
     element_mul(temp3, k2, User_Alice_Priv.r);
     element_printf("temp3 = %B\n", temp3); // 输出明文的x,y坐标
     element_pow_zn(PCT.C4, pkg_params.e_g_g, temp3);
-    element_printf("PCT.C4 in Enc = %B\n", PCT.C4); // 输出明文的x,y坐标
+    element_printf("PCT.C4 193--- in Enc = %B\n", PCT.C4); // 输出明文的x,y坐标
 
     // C5
     // element_t result;
     // element_init_GT(result, pairing);
 
+    element_printf("PCT.C5 212 pkg_params.e_g_h Enc = %B\n", pkg_params.e_g_h);
+    element_printf("PCT.C5 212 k1 Enc = %B\n", k1);
+    element_printf("PCT.C5 212 ts_params.e_g_h Enc = %B\n", ts_params.e_g_h);
+    element_printf("PCT.C5 212 k2 Enc = %B\n", k2);
+    element_printf("PCT.C5 212 PT Enc = %B\n", PT);
     element_invert(temp4, ts_params.e_g_h);
     element_pow_zn(temp4, temp4, k1);
     
@@ -197,7 +222,26 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
     
     element_mul(PCT.C5, PT, temp4);
     element_mul(PCT.C5, PCT.C5, temp5);
-    element_printf("PCT.C5 in Enc = %B\n", PCT.C5); // 输出明文的x,y坐标
+    element_printf("PCT.C5 in Enc = %B\n", PCT.C5); // 先求底数逆元再求幂
+
+    
+    element_printf("PCT.C5 225 pkg_params.e_g_h Enc = %B\n", pkg_params.e_g_h);
+    element_printf("PCT.C5 226 k1 Enc = %B\n", k1);
+    element_printf("PCT.C5 225 ts_params.e_g_h Enc = %B\n", ts_params.e_g_h);
+    element_printf("PCT.C5 226 k2 Enc = %B\n", k2);
+    element_printf("PCT.C5 212 PT Enc = %B\n", PT);
+    element_pow_zn(temp4, ts_params.e_g_h, k1);
+    element_invert(temp4, temp4);
+    
+    
+    element_pow_zn(temp5, pkg_params.e_g_h, k2);
+    element_invert(temp5, temp5);
+    
+    element_mul(PCT.C5, PT, temp4);
+    element_mul(PCT.C5, PCT.C5, temp5);
+    element_printf("PCT.C5 in Enc = %B\n", PCT.C5); // 先求幂，再求逆元
+
+
 
     element_clear(k1);
     element_clear(k2);
@@ -214,7 +258,7 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
 }
 
 // Sender解密函数
-void Dec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, UserPrivateKey User_Alice_Priv, TimeTrapDoor St, Ciphertext PCT, element_t &PT_Alice)
+void SenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, UserPrivateKey User_Alice_Priv, TimeTrapDoor St, Ciphertext PCT, element_t &PT_Alice)
 {
     element_t temp1, temp2, temp3, temp4, temp5;
     element_init_GT(temp1, pairing);
@@ -225,8 +269,8 @@ void Dec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, UserPriv
     element_pow_zn(temp3, PCT.C2, St.r);
     pairing_apply(temp2, PCT.C3, User_Alice_Priv.K, pairing);
 
-    element_mul(PT_Alice, temp1, temp2);
-    element_mul(PT_Alice, PT_Alice, temp3);
+    element_mul(PT_Alice, temp1, temp3);
+    element_mul(PT_Alice, PT_Alice, temp2);
     element_mul(PT_Alice, PT_Alice, PCT.C4);
     element_mul(PT_Alice, PT_Alice, PCT.C5);
 
@@ -382,7 +426,7 @@ int main()
 
     Enc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, PT, PCT);
     element_printf("After Enc PCT.C3 = %B\n", PCT.C3); // 输出明文的x,y坐标
-    Dec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
+    SenderDec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
 
     element_t rk;
     element_init_G1(rk, pairing);
