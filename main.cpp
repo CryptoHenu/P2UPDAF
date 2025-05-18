@@ -31,24 +31,15 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
     element_random(privatekey.r);
 
     element_init_Zr(diff, pairing);
-
     element_init_Zr(inv, pairing);
-    element_sub(diff, pkg_priv, user_Alice_Pub);                  // diff ← a - b
-    element_invert(inv, diff);
 
-    element_t test;
-    element_init_Zr(test, pairing);
-    element_mul(test, inv, diff);
+    element_sub(diff, pkg_priv, user_Alice_Pub);        
+    element_invert(inv, diff);
 
     element_neg(privatekey.K, pkg_params.g);
     element_pow_zn(privatekey.K, privatekey.K, privatekey.r);
     element_add(privatekey.K, privatekey.K, pkg_params.h);
 
-    element_pow_zn(privatekey.K, pkg_params.g, privatekey.r);
-    element_neg(privatekey.K, privatekey.K);
-    element_add(privatekey.K, privatekey.K, pkg_params.h);
-
-    element_add(privatekey.K, privatekey.K, pkg_params.h); // h  g -r
     element_pow_zn(privatekey.K, privatekey.K, inv);
 
     if (inv == 0)
@@ -60,12 +51,11 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
         printf("Modular inverse: ");
         element_printf("%B\n", inv);
     }
-    // element_printf("privatekey.r = %B\n", privatekey.r);
-    // element_printf("privatekey.K = %B\n", privatekey.K);
+    element_printf("privatekey.r = %B\n", privatekey.r);
+    element_printf("privatekey.K = %B\n", privatekey.K);
 
     element_clear(diff);
     element_clear(inv);
-    element_clear(test);
 }
 
 // 加密函数
@@ -97,6 +87,10 @@ void Enc(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, Use
     element_pow_zn(temp3, temp3, k1);
 
     element_mul(PCT.C3, PT, temp3);
+    
+    element_printf("PCT.C1 in enc = %B\n", PCT.C1);
+    element_printf("PCT.C2 in enc = %B\n", PCT.C2);
+    element_printf("PCT.C3 in enc = %B\n", PCT.C3);
 
     element_clear(k1);
     element_clear(temp1);
@@ -126,9 +120,9 @@ void SenderDec(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Ali
     element_clear(temp1);
     element_clear(temp2);
 
-
+    element_printf("PT_Alice in dec = %B\n", PT_Alice); // 输出明文的x,y坐标
     cout << "解密成功:" << endl;
-    element_printf("After Dec PT_Alice = %B\n", PT_Alice); // 输出明文的x,y坐标
+    
 }
 
 int main()
@@ -156,9 +150,7 @@ int main()
         printf("参数读取成功。\n");
     }
     
-
     pairing_init_set_str(pairing, param); // 从文件加载参数
-
     if (!pairing_is_symmetric(pairing))
     {
         printf("这是一个非对称配对。\n");
@@ -172,13 +164,14 @@ int main()
     element_t pkg_priv;
     element_init_Zr(pkg_priv, pairing);
     element_random(pkg_priv);
+    element_printf("pkg_priv       = %B\n", pkg_priv);
 
     element_t user_Alice_Pub; // 定义用户公钥对象
     element_init_Zr(user_Alice_Pub, pairing);
     element_random(user_Alice_Pub);
+    element_printf("user_Alice_Pub = %B\n", user_Alice_Pub);
 
     pkg_params pkg_params; // 定义PKG参数结构体
-
 
     // PKG参数初始化
     element_init_G1(pkg_params.g, pairing); // PKG参数初始化
@@ -212,6 +205,9 @@ int main()
     element_init_G1(PCT.C1, pairing);
     element_init_GT(PCT.C2, pairing);
     element_init_GT(PCT.C3, pairing);
+    element_printf("PCT.C1 = %B\n", PCT.C1);
+    element_printf("PCT.C2 = %B\n", PCT.C2);
+    element_printf("PCT.C3 = %B\n", PCT.C3);
 
 
     // 调用私钥生成函数
@@ -221,11 +217,9 @@ int main()
  
     cout << "加密开始：" << endl;
     Enc(pairing, pkg_params, user_Alice_Pub, User_Alice_Priv, PT, PCT);
-    cout << "加密成功:" << endl;
 
     cout << "解密开始：" << endl;
     SenderDec(pairing, pkg_params, User_Alice_Priv, PCT, PT_Alice);
-    cout << "解密成功:" << endl;
 
     element_printf("PT       = %B\n", PT);
     element_printf("PT_Alice = %B\n", PT_Alice);
