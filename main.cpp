@@ -5,23 +5,12 @@
 
 using namespace std;
 
-// 定义TS参数结构体
-typedef struct ts_params
-{
-    element_t g, g1, h, e_g_g, e_g_h;
-} ts_params;
-
 // 定义PKG参数结构体
 typedef struct pkg_params
 {
     element_t g, g1, h, e_g_g, e_g_h;
 } pkg_params;
 
-// 定义时间陷门结构体
-typedef struct TimeTrapDoor
-{
-    element_t r, K;
-} TimeTrapDoor;
 
 // 定义用户私钥结构体
 typedef struct UserPrivateKey
@@ -32,7 +21,7 @@ typedef struct UserPrivateKey
 // 定义原始密文结构体
 typedef struct Ciphertext
 {
-    element_t C1, C2, C3, C4, C5;
+    element_t C1, C2, C3;
 } Ciphertext;
 
 // 私钥生成函数
@@ -42,12 +31,12 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
     element_random(privatekey.r);
 
     element_init_Zr(diff, pairing);
-    
+
     element_init_Zr(inv, pairing);
-    element_sub(diff, pkg_priv, user_Alice_Pub); // diff ← a - b
-    element_printf("test pkg_priv       = %B\n", pkg_priv); // 验证正负分母的逆元
+    element_sub(diff, pkg_priv, user_Alice_Pub);                  // diff ← a - b
+    element_printf("test pkg_priv       = %B\n", pkg_priv);       // 验证正负分母的逆元
     element_printf("test user_Alice_Pub = %B\n", user_Alice_Pub); // 验证正负分母的逆元
-    element_printf("test diff           = %B\n", diff); // 验证正负分母的逆元
+    element_printf("test diff           = %B\n", diff);           // 验证正负分母的逆元
     element_invert(inv, diff);
 
     element_t test;
@@ -60,18 +49,16 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
     element_add(privatekey.K, privatekey.K, pkg_params.h);
     element_printf("test 55 privatekey.K = %B\n", privatekey.K); // 先求g的逆元，再数乘
 
-    
     element_pow_zn(privatekey.K, pkg_params.g, privatekey.r);
-    element_neg(privatekey.K, privatekey.K);  
-    element_add(privatekey.K, privatekey.K, pkg_params.h);  
-    element_printf("test 61 privatekey.K = %B\n", privatekey.K);  // 先数乘再求整体的逆
+    element_neg(privatekey.K, privatekey.K);
+    element_add(privatekey.K, privatekey.K, pkg_params.h);
+    element_printf("test 61 privatekey.K = %B\n", privatekey.K); // 先数乘再求整体的逆
 
     // element_sub(privatekey.r, r, diff); // diff ← a - b
     // element_mul_zn(privatekey.K, pkg_params.g, privatekey.r);
     // element_printf("privatekey.K = %B\n", privatekey.K);  // 手动修复-r，再数乘
 
-
-    element_add(privatekey.K, privatekey.K, pkg_params.h);  // h  g -r
+    element_add(privatekey.K, privatekey.K, pkg_params.h); // h  g -r
     element_pow_zn(privatekey.K, privatekey.K, inv);
 
     if (inv == 0)
@@ -83,47 +70,16 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
         printf("Modular inverse: ");
         element_printf("%B\n", inv);
     }
-    //element_printf("privatekey.r = %B\n", privatekey.r);
-    //element_printf("privatekey.K = %B\n", privatekey.K);
+    // element_printf("privatekey.r = %B\n", privatekey.r);
+    // element_printf("privatekey.K = %B\n", privatekey.K);
 
     element_clear(diff);
     element_clear(inv);
     element_clear(test);
 }
 
-// 时间陷门生成函数
-void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, element_t Time_Pub, TimeTrapDoor &Time_St)
-{
-    element_t diff, inv;                 // 定义哈希值对象
-    element_random(Time_St.r); // priv_key ← 随机值 ∈ Zr
-    element_init_Zr(diff, pairing);
-    element_init_Zr(inv, pairing);
-    element_sub(diff, ts_priv, Time_Pub); // diff ← a - b
-    element_invert(inv, diff);
-    element_neg(Time_St.K, ts_params.g);
-    element_pow_zn(Time_St.K, Time_St.K, Time_St.r);
-    element_add(Time_St.K, Time_St.K, ts_params.h);
-    element_pow_zn(Time_St.K, Time_St.K, inv);
-
-    if (inv == 0)
-    {
-        printf("No inverse exists!\n");
-    }
-    else
-    {
-        printf("Modular inverse: ");
-        element_printf("%B\n", inv);
-    }
-    cout << "时间陷门生成成功:" << endl;
-    element_printf("Time_St.r = %B\n", Time_St.r);
-    element_printf("Time_St.K = %B\n", Time_St.K);
-
-    element_clear(diff);
-    element_clear(inv);
-}
-
 // 加密函数
-void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, element_t Time_Pub, element_t PT, Ciphertext &PCT)
+void Enc(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, element_t PT, Ciphertext &PCT)
 {
 
     element_t k1, k2, temp1, temp2, temp3, temp4, temp5, temp6, temp7;
@@ -142,106 +98,103 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
     element_init_Zr(temp6, pairing);
     element_init_Zr(temp7, pairing);
 
-
     // C1
-    element_neg(PCT.C1, ts_params.g);
-    element_printf("test ts_params.g in Enc = %B\n", ts_params.g);
-    element_printf("test ts_params.g1 in Enc = %B\n", ts_params.g1);
-    element_printf("test k1 in Enc = %B\n", k1);
-    element_printf("test Time_Pub Enc = %B\n", Time_Pub);
-    element_pow_zn(PCT.C1, PCT.C1, k1);
-    element_printf("test -PCT.C1 k1 Enc = %B\n", PCT.C1);
-    element_pow_zn(PCT.C1, PCT.C1, Time_Pub);
-    element_printf("test temp1 Enc = %B\n", temp1);
-    element_pow_zn(temp1, ts_params.g1, k1);
-    
-    element_printf("test PCT.C1 Enc = %B\n", PCT.C1);
-    element_add(PCT.C1, PCT.C1, temp1);
-    element_printf("test PCT.C1 in Enc = %B\n", PCT.C1); // 先求g的逆元，再分开求数乘
+    // element_neg(PCT.C1, ts_params.g);
+    // element_printf("test ts_params.g in Enc = %B\n", ts_params.g);
+    // element_printf("test ts_params.g1 in Enc = %B\n", ts_params.g1);
+    // element_printf("test k1 in Enc = %B\n", k1);
+    // element_printf("test Time_Pub Enc = %B\n", Time_Pub);
+    // element_pow_zn(PCT.C1, PCT.C1, k1);
+    // element_printf("test -PCT.C1 k1 Enc = %B\n", PCT.C1);
+    // element_pow_zn(PCT.C1, PCT.C1, Time_Pub);
+    // element_printf("test temp1 Enc = %B\n", temp1);
+    // element_pow_zn(temp1, ts_params.g1, k1);
 
-    element_printf("test ts_params.g in Enc = %B\n", ts_params.g);
-    element_printf("test ts_params.g1 in Enc = %B\n", ts_params.g1);
-    element_printf("test k1 in Enc = %B\n", k1);
-    element_printf("test Time_Pub Enc = %B\n", Time_Pub);
-    element_printf("test temp1 Enc = %B\n", temp1);
-    element_mul(temp6, k1, Time_Pub);
-    element_neg(PCT.C1, ts_params.g);
-    //element_mul_zn(PCT.C1, PCT.C1, k1);
-    //element_mul_zn(PCT.C1, PCT.C1, Time_Pub);
-    element_pow_zn(PCT.C1, PCT.C1, temp6);
-    element_printf("test PCT.C1 Enc = %B\n", PCT.C1);
-    element_add(PCT.C1, PCT.C1, temp1);
-    element_printf("test PCT.C1 in Enc = %B\n", PCT.C1); // 先求g的逆元，再合并求数乘
+    // element_printf("test PCT.C1 Enc = %B\n", PCT.C1);
+    // element_add(PCT.C1, PCT.C1, temp1);
+    // element_printf("test PCT.C1 in Enc = %B\n", PCT.C1); // 先求g的逆元，再分开求数乘
 
+    // element_printf("test ts_params.g in Enc = %B\n", ts_params.g);
+    // element_printf("test ts_params.g1 in Enc = %B\n", ts_params.g1);
+    // element_printf("test k1 in Enc = %B\n", k1);
+    // element_printf("test Time_Pub Enc = %B\n", Time_Pub);
+    // element_printf("test temp1 Enc = %B\n", temp1);
+    // element_mul(temp6, k1, Time_Pub);
+    // element_printf("PCT.C2 temp6 Enc    = %B\n", temp6);
+    // element_printf("PCT.C2 k1 Enc       = %B\n", k1);
+    // element_printf("PCT.C2 Time_Pub Enc = %B\n", Time_Pub);
+    // element_neg(PCT.C1, ts_params.g);
+    // // element_mul_zn(PCT.C1, PCT.C1, k1);
+    // // element_mul_zn(PCT.C1, PCT.C1, Time_Pub);
+    // element_pow_zn(PCT.C1, PCT.C1, temp6);
+    // //element_printf("test PCT.C1 Enc = %B\n", PCT.C1);
+    // element_add(PCT.C1, PCT.C1, temp1);
+    // //element_printf("test PCT.C1 in Enc = %B\n", PCT.C1); // 先求g的逆元，再合并求数乘
 
-    // C2
-    element_pow_zn(PCT.C2, ts_params.e_g_g, k1);
-    element_printf("PCT.C2 in Enc = %B\n", PCT.C2); // 输出明文的x,y坐标
+    // // C2
+    // element_pow_zn(PCT.C2, ts_params.e_g_g, k1);
+    // element_printf("PCT.C2 in Enc = %B\n", PCT.C2); // 输出明文的x,y坐标
 
     // C3
     element_mul(temp7, k2, user_Alice_Pub);
     element_neg(PCT.C3, pkg_params.g);
     element_pow_zn(PCT.C3, PCT.C3, temp7);
-    //element_pow_zn(PCT.C3, PCT.C3, user_Alice_Pub);
+    // element_pow_zn(PCT.C3, PCT.C3, user_Alice_Pub);
     element_pow_zn(temp2, pkg_params.g1, k2);
     element_add(PCT.C3, PCT.C3, temp2);
-    element_printf("PCT.C3 in Enc = %B\n", PCT.C3); // 输出明文的x,y坐标
+    //element_printf("PCT.C3 in Enc = %B\n", PCT.C3); // 输出明文的x,y坐标
 
     // C4
-    element_printf("PCT.C4 193-111 pkg_params.e_g_g Enc = %B\n", pkg_params.e_g_g);
-    element_printf("PCT.C4 193 k2 Enc = %B\n", k2);
-    element_printf("PCT.C4 193 PCT.C4 Enc = %B\n", PCT.C4);
-    element_printf("PCT.C4 193 User_Alice_Priv.r Enc = %B\n", User_Alice_Priv.r);
-    element_pow_zn(PCT.C4, pkg_params.e_g_g, k2);
-    element_pow_zn(PCT.C4, PCT.C4, User_Alice_Priv.r);
-    element_printf("PCT.C4 193--- in Enc = %B\n", PCT.C4); // 输出明文的x,y坐标
+    // element_printf("PCT.C4 193-111 pkg_params.e_g_g Enc = %B\n", pkg_params.e_g_g);
+    // element_printf("PCT.C4 193 k2 Enc = %B\n", k2);
+    // element_printf("PCT.C4 193 PCT.C4 Enc = %B\n", PCT.C4);
+    // element_printf("PCT.C4 193 User_Alice_Priv.r Enc = %B\n", User_Alice_Priv.r);
+    // element_pow_zn(PCT.C4, pkg_params.e_g_g, k2);
+    // element_pow_zn(PCT.C4, PCT.C4, User_Alice_Priv.r);
+    // element_printf("PCT.C4 193--- in Enc = %B\n", PCT.C4); // 输出明文的x,y坐标
 
-    element_printf("PCT.C4 193 pkg_params.e_g_g Enc = %B\n", pkg_params.e_g_g);
-    element_printf("PCT.C4 193 k2 Enc = %B\n", k2);
-    element_printf("PCT.C4 193 PCT.C4 Enc = %B\n", PCT.C4);
-    element_printf("PCT.C4 193 User_Alice_Priv.r Enc = %B\n", User_Alice_Priv.r);
+    // element_printf("PCT.C4 193 pkg_params.e_g_g Enc = %B\n", pkg_params.e_g_g);
+    // element_printf("PCT.C4 193 k2 Enc = %B\n", k2);
+    // element_printf("PCT.C4 193 PCT.C4 Enc = %B\n", PCT.C4);
+    // element_printf("PCT.C4 193 User_Alice_Priv.r Enc = %B\n", User_Alice_Priv.r);
     element_mul(temp3, k2, User_Alice_Priv.r);
-    element_printf("temp3 = %B\n", temp3); // 输出明文的x,y坐标
+    //element_printf("temp3 = %B\n", temp3); // 输出明文的x,y坐标
     element_pow_zn(PCT.C4, pkg_params.e_g_g, temp3);
-    element_printf("PCT.C4 193--- in Enc = %B\n", PCT.C4); // 输出明文的x,y坐标
+    //element_printf("PCT.C4 193--- in Enc = %B\n", PCT.C4); // 输出明文的x,y坐标
 
     // C5
     // element_t result;
     // element_init_GT(result, pairing);
 
-    element_printf("PCT.C5 212 pkg_params.e_g_h Enc = %B\n", pkg_params.e_g_h);
-    element_printf("PCT.C5 212 k1 Enc = %B\n", k1);
-    element_printf("PCT.C5 212 ts_params.e_g_h Enc = %B\n", ts_params.e_g_h);
-    element_printf("PCT.C5 212 k2 Enc = %B\n", k2);
-    element_printf("PCT.C5 212 PT Enc = %B\n", PT);
+    // element_printf("PCT.C5 212 pkg_params.e_g_h Enc = %B\n", pkg_params.e_g_h);
+    // element_printf("PCT.C5 212 k1 Enc = %B\n", k1);
+    // element_printf("PCT.C5 212 ts_params.e_g_h Enc = %B\n", ts_params.e_g_h);
+    // element_printf("PCT.C5 212 k2 Enc = %B\n", k2);
+    // element_printf("PCT.C5 212 PT Enc = %B\n", PT);
     element_invert(temp4, ts_params.e_g_h);
     element_pow_zn(temp4, temp4, k1);
-    
+
     element_invert(temp5, pkg_params.e_g_h);
     element_pow_zn(temp5, temp5, k2);
-    
+
     element_mul(PCT.C5, PT, temp4);
     element_mul(PCT.C5, PCT.C5, temp5);
     element_printf("PCT.C5 in Enc = %B\n", PCT.C5); // 先求底数逆元再求幂
 
-    
-    element_printf("PCT.C5 225 pkg_params.e_g_h Enc = %B\n", pkg_params.e_g_h);
-    element_printf("PCT.C5 226 k1 Enc = %B\n", k1);
-    element_printf("PCT.C5 225 ts_params.e_g_h Enc = %B\n", ts_params.e_g_h);
-    element_printf("PCT.C5 226 k2 Enc = %B\n", k2);
-    element_printf("PCT.C5 212 PT Enc = %B\n", PT);
-    element_pow_zn(temp4, ts_params.e_g_h, k1);
-    element_invert(temp4, temp4);
-    
-    
-    element_pow_zn(temp5, pkg_params.e_g_h, k2);
-    element_invert(temp5, temp5);
-    
-    element_mul(PCT.C5, PT, temp4);
-    element_mul(PCT.C5, PCT.C5, temp5);
-    element_printf("PCT.C5 in Enc = %B\n", PCT.C5); // 先求幂，再求逆元
+    // element_printf("PCT.C5 225 pkg_params.e_g_h Enc = %B\n", pkg_params.e_g_h);
+    // element_printf("PCT.C5 226 k1 Enc = %B\n", k1);
+    // element_printf("PCT.C5 225 ts_params.e_g_h Enc = %B\n", ts_params.e_g_h);
+    // element_printf("PCT.C5 226 k2 Enc = %B\n", k2);
+    // element_printf("PCT.C5 212 PT Enc = %B\n", PT);
+    // element_pow_zn(temp4, ts_params.e_g_h, k1);
+    // element_invert(temp4, temp4);
 
+    // element_pow_zn(temp5, pkg_params.e_g_h, k2);
+    // element_invert(temp5, temp5);
 
+    // element_mul(PCT.C5, PT, temp4);
+    // element_mul(PCT.C5, PCT.C5, temp5);
+    // element_printf("PCT.C5 in Enc = %B\n", PCT.C5); // 先求幂，再求逆元
 
     element_clear(k1);
     element_clear(k2);
@@ -282,44 +235,42 @@ void SenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, Us
     element_printf("After Dec PT_Alice = %B\n", PT_Alice); // 输出明文的x,y坐标
 }
 
-// RK生成函数
-void RkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, Ciphertext PCT, element_t &rk, element_t &X)
-{
-    element_t Q, temp;
-    element_init_G1(temp, pairing);
-    element_init_G1(Q, pairing);
-    element_random(Q);
-    element_printf("Q = %B\n", Q);           // 输出明文的x,y坐标
-    element_printf("PCT.C3 = %B\n", PCT.C3); // 输出明文的x,y坐标
-
-    element_mul_zn(temp, Q, User_Alice_Priv.r);
-    element_add(rk, temp, User_Alice_Priv.K);
-    pairing_apply(X, temp, PCT.C3, pairing);
-
-    element_clear(Q);
-    element_clear(temp);
-
-    cout << "RK, X生成成功:" << endl;
-    element_printf("rk = %B\n", rk); // 输出明文的x,y坐标
-    element_printf("X = %B\n", X);   // 输出明文的x,y坐标
-}
-
 int main()
 {
     pairing_t pairing; // 定义配对对象
 
-    // 初始化配对参数（使用预定义的 Type A 参数）
-    const char *param_str =
-        "type a\n"
-        "q 8780710799663312522437781984754049815806883199414208211022683396663570522207602206790247281104613111\n"
-        "h 120160122648911460793888213667405342048029544012513118202832259291762929507923\n"
-        "r 730750818665451621361119245571504901405976559617\n"
-        "exp2 159\n"
-        "exp1 107\n"
-        "sign1 1\n"
-        "sign0 1\n";
+    FILE *fp = fopen("../param/a.param", "r"); // 打开参数文件
+    if (!fp)
+    {
+        printf("参数文件打开失败！\n");
+        return 1;
+    }
+    else{
+        printf("参数文件打开成功！\n");
+    }
 
-    pairing_init_set_buf(pairing, param_str, strlen(param_str)); // 从字符串加载参数
+    char param[1024]; // 定义参数字符串
+    size_t count = fread(param, 1, sizeof(param), fp);
+    fclose(fp); // 关闭文件
+    if (count == 0)
+    {
+        printf("参数读取失败或参数文件为空！\n");
+    }
+    else{
+        printf("参数读取成功！\n");
+    }
+    
+
+    pairing_init_set_str(pairing, param); // 从文件加载参数
+
+    if (!pairing_is_symmetric(pairing))
+    {
+        printf("这是一个非对称配对。\n");
+    }
+    else
+    {
+        printf("这是一个对称配对。\n");
+    }
 
     // TS，PKG私钥定义，初始化，生成
     element_t ts_priv, pkg_priv;
@@ -328,7 +279,6 @@ int main()
     element_init_Zr(pkg_priv, pairing);
     element_random(pkg_priv);
 
-    
     element_t user_Alice_Pub, user_Bob_Pub, user_Tom_Pub, user_Andy_Pub, Time_Pub; // 定义用户公钥对象
     // 随机生成用户Alice公钥，暂不使用hash函数
     element_init_Zr(user_Alice_Pub, pairing);
