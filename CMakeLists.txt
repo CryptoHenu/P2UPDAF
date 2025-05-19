@@ -21,10 +21,13 @@ target_include_directories(PbcBendmarkingCmake PRIVATE ${INC_DIR})
 # 添加库文件搜索路径
 target_link_directories(PbcBendmarkingCmake PRIVATE ${LINK_DIR})
 
+
 # 链接库
 target_link_libraries(PbcBendmarkingCmake PRIVATE
         libpbc.a
         libgmp.a
+        libssl.a
+        libcrypto.a
 )
 
 #生成调试信息

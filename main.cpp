@@ -1,9 +1,18 @@
 // -*- coding: utf-8 -*-
 
+/*
+ *
+ *Author:  Ziyi Dong
+ *
+*/ 
+
 #include <stdio.h>
 #include <iostream>
 #include <string.h>
+
+#include "sha.h"
 #include "pbc.h"
+
 
 
 using namespace std;
@@ -346,11 +355,22 @@ void Dec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTra
 
 }
 
+
+void id_to_zr(pairing_t pairing, const char *id, element_t &upk) {
+    // 生成SHA-256哈希
+    unsigned char digest[SHA256_DIGEST_LENGTH];
+    SHA256((unsigned char*)id, strlen(id), digest);
+
+    // 从哈希值加载元素
+    element_from_hash(upk, digest, SHA256_DIGEST_LENGTH);
+    
+}
+
 int main()
 {
     pairing_t pairing; 
 
-    FILE *fp = fopen("../param/a.param", "r"); // �򿪲����ļ�
+    FILE *fp = fopen("../param/a.param", "r");
     if (!fp)
     {
         printf("param file open fail\n");
@@ -387,17 +407,22 @@ int main()
     element_random(ts_priv);
     element_random(pkg_priv);
 
+
+    char Alice[] = "sender.alice@gmail.com";
+    char Time[] = "2025-5-5 12:00:00";
+
     element_t user_Alice_Pub, Time_Pub;
     element_init_Zr(user_Alice_Pub, pairing);
     element_init_Zr(Time_Pub, pairing);
-    element_random(user_Alice_Pub);
-    element_random(Time_Pub);
+    id_to_zr(pairing, Alice, user_Alice_Pub);
+    
+    id_to_zr(pairing, Time, Time_Pub);
+    
 
 
     element_t user_Bob_Pub;
     element_init_Zr(user_Bob_Pub, pairing);
     element_random(user_Bob_Pub);
-
 
     pkg_params pkg_params; 
     ts_params ts_params; 
