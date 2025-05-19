@@ -44,12 +44,12 @@ typedef struct TimeTrapDoor
 // Ciphertext structure
 typedef struct Ciphertext
 {
-    element_t C1, C2, C3, C4, C5;
+    element_t C1, C2, C3, C4, C5, C6;
 } Ciphertext;
 
 typedef struct ReCiphertext
 {
-    element_t C1, C2, C3, C4, C5;
+    element_t C1, C2, C3, C4, C5, C6, RK2, C32;
 } ReCiphertext;
 
 typedef struct Rj
@@ -121,7 +121,7 @@ void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, 
 }
 
 // Encryption function
-void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, element_t Time_Pub, element_t PT, Ciphertext &PCT)
+void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, element_t Time_Pub, element_t vk, element_t PT, Ciphertext &PCT)
 {
 
     element_t k1, k2;
@@ -179,6 +179,9 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
 
     element_mul(PCT.C5, PT, temp3);
     element_mul(PCT.C5, PCT.C5, temp6);
+
+    // C6
+    element_pow_zn(PCT.C6, pkg_params.g, vk);
     
 
     element_clear(k1);
@@ -283,8 +286,22 @@ void RjGen(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Alice_P
 
     cout << "Rj generation function Succ" << endl;
 }
-void ReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, ReCiphertext &RCT)
+void ReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, pkg_params pkg_params, element_t vk, ReCiphertext &RCT)
 {
+
+    element_t RK1, r, temp;
+    element_init_G1(RK1, pairing);
+    element_init_Zr(r, pairing);
+    element_init_Zr(temp, pairing);
+    element_random(r);
+
+    // RK1
+    element_add(temp, r, vk);
+    element_pow_zn(RK1, pkg_params.g, temp);
+    element_add(RK1, RK1, rk);
+
+    // RK2
+    element_pow_zn(RCT.RK2, pkg_params.g, r);
 
  
     //  RCT.C1 = PCT.C1;
@@ -294,7 +311,7 @@ void ReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, ReCiphertext &RCT)
     element_set(RCT.C2, PCT.C2);
 
     //  RCT.C3 = PCT.C3;
-    pairing_apply(RCT.C3, PCT.C3, rk, pairing);
+    element_set(RCT.C3, PCT.C3);   //
 
     //  RCT.C4 = PCT.C4;
     element_set(RCT.C4, PCT.C4);
@@ -302,12 +319,17 @@ void ReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, ReCiphertext &RCT)
     //  RCT.C5 = PCT.C5;
     element_set(RCT.C5, PCT.C5);
 
+    //  RCT.C5 = PCT.C5;
+    element_set(RCT.C6, PCT.C6);
+
+    //  RCT.C32
+    pairing_apply(RCT.C32, PCT.C3, RK1, pairing);
+
     cout << "代理ReEnc Success" << endl;
-    element_printf("RCT.C1 = %B\n", RCT.C1);
-    element_printf("RCT.C2 = %B\n", RCT.C2);
-    element_printf("RCT.C3 = %B\n", RCT.C3);
-    element_printf("RCT.C4 = %B\n", RCT.C4);
-    element_printf("RCT.C5 = %B\n", RCT.C5);
+
+    element_clear(RK1);
+    element_clear(r);
+    element_clear(temp);
 
 }
 
@@ -335,23 +357,31 @@ void Dec1(pairing_t pairing, UserPrivateKey User_Priv, Rj rj, element_t& X)
 
 void Dec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTrapDoor St , Rj rj, element_t X, element_t& PT_Bob)
 {
-    element_t temp1, temp2;
+    element_t temp1, temp2, temp3, temp4;
     element_init_GT(temp1, pairing);
     element_init_GT(temp2, pairing);
+    element_init_GT(temp3, pairing);
+    element_init_G1(temp4, pairing);
 
     pairing_apply(temp1, RCT.C1, St.K, pairing);
     element_pow_zn(temp2, RCT.C2, St.r);
     element_mul(PT_Bob, temp1, temp2);
-    element_mul(PT_Bob, PT_Bob, RCT.C3);
+    element_mul(PT_Bob, PT_Bob, RCT.C32);
     element_mul(PT_Bob, PT_Bob, RCT.C4);
     element_mul(PT_Bob, PT_Bob, RCT.C5);
     element_div(PT_Bob, PT_Bob, X);
 
+    element_add(temp4, RCT.C6, RCT.RK2);
+    pairing_apply(temp3, RCT.C3, temp4, pairing);
+    element_div(PT_Bob, PT_Bob, temp3);
+
     element_clear(temp1);
     element_clear(temp2);
+    element_clear(temp3);
+    element_clear(temp4);
 
-    cout << "PT_Bob seccess:" << endl;
-    element_printf("PT_Bob = %B\n", PT_Bob); 
+    // cout << "PT_Bob seccess:" << endl;
+    // element_printf("PT_Bob = %B\n", PT_Bob); 
 
 }
 
@@ -406,6 +436,10 @@ int main()
     element_init_Zr(pkg_priv, pairing);
     element_random(ts_priv);
     element_random(pkg_priv);
+
+    element_t vk, sk;
+    element_init_Zr(vk, pairing);
+    element_init_Zr(sk, pairing);
 
 
     char Alice[] = "sender.alice@gmail.com";
@@ -473,6 +507,7 @@ int main()
     element_init_G1(PCT.C3, pairing);
     element_init_GT(PCT.C4, pairing);
     element_init_GT(PCT.C5, pairing);
+    element_init_G1(PCT.C6, pairing);
 
 
     PrivatekeyGen(pairing, pkg_priv, pkg_params, user_Alice_Pub, User_Alice_Priv);
@@ -481,7 +516,7 @@ int main()
  
     TimeTrapDoorGen(pairing, ts_priv, ts_params, Time_Pub, Time_St);
 
-    Enc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, PT, PCT);
+    Enc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, vk, PT, PCT);
 
     element_t rk, PX;
     element_init_G1(rk, pairing);
@@ -508,11 +543,15 @@ int main()
     ReCiphertext RCT;
     element_init_G1(RCT.C1, pairing);
     element_init_GT(RCT.C2, pairing);
-    element_init_GT(RCT.C3, pairing);
+    element_init_G1(RCT.C3, pairing);  // 当前为正确版本，但bus error
     element_init_GT(RCT.C4, pairing);
     element_init_GT(RCT.C5, pairing);
+    element_init_G1(RCT.C6, pairing);
+    element_init_G1(RCT.RK2, pairing);
+    element_init_GT(RCT.C32, pairing);
 
-    ReEnc(pairing, PCT, rk, RCT);
+    ReEnc(pairing, PCT, rk, pkg_params, vk, RCT);
+    element_printf("RCT.C1 = %B\n", RCT.C1);
     element_printf("PCT.C1 = %B\n", PCT.C1);
     element_printf("PCT.C2 = %B\n", PCT.C2);
     element_printf("PCT.C3 = %B\n", PCT.C3);
@@ -562,12 +601,16 @@ int main()
     element_clear(PCT.C3);
     element_clear(PCT.C4); 
     element_clear(PCT.C5);
+    element_clear(PCT.C6);
 
     element_clear(RCT.C1);
     element_clear(RCT.C2);
     element_clear(RCT.C3);
     element_clear(RCT.C4);
     element_clear(RCT.C5);
+    element_clear(RCT.C6);
+    element_clear(RCT.RK2);
+    element_clear(RCT.C32);
 
     element_clear(ts_priv);
     element_clear(ts_params.g);
@@ -583,6 +626,9 @@ int main()
     element_clear(rj_bob.u);
     element_clear(rj_bob.v);
     element_clear(rj_bob.w);
+
+    element_clear(vk);
+    element_clear(sk);
 
     element_clear(user_Bob_Pub);
 
