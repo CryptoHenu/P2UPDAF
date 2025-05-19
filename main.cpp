@@ -5,33 +5,34 @@
 #include <string.h>
 #include "pbc.h"
 
+
 using namespace std;
 
-// ����PKG�����ṹ��
+// PKG parameters stucture
 typedef struct pkg_params
 {
     element_t g, g1, h, e_g_g, e_g_h;
 } pkg_params;
 
-// ����TS�����ṹ��
+//  TS parameters structure
 typedef struct ts_params
 {
     element_t g, g1, h, e_g_g, e_g_h;
 } ts_params;
 
-// �����û�˽Կ�ṹ��
+// User private key structure
 typedef struct UserPrivateKey
 {
     element_t r, K;
 } UserPrivateKey;
 
-// ����ʱ�����Žṹ��
+// TimeTrapDoor structure
 typedef struct TimeTrapDoor
 {
     element_t r, K;
 } TimeTrapDoor;
 
-// ����ԭʼ���Ľṹ��
+// Ciphertext structure
 typedef struct Ciphertext
 {
     element_t C1, C2, C3, C4, C5;
@@ -47,7 +48,7 @@ typedef struct Rj
     element_t u, v, w;
 } Rj;
 
-// ˽Կ���ɺ���
+// User private key generation
 void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey &privatekey)
 {
     element_t diff, inv;
@@ -78,7 +79,7 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
     element_clear(inv);
 }
 
-// ʱ���������ɺ���
+// TimeTrapDoor generation
 void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, element_t Time_Pub, TimeTrapDoor &Time_St)
 {
     element_t diff, inv;            
@@ -102,7 +103,7 @@ void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, 
         printf("Modular inverse: ");
         element_printf("%B\n", inv);
     }
-    cout << "ʱ���������ɳɹ�:" << endl;
+    cout << "TimeTrapDoor generation succ:" << endl;
     element_printf("Time_St.r = %B\n", Time_St.r);
     element_printf("Time_St.K = %B\n", Time_St.K);
 
@@ -110,7 +111,7 @@ void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, 
     element_clear(inv);
 }
 
-// ���ܺ���
+// Encryption function
 void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, element_t Time_Pub, element_t PT, Ciphertext &PCT)
 {
 
@@ -183,7 +184,7 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
 
     // element_clear(result);
 
-    cout << "���ܳɹ�:" << endl;
+    cout << "Enc success:" << endl;
     element_printf("PCT.C1 = %B\n", PCT.C1);
     element_printf("PCT.C2 = %B\n", PCT.C2);
     element_printf("PCT.C3 = %B\n", PCT.C3);
@@ -191,7 +192,7 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
     element_printf("PCT.C5 = %B\n", PCT.C5);
 }
 
-// Sender���ܺ���
+// Sender decryption function
 void SenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, UserPrivateKey User_Alice_Priv, TimeTrapDoor St, Ciphertext PCT, element_t &PT_Alice)
 {
     element_t temp1, temp2, temp3, temp4;
@@ -223,11 +224,11 @@ void SenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, Us
     element_clear(temp3);
     element_clear(temp4);
 
-    element_printf("PT_Alice in dec = %B\n", PT_Alice); // ������ĵ�x,y����
-    cout << "���ܳɹ�:" << endl;
+    element_printf("PT_Alice in dec = %B\n", PT_Alice); 
+    cout << "Sender decryption sueecss:" << endl;
     
 }
-// RK���ɺ���
+// RK, X generation function
 void RkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, Ciphertext PCT, element_t &rk, element_t &X)
 {
     element_t Q, temp;
@@ -243,10 +244,10 @@ void RkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, U
     element_clear(Q);
     element_clear(temp);
 
-    cout << "RK, X���ɳɹ�:" << endl;
+    cout << "RK, X generation function:" << endl;
 }
 
-// r;
+// Rj generation function;
 void RjGen(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Alice_Priv, element_t user_Pub, element_t rk, element_t X, element_t k3, Rj &rj)
 {
     element_t temp1, temp2;
@@ -271,7 +272,7 @@ void RjGen(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Alice_P
     element_clear(temp1);
     element_clear(temp2);
 
-    cout << "Rj���ɳɹ�" << endl;
+    cout << "Rj generation function Succ" << endl;
 }
 void ReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, ReCiphertext &RCT)
 {
@@ -301,7 +302,7 @@ void ReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, ReCiphertext &RCT)
 
 }
 
-
+// Dec1 decryption function
 void Dec1(pairing_t pairing, UserPrivateKey User_Priv, Rj rj, element_t& X)
 {
     element_t temp1, temp2;
@@ -318,7 +319,7 @@ void Dec1(pairing_t pairing, UserPrivateKey User_Priv, Rj rj, element_t& X)
     element_clear(temp1);
     element_clear(temp2);
 
-    cout << "X���ܳɹ�:" << endl;
+    cout << "Dec1 decryption function: X =" << endl;
 
 }
 
@@ -340,54 +341,53 @@ void Dec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTra
     element_clear(temp1);
     element_clear(temp2);
 
-    cout << "Bob���ܳɹ�:" << endl;
-    element_printf("PT_Bob = %B\n", PT_Bob); // ������ĵ�x,y����
+    cout << "PT_Bob seccess:" << endl;
+    element_printf("PT_Bob = %B\n", PT_Bob); 
 
 }
 
 int main()
 {
-    pairing_t pairing; // ������Զ���
+    pairing_t pairing; 
 
     FILE *fp = fopen("../param/a.param", "r"); // �򿪲����ļ�
     if (!fp)
     {
-        printf("�����ļ���ʧ�ܡ�\n");
+        printf("param file open fail\n");
         return 1;
     }
     else{
-        printf("�����ļ��򿪳ɹ���\n");
+        printf("param file open succ\n");
     }
 
-    char param[1024]; // ��������ַ���
+    char param[1024];
     size_t count = fread(param, 1, sizeof(param), fp);
-    fclose(fp); // �ر��ļ�
+    fclose(fp); 
     if (count == 0)
     {
-        printf("������ȡʧ�ܻ�����ļ�Ϊ�ա�\n");
+        printf("write fail\n");
     }
     else{
-        printf("������ȡ�ɹ���\n");
+        printf("write Succ\n");
     }
     
-    pairing_init_set_str(pairing, param); // ���ļ����ز���
+    pairing_init_set_str(pairing, param); 
     if (!pairing_is_symmetric(pairing))
     {
-        printf("����һ���ǶԳ���ԡ�\n");
+        printf("is a asys\n");
     }
     else
     {
-        printf("����һ���Գ���ԡ�\n");
+        printf("is a sys\n");
     }
 
-    // TS��PKG˽Կ���壬��ʼ��������
     element_t ts_priv, pkg_priv;
     element_init_Zr(ts_priv, pairing);
     element_init_Zr(pkg_priv, pairing);
     element_random(ts_priv);
     element_random(pkg_priv);
 
-    element_t user_Alice_Pub, Time_Pub; // �����û���Կ����
+    element_t user_Alice_Pub, Time_Pub;
     element_init_Zr(user_Alice_Pub, pairing);
     element_init_Zr(Time_Pub, pairing);
     element_random(user_Alice_Pub);
@@ -399,10 +399,9 @@ int main()
     element_random(user_Bob_Pub);
 
 
-    pkg_params pkg_params; // ����PKG�����ṹ��
-    ts_params ts_params;   // ����TS�����ṹ��
+    pkg_params pkg_params; 
+    ts_params ts_params; 
 
-    // TS������ʼ��
     element_init_G1(ts_params.g, pairing);
     element_init_G1(ts_params.h, pairing);
     element_init_G1(ts_params.g1, pairing);
@@ -414,8 +413,7 @@ int main()
     pairing_apply(ts_params.e_g_g, ts_params.g, ts_params.g, pairing);
     pairing_apply(ts_params.e_g_h, ts_params.g, ts_params.h, pairing);
 
-    // PKG������ʼ��
-    element_init_G1(pkg_params.g, pairing); // PKG������ʼ��
+    element_init_G1(pkg_params.g, pairing); 
     element_init_G1(pkg_params.h, pairing);
     element_init_G1(pkg_params.g1, pairing);
     element_init_GT(pkg_params.e_g_g, pairing);
@@ -426,7 +424,7 @@ int main()
     pairing_apply(pkg_params.e_g_g, pkg_params.g, pkg_params.g, pairing);
     pairing_apply(pkg_params.e_g_h, pkg_params.g, pkg_params.h, pairing);
 
-    UserPrivateKey User_Alice_Priv, User_Bob_Priv; // �����û�˽Կ����
+    UserPrivateKey User_Alice_Priv, User_Bob_Priv; 
     TimeTrapDoor Time_St;
 
     element_init_Zr(User_Alice_Priv.r, pairing);
@@ -436,19 +434,14 @@ int main()
     element_init_Zr(User_Bob_Priv.r, pairing);
     element_init_G1(User_Bob_Priv.K, pairing);
     
-    // �������������
     element_t PT;
     element_init_GT(PT, pairing);
     element_random(PT);
-    element_printf("������������� PT = %B\n", PT);
 
     element_t PT_Alice, PT_Bob;
     element_init_GT(PT_Alice, pairing);
     element_init_GT(PT_Bob, pairing);
-    element_printf("PT_Alice���ĳ�ʼ�� = %B\n", PT_Alice);
-    element_printf("PT_Bob���ĳ�ʼ�� = %B\n", PT_Bob);
 
-    // ��ʼ���ĵĶ���ͳ�ʼ��
     Ciphertext PCT;
     element_init_G1(PCT.C1, pairing);
     element_init_GT(PCT.C2, pairing);
@@ -457,19 +450,12 @@ int main()
     element_init_GT(PCT.C5, pairing);
 
 
-    // ����˽Կ���ɺ���
-    cout << "Alice˽Կ���ɿ�ʼ:" << endl;
     PrivatekeyGen(pairing, pkg_priv, pkg_params, user_Alice_Pub, User_Alice_Priv);
-    cout << "Alice˽Կ���ɳɹ�:" << endl;
 
-    cout << "Bob˽Կ���ɿ�ʼ:" << endl;
     PrivatekeyGen(pairing, pkg_priv, pkg_params, user_Bob_Pub, User_Bob_Priv);
-    cout << "Bob˽Կ���ɳɹ�:" << endl;
  
-    // ����ʱ���������ɺ���
     TimeTrapDoorGen(pairing, ts_priv, ts_params, Time_Pub, Time_St);
 
-    cout << "���ܿ�ʼ��" << endl;
     Enc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, PT, PCT);
 
     element_t rk, PX;
@@ -477,8 +463,8 @@ int main()
     element_init_GT(PX, pairing);
 
     RkGen(pairing, pkg_params, user_Alice_Pub, User_Alice_Priv, PCT, rk, PX);
-    element_printf("rk = %B\n", rk); // ������ĵ�x,y����
-    element_printf("PX = %B\n", PX);   // ������ĵ�x,y����
+    element_printf("rk = %B\n", rk); 
+    element_printf("PX = %B\n", PX);  
 
     element_t k3;
     element_init_Zr(k3, pairing);
@@ -489,7 +475,6 @@ int main()
     element_init_GT(rj_bob.v, pairing);
     element_init_GT(rj_bob.w, pairing);
 
-    // ����RK���ɺ���
     RjGen(pairing, pkg_params, User_Alice_Priv, user_Bob_Pub, rk, PX, k3, rj_bob);
     element_printf("rj_bob.u = %B\n", rj_bob.u);
     element_printf("rj_bob.v = %B\n", rj_bob.v);
@@ -510,7 +495,6 @@ int main()
     element_printf("PCT.C5 = %B\n", PCT.C5);
     
 
-    // ����X���ܺ���
     element_t X;
     element_init_GT(X, pairing);
     Dec1(pairing, User_Bob_Priv, rj_bob, X);
@@ -520,7 +504,6 @@ int main()
     Dec2(pairing, User_Bob_Priv, RCT, Time_St , rj_bob, X, PT_Bob);
 
 
-    cout << "���ܿ�ʼ��" << endl;
     SenderDec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
 
     element_printf("PX       = %B\n", PX);
@@ -529,7 +512,6 @@ int main()
     element_printf("PT_Alice = %B\n", PT_Alice);
     element_printf("PT_Bob   = %B\n", PT_Bob);
 
-    // �����ڴ�
 
     element_clear(pkg_priv);
     element_clear(pkg_params.g);
@@ -579,9 +561,7 @@ int main()
 
     element_clear(user_Bob_Pub);
 
-    // ������Բ���
     pairing_clear(pairing);
 
-    cout << "�������гɹ�" << endl;
     return 0;
 }
