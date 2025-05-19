@@ -1,5 +1,12 @@
 # ninja log v5
+<<<<<<< HEAD
 0	337	1747542904332332575	CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o	f1e84bc6f09f2295
 337	462	1747542904452332573	PbcBendmarkingCmake	c9c5cf19ed8aa182
 1	306	1747554902994544468	CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o	f1e84bc6f09f2295
 306	442	1747554903124533674	PbcBendmarkingCmake	c9c5cf19ed8aa182
+=======
+257	376	1747576273455968587	PbcBendmarkingCmake	c9c5cf19ed8aa182
+0	257	1747576273335968509	CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o	f1e84bc6f09f2295
+1	328	1747617565835699415	CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o	f1e84bc6f09f2295
+328	468	1747617565975699446	PbcBendmarkingCmake	c9c5cf19ed8aa182
+>>>>>>> GentryIBE-test
