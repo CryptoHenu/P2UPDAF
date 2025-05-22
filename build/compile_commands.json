@@ -1,7 +1,8 @@
 [
 {
-  "directory": "/home/ubuntu22/projects/PBC-IBTRPRE/build",
-  "command": "/usr/bin/g++ -I/home/ubuntu22/projects/PBC-IBTRPRE/include  -g -g -std=gnu++20 -o CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o -c /home/ubuntu22/projects/PBC-IBTRPRE/main.cpp",
-  "file": "/home/ubuntu22/projects/PBC-IBTRPRE/main.cpp"
+  "directory": "/home/ubuntuserver24/projects/PBC-IBTRPRE/build",
+  "command": "/usr/bin/g++  -I/home/ubuntuserver24/projects/PBC-IBTRPRE/include  -g -g -std=gnu++20 -o CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/main.cpp",
+  "file": "/home/ubuntuserver24/projects/PBC-IBTRPRE/main.cpp",
+  "output": "CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o"
 }
 ]
