@@ -1,1 +1,1 @@
-/usr/bin/c++  -g -g CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o -o PbcBendmarkingCmake   -L/home/ubuntu22/projects/PbcBendmarkingCmake/lib  -Wl,-rpath,/home/ubuntu22/projects/PbcBendmarkingCmake/lib -Wl,-Bstatic -lpbc -lgmp -Wl,-Bdynamic 
+/usr/bin/g++  -g -g CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o CMakeFiles/PbcBendmarkingCmake.dir/wots.cpp.o CMakeFiles/PbcBendmarkingCmake.dir/hash.cpp.o -o PbcBendmarkingCmake   -L/home/ubuntuserver24/projects/PBC-IBTRPRE/lib  -Wl,-rpath,/home/ubuntuserver24/projects/PBC-IBTRPRE/lib -lpbc -lgmp -lssl -lcrypto 

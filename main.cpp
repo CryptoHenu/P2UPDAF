@@ -1,10 +1,13 @@
-// -*- coding: utf-8 -*-
-
 /*
- *
- *Author:  Ziyi Dong
- *
-*/ 
+ * @Coding: UTF-8
+ * @Author: Ziyi Dong
+ * @Created: 05-14-2025
+ * @Last Modified: 05-22-2025
+ * @Copyright: © 2023-2024 MyCompany Inc. All Rights Reserved.
+ * @License: MIT (详见项目根目录的 LICENSE 文件)
+ * @Contact: zhangsan@example.com
+ * @Desc: 此模块用于处理用户认证逻辑.
+ */
 
 #include <stdio.h>
 #include <iostream>
@@ -34,7 +37,7 @@ typedef struct pkg_params
     element_t g, g1, h, e_g_g, e_g_h;
 } pkg_params;
 
-//  TS parameters structure
+// TS parameters structure
 typedef struct ts_params
 {
     element_t g, g1, h, e_g_g, e_g_h;
@@ -58,17 +61,19 @@ typedef struct Ciphertext
     element_t C1, C2, C3, C4, C5, C6;
 } Ciphertext;
 
+// ReCiphertext structure
 typedef struct ReCiphertext
 {
     element_t C1, C2, C3, C4, C5, C6, RK2, C32;
 } ReCiphertext;
 
+// Rj structure
 typedef struct Rj
 {
     element_t u, v, w;
 } Rj;
 
-// User private key generation
+// User private key generation function
 void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey &privatekey)
 {
     element_t diff, inv;
@@ -92,14 +97,14 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
         printf("Modular inverse: ");
         element_printf("%B\n", inv);
     }
-    element_printf("privatekey.r = %B\n", privatekey.r);
-    element_printf("privatekey.K = %B\n", privatekey.K);
+    //element_printf("privatekey.r = %B\n", privatekey.r);
+    //element_printf("privatekey.K = %B\n", privatekey.K);
 
     element_clear(diff);
     element_clear(inv);
 }
 
-// TimeTrapDoor generation
+// TimeTrapDoor generation function
 void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, element_t Time_Pub, TimeTrapDoor &Time_St)
 {
     element_t diff, inv;            
@@ -107,7 +112,7 @@ void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, 
     element_init_Zr(diff, pairing);
     element_init_Zr(inv, pairing);
     
-    element_sub(diff, ts_priv, Time_Pub); // diff �� a - b
+    element_sub(diff, ts_priv, Time_Pub);
     element_invert(inv, diff);
     element_neg(Time_St.K, ts_params.g);
     element_pow_zn(Time_St.K, Time_St.K, Time_St.r);
@@ -123,9 +128,9 @@ void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, 
         printf("Modular inverse: ");
         element_printf("%B\n", inv);
     }
-    cout << "TimeTrapDoor generation succ:" << endl;
-    element_printf("Time_St.r = %B\n", Time_St.r);
-    element_printf("Time_St.K = %B\n", Time_St.K);
+    //cout << "TimeTrapDoor generation succ:" << endl;
+    //element_printf("Time_St.r = %B\n", Time_St.r);
+    //element_printf("Time_St.K = %B\n", Time_St.K);
 
     element_clear(diff);
     element_clear(inv);
@@ -207,12 +212,12 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
 
     // element_clear(result);
 
-    cout << "Enc success:" << endl;
-    element_printf("PCT.C1 = %B\n", PCT.C1);
-    element_printf("PCT.C2 = %B\n", PCT.C2);
-    element_printf("PCT.C3 = %B\n", PCT.C3);
-    element_printf("PCT.C4 = %B\n", PCT.C4);
-    element_printf("PCT.C5 = %B\n", PCT.C5);
+    //cout << "Enc success:" << endl;
+    //element_printf("PCT.C1 = %B\n", PCT.C1);
+    //element_printf("PCT.C2 = %B\n", PCT.C2);
+    //element_printf("PCT.C3 = %B\n", PCT.C3);
+    //element_printf("PCT.C4 = %B\n", PCT.C4);
+    //element_printf("PCT.C5 = %B\n", PCT.C5);
 }
 
 // Sender decryption function
@@ -247,8 +252,8 @@ void SenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, Us
     element_clear(temp3);
     element_clear(temp4);
 
-    element_printf("PT_Alice in dec = %B\n", PT_Alice); 
-    cout << "Sender decryption sueecss:" << endl;
+    //element_printf("PT_Alice in dec = %B\n", PT_Alice); 
+    //cout << "Sender decryption sueecss:" << endl;
     
 }
 // RK, X generation function
@@ -267,10 +272,10 @@ void RkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, U
     element_clear(Q);
     element_clear(temp);
 
-    cout << "RK, X generation function:" << endl;
+    //cout << "RK, X generation function:" << endl;
 }
 
-// Rj generation function;
+// Rj generation function
 void RjGen(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Alice_Priv, element_t user_Pub, element_t rk, element_t X, element_t k3, Rj &rj)
 {
     element_t temp1, temp2;
@@ -297,6 +302,8 @@ void RjGen(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Alice_P
 
     cout << "Rj generation function Succ" << endl;
 }
+
+// Re-Encryption function
 void ReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, pkg_params pkg_params, element_t vk, ReCiphertext &RCT)
 {
 
@@ -336,7 +343,7 @@ void ReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, pkg_params pkg_param
     //  RCT.C32
     pairing_apply(RCT.C32, PCT.C3, RK1, pairing);
 
-    cout << "代理ReEnc Success" << endl;
+    //cout << "代理ReEnc Success" << endl;
 
     element_clear(RK1);
     element_clear(r);
@@ -361,11 +368,11 @@ void Dec1(pairing_t pairing, UserPrivateKey User_Priv, Rj rj, element_t& X)
     element_clear(temp1);
     element_clear(temp2);
 
-    cout << "Dec1 decryption function: X =" << endl;
+    //cout << "Dec1 decryption function: X =" << endl;
 
 }
 
-
+// Dec2 decryption function
 void Dec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTrapDoor St , Rj rj, element_t X, element_t& PT_Bob)
 {
     element_t temp1, temp2, temp3, temp4;
@@ -396,7 +403,7 @@ void Dec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTra
 
 }
 
-
+// hash: {0,1}* -> Zr
 void id_to_zr(pairing_t pairing, const char *id, element_t &upk) {
     // 生成SHA-256哈希
     unsigned char digest[SHA256_DIGEST_LENGTH];
@@ -404,9 +411,9 @@ void id_to_zr(pairing_t pairing, const char *id, element_t &upk) {
 
     // 从哈希值加载元素
     element_from_hash(upk, digest, SHA256_DIGEST_LENGTH);
-    
 }
 
+// main function
 int main()
 {
     pairing_t pairing; 
@@ -442,6 +449,23 @@ int main()
         printf("is a sys\n");
     }
 
+    uint8_t sk_seed[WOTS_N] = {1};
+    uint8_t message[WOTS_N] = {0x12};
+
+    uint8_t pk1[WOTS_LEN][WOTS_N];
+    uint8_t pk2[WOTS_LEN][WOTS_N];
+    uint8_t sig[WOTS_LEN][WOTS_N];
+
+    // out put seed of sk, and msg
+    printf("sk种子生成: \n");
+    print_hex("Seed (sk_seed)", sk_seed, WOTS_N);
+    printf("\n");
+
+    printf("pk1生成: \n");
+    wots_keygen(pk1, sk_seed);
+    //print_hex("Public key (wots_keygen)", pk1, WOTS_LEN * WOTS_N);
+    printf("\n");
+
     element_t ts_priv, pkg_priv;
     element_init_Zr(ts_priv, pairing);
     element_init_Zr(pkg_priv, pairing);
@@ -451,7 +475,6 @@ int main()
     element_t vk, sk;
     element_init_Zr(vk, pairing);
     element_init_Zr(sk, pairing);
-
 
     char Alice[] = "sender.alice@gmail.com";
     char Time[] = "2025-5-5 12:00:00";
@@ -463,8 +486,6 @@ int main()
     
     id_to_zr(pairing, Time, Time_Pub);
     
-
-
     element_t user_Bob_Pub;
     element_init_Zr(user_Bob_Pub, pairing);
     element_random(user_Bob_Pub);
@@ -529,6 +550,16 @@ int main()
 
     Enc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, vk, PT, PCT);
 
+    
+    printf("message生成: \n");
+    print_hex("Message", message, WOTS_N);
+    printf("\n");
+
+    printf("sig生成: \n");
+    wots_sign(sig, message, sk_seed);
+    //print_hex("Signature (wots_sign)", sig, WOTS_LEN * WOTS_N);
+    printf("\n");
+
     element_t rk, PX;
     element_init_G1(rk, pairing);
     element_init_GT(PX, pairing);
@@ -561,17 +592,31 @@ int main()
     element_init_G1(RCT.RK2, pairing);
     element_init_GT(RCT.C32, pairing);
 
+
+    printf("pk2生成: \n");
+    wots_pk_from_sig(pk2, sig, message);
+    //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
+    printf("\n");
+
+    int receiversuccess = 1;
+    for (int i = 0; i < WOTS_LEN; i++) {
+        if (memcmp(pk1[i], pk2[i], WOTS_N) != 0) {
+            receiversuccess = 0;
+            break;
+        }
+    }
+    printf("WOTS+ verification %s\n", receiversuccess ? "passed" : "failed");
+
     ReEnc(pairing, PCT, rk, pkg_params, vk, RCT);
-    element_printf("RCT.C1 = %B\n", RCT.C1);
-    element_printf("PCT.C1 = %B\n", PCT.C1);
-    element_printf("PCT.C2 = %B\n", PCT.C2);
-    element_printf("PCT.C3 = %B\n", PCT.C3);
-    element_printf("PCT.C4 = %B\n", PCT.C4);
-    element_printf("PCT.C5 = %B\n", PCT.C5);
-    
 
     element_t X;
     element_init_GT(X, pairing);
+
+    printf("pk2生成: \n");
+    wots_pk_from_sig(pk2, sig, message);
+    //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
+    printf("\n");
+
     Dec1(pairing, User_Bob_Priv, rj_bob, X);
     element_printf("PX = %B\n", PX);
     element_printf("X = %B\n", X);
@@ -579,14 +624,27 @@ int main()
     Dec2(pairing, User_Bob_Priv, RCT, Time_St , rj_bob, X, PT_Bob);
 
 
+    printf("pk2生成: \n");
+    wots_pk_from_sig(pk2, sig, message);
+    //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
+    printf("\n");
+
+    int sendersuccess = 1;
+    for (int i = 0; i < WOTS_LEN; i++) {
+        if (memcmp(pk1[i], pk2[i], WOTS_N) != 0) {
+            sendersuccess = 0;
+            break;
+        }
+    }
+    printf("WOTS+ verification %s\n", sendersuccess ? "passed" : "failed");
+    
     SenderDec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
 
-    element_printf("PX       = %B\n", PX);
-    element_printf("X        = %B\n", X);
-    element_printf("PT       = %B\n", PT);
-    element_printf("PT_Alice = %B\n", PT_Alice);
-    element_printf("PT_Bob   = %B\n", PT_Bob);
-
+    // element_printf("PX       = %B\n", PX);
+    // element_printf("X        = %B\n", X);
+    // element_printf("PT       = %B\n", PT);
+    // element_printf("PT_Alice = %B\n", PT_Alice);
+    // element_printf("PT_Bob   = %B\n", PT_Bob);
 
     element_clear(pkg_priv);
     element_clear(pkg_params.g);
@@ -595,14 +653,10 @@ int main()
     element_clear(pkg_params.e_g_g);
     element_clear(pkg_params.e_g_h);
 
-
     element_clear(user_Alice_Pub);
-
-
 
     element_clear(User_Alice_Priv.r);
     element_clear(User_Alice_Priv.K);
-
 
     element_clear(PT);
     element_clear(PT_Alice);
@@ -645,51 +699,6 @@ int main()
 
     pairing_clear(pairing);
 
-
-    uint8_t sk_seed[WOTS_N] = {1};
-    uint8_t message[WOTS_N] = {0x12};
-
-    uint8_t pk1[WOTS_LEN][WOTS_N];
-    uint8_t pk2[WOTS_LEN][WOTS_N];
-    uint8_t sig[WOTS_LEN][WOTS_N];
-
-    // 输出种子和消息
-    printf("sk种子生成: \n");
-    print_hex("Seed (sk_seed)", sk_seed, WOTS_N);
-    printf("\n");
-
-    printf("message生成: \n");
-    print_hex("Message", message, WOTS_N);
-    printf("\n");
-
-    printf("pk1生成: \n");
-    wots_keygen(pk1, sk_seed);
-    //print_hex("Public key (wots_keygen)", pk1, WOTS_LEN * WOTS_N);
-    printf("\n");
-
-
-    printf("sig生成: \n");
-    wots_sign(sig, message, sk_seed);
-    //print_hex("Signature (wots_sign)", sig, WOTS_LEN * WOTS_N);
-    printf("\n");
-
-    printf("pk2生成: \n");
-    wots_pk_from_sig(pk2, sig, message);
-    //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
-    printf("\n");
-
-    int success = 1;
-    for (int i = 0; i < WOTS_LEN; i++) {
-        if (memcmp(pk1[i], pk2[i], WOTS_N) != 0) {
-            success = 0;
-            break;
-        }
-    }
-
-    printf("WOTS+ verification %s\n", success ? "passed" : "failed");
-    return 0;
-
-
-
+    
     return 0;
 }
