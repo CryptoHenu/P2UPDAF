@@ -9,13 +9,24 @@
 #include <stdio.h>
 #include <iostream>
 #include <string.h>
+#include <stdint.h>
 
 #include "sha.h"
 #include "pbc.h"
+#include "wots.h"
 
 
 
 using namespace std;
+
+
+void print_hex(const char *label, const uint8_t *data, size_t len) {
+    printf("%s: ", label);
+    for (size_t i = 0; i < len; i++) {
+        printf("%02x", data[i]);
+    }
+    printf("\n");
+}
 
 // PKG parameters stucture
 typedef struct pkg_params
@@ -543,7 +554,7 @@ int main()
     ReCiphertext RCT;
     element_init_G1(RCT.C1, pairing);
     element_init_GT(RCT.C2, pairing);
-    element_init_G1(RCT.C3, pairing);  // 当前为正确版本，但bus error
+    element_init_G1(RCT.C3, pairing);
     element_init_GT(RCT.C4, pairing);
     element_init_GT(RCT.C5, pairing);
     element_init_G1(RCT.C6, pairing);
@@ -633,6 +644,52 @@ int main()
     element_clear(user_Bob_Pub);
 
     pairing_clear(pairing);
+
+
+    uint8_t sk_seed[WOTS_N] = {1};
+    uint8_t message[WOTS_N] = {0x12};
+
+    uint8_t pk1[WOTS_LEN][WOTS_N];
+    uint8_t pk2[WOTS_LEN][WOTS_N];
+    uint8_t sig[WOTS_LEN][WOTS_N];
+
+    // 输出种子和消息
+    printf("sk种子生成: \n");
+    print_hex("Seed (sk_seed)", sk_seed, WOTS_N);
+    printf("\n");
+
+    printf("message生成: \n");
+    print_hex("Message", message, WOTS_N);
+    printf("\n");
+
+    printf("pk1生成: \n");
+    wots_keygen(pk1, sk_seed);
+    //print_hex("Public key (wots_keygen)", pk1, WOTS_LEN * WOTS_N);
+    printf("\n");
+
+
+    printf("sig生成: \n");
+    wots_sign(sig, message, sk_seed);
+    //print_hex("Signature (wots_sign)", sig, WOTS_LEN * WOTS_N);
+    printf("\n");
+
+    printf("pk2生成: \n");
+    wots_pk_from_sig(pk2, sig, message);
+    //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
+    printf("\n");
+
+    int success = 1;
+    for (int i = 0; i < WOTS_LEN; i++) {
+        if (memcmp(pk1[i], pk2[i], WOTS_N) != 0) {
+            success = 0;
+            break;
+        }
+    }
+
+    printf("WOTS+ verification %s\n", success ? "passed" : "failed");
+    return 0;
+
+
 
     return 0;
 }

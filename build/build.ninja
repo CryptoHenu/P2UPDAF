@@ -56,6 +56,20 @@ build CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o: CXX_COMPILER__PbcBendmarkin
   OBJECT_DIR = CMakeFiles/PbcBendmarkingCmake.dir
   OBJECT_FILE_DIR = CMakeFiles/PbcBendmarkingCmake.dir
 
+build CMakeFiles/PbcBendmarkingCmake.dir/wots.cpp.o: CXX_COMPILER__PbcBendmarkingCmake_Debug /home/ubuntu22/projects/PBC-IBTRPRE/wots.cpp || cmake_object_order_depends_target_PbcBendmarkingCmake
+  DEP_FILE = CMakeFiles/PbcBendmarkingCmake.dir/wots.cpp.o.d
+  FLAGS = -g -g -std=gnu++20
+  INCLUDES = -I/home/ubuntu22/projects/PBC-IBTRPRE/include
+  OBJECT_DIR = CMakeFiles/PbcBendmarkingCmake.dir
+  OBJECT_FILE_DIR = CMakeFiles/PbcBendmarkingCmake.dir
+
+build CMakeFiles/PbcBendmarkingCmake.dir/hash.cpp.o: CXX_COMPILER__PbcBendmarkingCmake_Debug /home/ubuntu22/projects/PBC-IBTRPRE/hash.cpp || cmake_object_order_depends_target_PbcBendmarkingCmake
+  DEP_FILE = CMakeFiles/PbcBendmarkingCmake.dir/hash.cpp.o.d
+  FLAGS = -g -g -std=gnu++20
+  INCLUDES = -I/home/ubuntu22/projects/PBC-IBTRPRE/include
+  OBJECT_DIR = CMakeFiles/PbcBendmarkingCmake.dir
+  OBJECT_FILE_DIR = CMakeFiles/PbcBendmarkingCmake.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target PbcBendmarkingCmake
@@ -64,9 +78,9 @@ build CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o: CXX_COMPILER__PbcBendmarkin
 #############################################
 # Link the executable PbcBendmarkingCmake
 
-build PbcBendmarkingCmake: CXX_EXECUTABLE_LINKER__PbcBendmarkingCmake_Debug CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o
+build PbcBendmarkingCmake: CXX_EXECUTABLE_LINKER__PbcBendmarkingCmake_Debug CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o CMakeFiles/PbcBendmarkingCmake.dir/wots.cpp.o CMakeFiles/PbcBendmarkingCmake.dir/hash.cpp.o
   FLAGS = -g -g
-  LINK_LIBRARIES = -Wl,-rpath,/home/ubuntu22/projects/PBC-IBTRPRE/lib  -Wl,-Bstatic  -lpbc  -lgmp  -lssl  -lcrypto  -Wl,-Bdynamic
+  LINK_LIBRARIES = -Wl,-rpath,/home/ubuntu22/projects/PBC-IBTRPRE/lib  -lpbc  -lgmp  -lssl  -lcrypto
   LINK_PATH = -L/home/ubuntu22/projects/PBC-IBTRPRE/lib
   OBJECT_DIR = CMakeFiles/PbcBendmarkingCmake.dir
   POST_BUILD = :
