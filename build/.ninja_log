@@ -1,10 +1,9 @@
 # ninja log v5
-1	287	1747905112350018602	CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o	f1e84bc6f09f2295
-259	506	1747904903530030695	PbcBendmarkingCmake	7cc28adab60827bc
+0	262	1747905466099993893	CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o	f1e84bc6f09f2295
+262	503	1747905466339993854	PbcBendmarkingCmake	359741469c048742
 1	51	1747905153190013456	CMakeFiles/PbcBendmarkingCmake.dir/hash.c.o	3721f35d56d4e36a
 0	59	1747905153200013454	CMakeFiles/PbcBendmarkingCmake.dir/wots.c.o	677a5fb700de31ff
 1	14	1747905426149995670	CMakeFiles/PbcBendmarkingCmake.dir/hash.cpp.o	3308eb2796d7e304
 1	19	1747905426149995670	CMakeFiles/PbcBendmarkingCmake.dir/wots.cpp.o	edf8edc08760e1b6
-19	268	1747905426399995638	PbcBendmarkingCmake	359741469c048742
-0	262	1747905466099993893	CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o	f1e84bc6f09f2295
-262	503	1747905466339993854	PbcBendmarkingCmake	359741469c048742
+0	323	1747905639991798737	CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o	f1e84bc6f09f2295
+323	608	1747905640273666312	PbcBendmarkingCmake	359741469c048742
