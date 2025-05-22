@@ -18,8 +18,6 @@
 #include "pbc.h"
 #include "wots.h"
 
-
-
 using namespace std;
 
 
@@ -699,6 +697,6 @@ int main()
 
     pairing_clear(pairing);
 
-    
+
     return 0;
 }
