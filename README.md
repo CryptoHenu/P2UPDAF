@@ -1,5 +1,14 @@
 # Project Title
 
+<div align="center">
+
+[![Status](https://img.shields.io/badge/status-active-success.svg)](https://github.com/ZIYIDONG/PBC-IBTRPRE)
+[![License](https://img.shields.io/badge/license-GPLv3.0-blue.svg)](/LICENSE)
+
+</div>
+
+---
+
 ## Table of Contents
 
 - [About](#about)
