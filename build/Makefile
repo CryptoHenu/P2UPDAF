@@ -177,6 +177,30 @@ cpaenc.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.s
 .PHONY : cpaenc.cpp.s
 
+cpakeygen.o: cpakeygen.cpp.o
+.PHONY : cpakeygen.o
+
+# target to build an object file
+cpakeygen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpakeygen.cpp.o
+.PHONY : cpakeygen.cpp.o
+
+cpakeygen.i: cpakeygen.cpp.i
+.PHONY : cpakeygen.i
+
+# target to preprocess a source file
+cpakeygen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpakeygen.cpp.i
+.PHONY : cpakeygen.cpp.i
+
+cpakeygen.s: cpakeygen.cpp.s
+.PHONY : cpakeygen.s
+
+# target to generate assembly for a file
+cpakeygen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpakeygen.cpp.s
+.PHONY : cpakeygen.cpp.s
+
 cpamain.o: cpamain.cpp.o
 .PHONY : cpamain.o
 
@@ -201,29 +225,29 @@ cpamain.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.s
 .PHONY : cpamain.cpp.s
 
-keygen.o: keygen.cpp.o
-.PHONY : keygen.o
+cpamaptozr.o: cpamaptozr.cpp.o
+.PHONY : cpamaptozr.o
 
 # target to build an object file
-keygen.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o
-.PHONY : keygen.cpp.o
+cpamaptozr.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpamaptozr.cpp.o
+.PHONY : cpamaptozr.cpp.o
 
-keygen.i: keygen.cpp.i
-.PHONY : keygen.i
+cpamaptozr.i: cpamaptozr.cpp.i
+.PHONY : cpamaptozr.i
 
 # target to preprocess a source file
-keygen.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.i
-.PHONY : keygen.cpp.i
+cpamaptozr.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpamaptozr.cpp.i
+.PHONY : cpamaptozr.cpp.i
 
-keygen.s: keygen.cpp.s
-.PHONY : keygen.s
+cpamaptozr.s: cpamaptozr.cpp.s
+.PHONY : cpamaptozr.s
 
 # target to generate assembly for a file
-keygen.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.s
-.PHONY : keygen.cpp.s
+cpamaptozr.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpamaptozr.cpp.s
+.PHONY : cpamaptozr.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -249,30 +273,6 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-maptozr.o: maptozr.cpp.o
-.PHONY : maptozr.o
-
-# target to build an object file
-maptozr.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o
-.PHONY : maptozr.cpp.o
-
-maptozr.i: maptozr.cpp.i
-.PHONY : maptozr.i
-
-# target to preprocess a source file
-maptozr.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.i
-.PHONY : maptozr.cpp.i
-
-maptozr.s: maptozr.cpp.s
-.PHONY : maptozr.s
-
-# target to generate assembly for a file
-maptozr.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.s
-.PHONY : maptozr.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -288,18 +288,18 @@ help:
 	@echo "... cpaenc.o"
 	@echo "... cpaenc.i"
 	@echo "... cpaenc.s"
+	@echo "... cpakeygen.o"
+	@echo "... cpakeygen.i"
+	@echo "... cpakeygen.s"
 	@echo "... cpamain.o"
 	@echo "... cpamain.i"
 	@echo "... cpamain.s"
-	@echo "... keygen.o"
-	@echo "... keygen.i"
-	@echo "... keygen.s"
+	@echo "... cpamaptozr.o"
+	@echo "... cpamaptozr.i"
+	@echo "... cpamaptozr.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... maptozr.o"
-	@echo "... maptozr.i"
-	@echo "... maptozr.s"
 .PHONY : help
 
 

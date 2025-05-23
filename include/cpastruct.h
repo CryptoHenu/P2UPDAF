@@ -1,5 +1,5 @@
-#ifndef STRUCT_H
-#define STRUCT_H
+#ifndef CPASTRUCT_H
+#define CPASTRUCT_H
 
 #include "pbc.h"
 

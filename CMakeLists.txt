@@ -16,10 +16,10 @@ set(LINK_DIR ${CMAKE_SOURCE_DIR}/lib)
 #编译文件
 add_executable(PbcBendmarkingCmake
         main.cpp
-        keygen.cpp
+        cpakeygen.cpp
         cpadec.cpp
         cpaenc.cpp
-        maptozr.cpp
+        cpamaptozr.cpp
         cpamain.cpp
 )
 

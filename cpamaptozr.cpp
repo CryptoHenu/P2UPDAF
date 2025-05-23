@@ -1,5 +1,5 @@
 #include "pbc.h"
-#include "maptozr.h"
+#include "cpamaptozr.h"
 #include "sha.h"
 #include <string.h>
 

@@ -2,7 +2,7 @@
 #define CPADEC_H
 
 #include "pbc.h"
-#include "struct.h"
+#include "cpastruct.h"
 
 void SenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, UserPrivateKey User_Alice_Priv, TimeTrapDoor St, Ciphertext PCT, element_t &PT_Alice);
 

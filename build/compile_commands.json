@@ -7,9 +7,9 @@
 },
 {
   "directory": "/home/ubuntuserver24/projects/PBC-IBTRPRE/build",
-  "command": "/usr/bin/g++  -I/home/ubuntuserver24/projects/PBC-IBTRPRE/include  -g -g -std=gnu++20 -o CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/keygen.cpp",
-  "file": "/home/ubuntuserver24/projects/PBC-IBTRPRE/keygen.cpp",
-  "output": "CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o"
+  "command": "/usr/bin/g++  -I/home/ubuntuserver24/projects/PBC-IBTRPRE/include  -g -g -std=gnu++20 -o CMakeFiles/PbcBendmarkingCmake.dir/cpakeygen.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/cpakeygen.cpp",
+  "file": "/home/ubuntuserver24/projects/PBC-IBTRPRE/cpakeygen.cpp",
+  "output": "CMakeFiles/PbcBendmarkingCmake.dir/cpakeygen.cpp.o"
 },
 {
   "directory": "/home/ubuntuserver24/projects/PBC-IBTRPRE/build",
@@ -25,9 +25,9 @@
 },
 {
   "directory": "/home/ubuntuserver24/projects/PBC-IBTRPRE/build",
-  "command": "/usr/bin/g++  -I/home/ubuntuserver24/projects/PBC-IBTRPRE/include  -g -g -std=gnu++20 -o CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/maptozr.cpp",
-  "file": "/home/ubuntuserver24/projects/PBC-IBTRPRE/maptozr.cpp",
-  "output": "CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o"
+  "command": "/usr/bin/g++  -I/home/ubuntuserver24/projects/PBC-IBTRPRE/include  -g -g -std=gnu++20 -o CMakeFiles/PbcBendmarkingCmake.dir/cpamaptozr.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/cpamaptozr.cpp",
+  "file": "/home/ubuntuserver24/projects/PBC-IBTRPRE/cpamaptozr.cpp",
+  "output": "CMakeFiles/PbcBendmarkingCmake.dir/cpamaptozr.cpp.o"
 },
 {
   "directory": "/home/ubuntuserver24/projects/PBC-IBTRPRE/build",

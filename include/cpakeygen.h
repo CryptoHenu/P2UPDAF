@@ -1,8 +1,8 @@
-#ifndef KEYGEN_H
-#define KEYGEN_H
+#ifndef CPAKEYGEN_H
+#define CPAKEYGEN_H
 
 #include "pbc.h"
-#include "struct.h"
+#include "cpastruct.h"
 
 void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey &privatekey);
 

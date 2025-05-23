@@ -4,11 +4,11 @@
 #include <string.h>
 
 #include "pbc.h"
-#include "struct.h"
-#include "keygen.h"
+#include "cpastruct.h"
+#include "cpakeygen.h"
 #include "cpadec.h"
 #include "cpaenc.h"
-#include "maptozr.h"
+#include "cpamaptozr.h"
 
 
 int cpamain()
