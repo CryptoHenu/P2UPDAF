@@ -14,7 +14,11 @@ set(LINK_DIR ${CMAKE_SOURCE_DIR}/lib)
 
 
 #编译文件
-add_executable(PbcBendmarkingCmake main.cpp wots.cpp hash.cpp)
+add_executable(PbcBendmarkingCmake 
+        main.cpp
+        wots.cpp
+        hash.cpp
+)
 
 # 添加头文件搜索路径
 target_include_directories(PbcBendmarkingCmake PRIVATE ${INC_DIR})
