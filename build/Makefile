@@ -129,6 +129,102 @@ PbcBendmarkingCmake/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/build
 .PHONY : PbcBendmarkingCmake/fast
 
+cpadec.o: cpadec.cpp.o
+.PHONY : cpadec.o
+
+# target to build an object file
+cpadec.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o
+.PHONY : cpadec.cpp.o
+
+cpadec.i: cpadec.cpp.i
+.PHONY : cpadec.i
+
+# target to preprocess a source file
+cpadec.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.i
+.PHONY : cpadec.cpp.i
+
+cpadec.s: cpadec.cpp.s
+.PHONY : cpadec.s
+
+# target to generate assembly for a file
+cpadec.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.s
+.PHONY : cpadec.cpp.s
+
+cpaenc.o: cpaenc.cpp.o
+.PHONY : cpaenc.o
+
+# target to build an object file
+cpaenc.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o
+.PHONY : cpaenc.cpp.o
+
+cpaenc.i: cpaenc.cpp.i
+.PHONY : cpaenc.i
+
+# target to preprocess a source file
+cpaenc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.i
+.PHONY : cpaenc.cpp.i
+
+cpaenc.s: cpaenc.cpp.s
+.PHONY : cpaenc.s
+
+# target to generate assembly for a file
+cpaenc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.s
+.PHONY : cpaenc.cpp.s
+
+cpamain.o: cpamain.cpp.o
+.PHONY : cpamain.o
+
+# target to build an object file
+cpamain.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o
+.PHONY : cpamain.cpp.o
+
+cpamain.i: cpamain.cpp.i
+.PHONY : cpamain.i
+
+# target to preprocess a source file
+cpamain.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.i
+.PHONY : cpamain.cpp.i
+
+cpamain.s: cpamain.cpp.s
+.PHONY : cpamain.s
+
+# target to generate assembly for a file
+cpamain.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.s
+.PHONY : cpamain.cpp.s
+
+keygen.o: keygen.cpp.o
+.PHONY : keygen.o
+
+# target to build an object file
+keygen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o
+.PHONY : keygen.cpp.o
+
+keygen.i: keygen.cpp.i
+.PHONY : keygen.i
+
+# target to preprocess a source file
+keygen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.i
+.PHONY : keygen.cpp.i
+
+keygen.s: keygen.cpp.s
+.PHONY : keygen.s
+
+# target to generate assembly for a file
+keygen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.s
+.PHONY : keygen.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -153,6 +249,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+maptozr.o: maptozr.cpp.o
+.PHONY : maptozr.o
+
+# target to build an object file
+maptozr.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o
+.PHONY : maptozr.cpp.o
+
+maptozr.i: maptozr.cpp.i
+.PHONY : maptozr.i
+
+# target to preprocess a source file
+maptozr.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.i
+.PHONY : maptozr.cpp.i
+
+maptozr.s: maptozr.cpp.s
+.PHONY : maptozr.s
+
+# target to generate assembly for a file
+maptozr.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.s
+.PHONY : maptozr.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +282,24 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... PbcBendmarkingCmake"
+	@echo "... cpadec.o"
+	@echo "... cpadec.i"
+	@echo "... cpadec.s"
+	@echo "... cpaenc.o"
+	@echo "... cpaenc.i"
+	@echo "... cpaenc.s"
+	@echo "... cpamain.o"
+	@echo "... cpamain.i"
+	@echo "... cpamain.s"
+	@echo "... keygen.o"
+	@echo "... keygen.i"
+	@echo "... keygen.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... maptozr.o"
+	@echo "... maptozr.i"
+	@echo "... maptozr.s"
 .PHONY : help
 
 

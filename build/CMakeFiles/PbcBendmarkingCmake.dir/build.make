@@ -83,17 +83,97 @@ CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntuserver24/projects/PBC-IBTRPRE/main.cpp -o CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.s
 
+CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/flags.make
+CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o: /home/ubuntuserver24/projects/PBC-IBTRPRE/keygen.cpp
+CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o -MF CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o.d -o CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/keygen.cpp
+
+CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntuserver24/projects/PBC-IBTRPRE/keygen.cpp > CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.i
+
+CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntuserver24/projects/PBC-IBTRPRE/keygen.cpp -o CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.s
+
+CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/flags.make
+CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o: /home/ubuntuserver24/projects/PBC-IBTRPRE/cpadec.cpp
+CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o -MF CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o.d -o CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/cpadec.cpp
+
+CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntuserver24/projects/PBC-IBTRPRE/cpadec.cpp > CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.i
+
+CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntuserver24/projects/PBC-IBTRPRE/cpadec.cpp -o CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.s
+
+CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/flags.make
+CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o: /home/ubuntuserver24/projects/PBC-IBTRPRE/cpaenc.cpp
+CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o -MF CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o.d -o CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/cpaenc.cpp
+
+CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntuserver24/projects/PBC-IBTRPRE/cpaenc.cpp > CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.i
+
+CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntuserver24/projects/PBC-IBTRPRE/cpaenc.cpp -o CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.s
+
+CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/flags.make
+CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o: /home/ubuntuserver24/projects/PBC-IBTRPRE/maptozr.cpp
+CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o -MF CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o.d -o CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/maptozr.cpp
+
+CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntuserver24/projects/PBC-IBTRPRE/maptozr.cpp > CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.i
+
+CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntuserver24/projects/PBC-IBTRPRE/maptozr.cpp -o CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.s
+
+CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/flags.make
+CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o: /home/ubuntuserver24/projects/PBC-IBTRPRE/cpamain.cpp
+CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o: CMakeFiles/PbcBendmarkingCmake.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o -MF CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o.d -o CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o -c /home/ubuntuserver24/projects/PBC-IBTRPRE/cpamain.cpp
+
+CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntuserver24/projects/PBC-IBTRPRE/cpamain.cpp > CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.i
+
+CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntuserver24/projects/PBC-IBTRPRE/cpamain.cpp -o CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.s
+
 # Object files for target PbcBendmarkingCmake
 PbcBendmarkingCmake_OBJECTS = \
-"CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o"
+"CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o" \
+"CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o" \
+"CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o" \
+"CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o" \
+"CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o" \
+"CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o"
 
 # External object files for target PbcBendmarkingCmake
 PbcBendmarkingCmake_EXTERNAL_OBJECTS =
 
 PbcBendmarkingCmake: CMakeFiles/PbcBendmarkingCmake.dir/main.cpp.o
+PbcBendmarkingCmake: CMakeFiles/PbcBendmarkingCmake.dir/keygen.cpp.o
+PbcBendmarkingCmake: CMakeFiles/PbcBendmarkingCmake.dir/cpadec.cpp.o
+PbcBendmarkingCmake: CMakeFiles/PbcBendmarkingCmake.dir/cpaenc.cpp.o
+PbcBendmarkingCmake: CMakeFiles/PbcBendmarkingCmake.dir/maptozr.cpp.o
+PbcBendmarkingCmake: CMakeFiles/PbcBendmarkingCmake.dir/cpamain.cpp.o
 PbcBendmarkingCmake: CMakeFiles/PbcBendmarkingCmake.dir/build.make
 PbcBendmarkingCmake: CMakeFiles/PbcBendmarkingCmake.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable PbcBendmarkingCmake"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable PbcBendmarkingCmake"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/PbcBendmarkingCmake.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
