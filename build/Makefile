@@ -129,6 +129,126 @@ PbcBendmarkingCmake/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/build
 .PHONY : PbcBendmarkingCmake/fast
 
+ccadec.o: ccadec.cpp.o
+.PHONY : ccadec.o
+
+# target to build an object file
+ccadec.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccadec.cpp.o
+.PHONY : ccadec.cpp.o
+
+ccadec.i: ccadec.cpp.i
+.PHONY : ccadec.i
+
+# target to preprocess a source file
+ccadec.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccadec.cpp.i
+.PHONY : ccadec.cpp.i
+
+ccadec.s: ccadec.cpp.s
+.PHONY : ccadec.s
+
+# target to generate assembly for a file
+ccadec.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccadec.cpp.s
+.PHONY : ccadec.cpp.s
+
+ccaenc.o: ccaenc.cpp.o
+.PHONY : ccaenc.o
+
+# target to build an object file
+ccaenc.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccaenc.cpp.o
+.PHONY : ccaenc.cpp.o
+
+ccaenc.i: ccaenc.cpp.i
+.PHONY : ccaenc.i
+
+# target to preprocess a source file
+ccaenc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccaenc.cpp.i
+.PHONY : ccaenc.cpp.i
+
+ccaenc.s: ccaenc.cpp.s
+.PHONY : ccaenc.s
+
+# target to generate assembly for a file
+ccaenc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccaenc.cpp.s
+.PHONY : ccaenc.cpp.s
+
+ccakeygen.o: ccakeygen.cpp.o
+.PHONY : ccakeygen.o
+
+# target to build an object file
+ccakeygen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccakeygen.cpp.o
+.PHONY : ccakeygen.cpp.o
+
+ccakeygen.i: ccakeygen.cpp.i
+.PHONY : ccakeygen.i
+
+# target to preprocess a source file
+ccakeygen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccakeygen.cpp.i
+.PHONY : ccakeygen.cpp.i
+
+ccakeygen.s: ccakeygen.cpp.s
+.PHONY : ccakeygen.s
+
+# target to generate assembly for a file
+ccakeygen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccakeygen.cpp.s
+.PHONY : ccakeygen.cpp.s
+
+ccamain.o: ccamain.cpp.o
+.PHONY : ccamain.o
+
+# target to build an object file
+ccamain.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccamain.cpp.o
+.PHONY : ccamain.cpp.o
+
+ccamain.i: ccamain.cpp.i
+.PHONY : ccamain.i
+
+# target to preprocess a source file
+ccamain.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccamain.cpp.i
+.PHONY : ccamain.cpp.i
+
+ccamain.s: ccamain.cpp.s
+.PHONY : ccamain.s
+
+# target to generate assembly for a file
+ccamain.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccamain.cpp.s
+.PHONY : ccamain.cpp.s
+
+ccamap.o: ccamap.cpp.o
+.PHONY : ccamap.o
+
+# target to build an object file
+ccamap.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccamap.cpp.o
+.PHONY : ccamap.cpp.o
+
+ccamap.i: ccamap.cpp.i
+.PHONY : ccamap.i
+
+# target to preprocess a source file
+ccamap.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccamap.cpp.i
+.PHONY : ccamap.cpp.i
+
+ccamap.s: ccamap.cpp.s
+.PHONY : ccamap.s
+
+# target to generate assembly for a file
+ccamap.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/ccamap.cpp.s
+.PHONY : ccamap.cpp.s
+
 hash.o: hash.cpp.o
 .PHONY : hash.o
 
@@ -210,6 +330,21 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... PbcBendmarkingCmake"
+	@echo "... ccadec.o"
+	@echo "... ccadec.i"
+	@echo "... ccadec.s"
+	@echo "... ccaenc.o"
+	@echo "... ccaenc.i"
+	@echo "... ccaenc.s"
+	@echo "... ccakeygen.o"
+	@echo "... ccakeygen.i"
+	@echo "... ccakeygen.s"
+	@echo "... ccamain.o"
+	@echo "... ccamain.i"
+	@echo "... ccamain.s"
+	@echo "... ccamap.o"
+	@echo "... ccamap.i"
+	@echo "... ccamap.s"
 	@echo "... hash.o"
 	@echo "... hash.i"
 	@echo "... hash.s"

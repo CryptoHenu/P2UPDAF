@@ -18,6 +18,11 @@ add_executable(PbcBendmarkingCmake
         main.cpp
         wots.cpp
         hash.cpp
+        ccaenc.cpp
+        ccadec.cpp
+        ccakeygen.cpp
+        ccamap.cpp
+        ccamain.cpp
 )
 
 # 添加头文件搜索路径

@@ -81,12 +81,12 @@ clean: CMakeFiles/PbcBendmarkingCmake.dir/clean
 CMakeFiles/PbcBendmarkingCmake.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PbcBendmarkingCmake.dir/build.make CMakeFiles/PbcBendmarkingCmake.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles --progress-num=1,2,3,4 "Built target PbcBendmarkingCmake"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target PbcBendmarkingCmake"
 .PHONY : CMakeFiles/PbcBendmarkingCmake.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/PbcBendmarkingCmake.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles 9
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/PbcBendmarkingCmake.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntuserver24/projects/PBC-IBTRPRE/build/CMakeFiles 0
 .PHONY : CMakeFiles/PbcBendmarkingCmake.dir/rule
