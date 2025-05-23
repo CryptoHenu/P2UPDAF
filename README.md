@@ -7,9 +7,7 @@
 
 <div align="center">
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-# [![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/ZIYIDONG/PBC-IBTRPRE/issues)
-# [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/ZIYIDONG/PBC-IBTRPRE/pulls)
+[![Status](https://img.shields.io/badge/status-active-success.svg)](https://github.com/ZIYIDONG/PBC-IBTRPRE)
 [![License](https://img.shields.io/badge/license-GPLv3.0-blue.svg)](/LICENSE)
 
 </div>
