@@ -14,6 +14,7 @@ set(LINK_DIR ${CMAKE_SOURCE_DIR}/lib)
 
 
 #编译文件
+<<<<<<< HEAD
 add_executable(PbcBendmarkingCmake
         main.cpp
         cpakeygen.cpp
@@ -21,6 +22,17 @@ add_executable(PbcBendmarkingCmake
         cpaenc.cpp
         cpamaptozr.cpp
         cpamain.cpp
+=======
+add_executable(PbcBendmarkingCmake 
+        main.cpp
+        wots.cpp
+        hash.cpp
+        ccaenc.cpp
+        ccadec.cpp
+        ccakeygen.cpp
+        ccamap.cpp
+        ccamain.cpp
+>>>>>>> CCA
 )
 
 # 添加头文件搜索路径
@@ -31,10 +43,10 @@ target_link_directories(PbcBendmarkingCmake PRIVATE ${LINK_DIR})
 
 # 链接库
 target_link_libraries(PbcBendmarkingCmake PRIVATE
-        libpbc.a
-        libgmp.a
-        libssl.a
-        libcrypto.a
+        pbc
+        gmp
+        ssl
+        crypto
 )
 
 #生成调试信息
