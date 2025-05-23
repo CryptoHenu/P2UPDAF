@@ -4,7 +4,7 @@
 
 
 // User private key generation function
-void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey &privatekey)
+void ccaPrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey &privatekey)
 {
     element_t diff, inv;
     element_random(privatekey.r);
@@ -35,7 +35,7 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
 }
 
 // TimeTrapDoor generation function
-void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, element_t Time_Pub, TimeTrapDoor &Time_St)
+void ccaTimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, element_t Time_Pub, TimeTrapDoor &Time_St)
 {
     element_t diff, inv;            
     element_random(Time_St.r); 
@@ -70,7 +70,7 @@ void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, 
 
 
 // RK, X generation function
-void RkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, Ciphertext PCT, element_t &rk, element_t &X)
+void ccaRkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, Ciphertext PCT, element_t &rk, element_t &X)
 {
     element_t Q, temp;
     element_init_G1(Q, pairing);
@@ -89,7 +89,7 @@ void RkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, U
 }
 
 // Rj generation function
-void RjGen(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Alice_Priv, element_t user_Pub, element_t rk, element_t X, element_t k3, Rj &rj)
+void ccaRjGen(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Alice_Priv, element_t user_Pub, element_t rk, element_t X, element_t k3, Rj &rj)
 {
     element_t temp1, temp2;
     element_init_Zr(temp1, pairing);

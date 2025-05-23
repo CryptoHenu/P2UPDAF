@@ -3,7 +3,7 @@
 #include "ccastruct.h"
 
 // Dec1 decryption function
-void Dec1(pairing_t pairing, UserPrivateKey User_Priv, Rj rj, element_t& X)
+void ccaDec1(pairing_t pairing, UserPrivateKey User_Priv, Rj rj, element_t& X)
 {
     element_t temp1, temp2;
     element_init_GT(temp1, pairing);
@@ -24,7 +24,7 @@ void Dec1(pairing_t pairing, UserPrivateKey User_Priv, Rj rj, element_t& X)
 }
 
 // Dec2 decryption function
-void Dec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTrapDoor St , Rj rj, element_t X, element_t& PT_Bob)
+void ccaDec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTrapDoor St , Rj rj, element_t X, element_t& PT_Bob)
 {
     element_t temp1, temp2, temp3, temp4;
     element_init_GT(temp1, pairing);
@@ -56,7 +56,7 @@ void Dec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTra
 
 
 // Sender decryption function
-void SenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, UserPrivateKey User_Alice_Priv, TimeTrapDoor St, Ciphertext PCT, element_t &PT_Alice)
+void ccaSenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, UserPrivateKey User_Alice_Priv, TimeTrapDoor St, Ciphertext PCT, element_t &PT_Alice)
 {
     element_t temp1, temp2, temp3, temp4;
     element_init_GT(temp1, pairing);

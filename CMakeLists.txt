@@ -14,7 +14,6 @@ set(LINK_DIR ${CMAKE_SOURCE_DIR}/lib)
 
 
 #编译文件
-<<<<<<< HEAD
 add_executable(PbcBendmarkingCmake
         main.cpp
         cpakeygen.cpp
@@ -22,9 +21,6 @@ add_executable(PbcBendmarkingCmake
         cpaenc.cpp
         cpamaptozr.cpp
         cpamain.cpp
-=======
-add_executable(PbcBendmarkingCmake 
-        main.cpp
         wots.cpp
         hash.cpp
         ccaenc.cpp
@@ -32,7 +28,6 @@ add_executable(PbcBendmarkingCmake
         ccakeygen.cpp
         ccamap.cpp
         ccamain.cpp
->>>>>>> CCA
 )
 
 # 添加头文件搜索路径

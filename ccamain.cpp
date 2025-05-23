@@ -109,9 +109,9 @@ int ccamain()
     element_t user_Alice_Pub, Time_Pub;
     element_init_Zr(user_Alice_Pub, pairing);
     element_init_Zr(Time_Pub, pairing);
-    id_to_zr(pairing, Alice, user_Alice_Pub);
+    ccaid_to_zr(pairing, Alice, user_Alice_Pub);
     
-    id_to_zr(pairing, Time, Time_Pub);
+    ccaid_to_zr(pairing, Time, Time_Pub);
     
     element_t user_Bob_Pub;
     element_init_Zr(user_Bob_Pub, pairing);
@@ -169,13 +169,13 @@ int ccamain()
     element_init_G1(PCT.C6, pairing);
 
 
-    PrivatekeyGen(pairing, pkg_priv, pkg_params, user_Alice_Pub, User_Alice_Priv);
+    ccaPrivatekeyGen(pairing, pkg_priv, pkg_params, user_Alice_Pub, User_Alice_Priv);
 
-    PrivatekeyGen(pairing, pkg_priv, pkg_params, user_Bob_Pub, User_Bob_Priv);
+    ccaPrivatekeyGen(pairing, pkg_priv, pkg_params, user_Bob_Pub, User_Bob_Priv);
  
-    TimeTrapDoorGen(pairing, ts_priv, ts_params, Time_Pub, Time_St);
+    ccaTimeTrapDoorGen(pairing, ts_priv, ts_params, Time_Pub, Time_St);
 
-    Enc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, vk, PT, PCT);
+    ccaEnc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, vk, PT, PCT);
 
     
     printf("message生成: \n");
@@ -191,7 +191,7 @@ int ccamain()
     element_init_G1(rk, pairing);
     element_init_GT(PX, pairing);
 
-    RkGen(pairing, pkg_params, user_Alice_Pub, User_Alice_Priv, PCT, rk, PX);
+    ccaRkGen(pairing, pkg_params, user_Alice_Pub, User_Alice_Priv, PCT, rk, PX);
     element_printf("rk = %B\n", rk); 
     element_printf("PX = %B\n", PX);  
 
@@ -204,7 +204,7 @@ int ccamain()
     element_init_GT(rj_bob.v, pairing);
     element_init_GT(rj_bob.w, pairing);
 
-    RjGen(pairing, pkg_params, User_Alice_Priv, user_Bob_Pub, rk, PX, k3, rj_bob);
+    ccaRjGen(pairing, pkg_params, User_Alice_Priv, user_Bob_Pub, rk, PX, k3, rj_bob);
     element_printf("rj_bob.u = %B\n", rj_bob.u);
     element_printf("rj_bob.v = %B\n", rj_bob.v);
     element_printf("rj_bob.w = %B\n", rj_bob.w);
@@ -234,7 +234,7 @@ int ccamain()
     }
     printf("WOTS+ verification %s\n", receiversuccess ? "passed" : "failed");
 
-    ReEnc(pairing, PCT, rk, pkg_params, vk, RCT);
+    ccaReEnc(pairing, PCT, rk, pkg_params, vk, RCT);
 
     element_t X;
     element_init_GT(X, pairing);
@@ -244,11 +244,11 @@ int ccamain()
     //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
     printf("\n");
 
-    Dec1(pairing, User_Bob_Priv, rj_bob, X);
+    ccaDec1(pairing, User_Bob_Priv, rj_bob, X);
     element_printf("PX = %B\n", PX);
     element_printf("X = %B\n", X);
 
-    Dec2(pairing, User_Bob_Priv, RCT, Time_St , rj_bob, X, PT_Bob);
+    ccaDec2(pairing, User_Bob_Priv, RCT, Time_St , rj_bob, X, PT_Bob);
 
 
     printf("pk2生成: \n");
@@ -265,7 +265,7 @@ int ccamain()
     }
     printf("WOTS+ verification %s\n", sendersuccess ? "passed" : "failed");
     
-    SenderDec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
+    ccaSenderDec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
 
     // element_printf("PX       = %B\n", PX);
     // element_printf("X        = %B\n", X);

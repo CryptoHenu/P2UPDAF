@@ -2,15 +2,19 @@
 #include <stdio.h>
 #include <iostream>
 #include <string.h>
-<<<<<<< HEAD
-
 #include "pbc.h"
 #include "cpastruct.h"
 #include "cpakeygen.h"
 #include "cpadec.h"
 #include "cpaenc.h"
 #include "cpamaptozr.h"
-#include "cpamain.h"
+#include "ccamain.h"
+#include "ccastruct.h"
+#include "ccakeygen.h"
+#include "ccadec.h"
+#include "ccaenc.h"
+#include "ccamap.h"
+#include "ccamain.h"
 
 using namespace std;
 
@@ -28,26 +32,16 @@ int main()
         cout << "CPA scheme test is false !" << endl;
     }
 
-
-    return 0;
-=======
-#include <stdint.h>
-#include <iostream>
-
-using namespace std;
-
-int main(){
-
+    // CCA scheme test
     int ccatest;
     ccatest = ccamain();
-    if(ccatest) {
-        cout <<  "CCA test is successfull !"     << endl;
+    if (ccatest){
+        cout << "CCA scheme test is successful !" << endl;
     }
     else{
-        cout <<  "CCA test is false !"     << endl;
+        cout << "CCA scheme test is false !" << endl;
     }
 
-    return 1;
+    return 0;
 
->>>>>>> CCA
 }
