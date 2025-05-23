@@ -8,8 +8,8 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/ZIYIDONG/PBC-IBTRPRE/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/ZIYIDONG/PBC-IBTRPRE/pulls)
+# [![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/ZIYIDONG/PBC-IBTRPRE/issues)
+# [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/ZIYIDONG/PBC-IBTRPRE/pulls)
 [![License](https://img.shields.io/badge/license-GPLv3.0-blue.svg)](/LICENSE)
 
 </div>
@@ -45,7 +45,9 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software and how to install them.
 
 ```
-Give examples
+GMP
+PBC
+OpenSSL
 ```
 
 ### Installing
