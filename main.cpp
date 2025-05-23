@@ -25,9 +25,9 @@ using namespace std;
 int main()
 {
     // CPA scheme test
-    int test;
-    test = cpamain();
-    if (test){
+    int cpatest;
+    cpatest = cpamain();
+    if (cpatest){
         cout << "CPA scheme test is successful !" << endl;
     }
     else{
