@@ -20,50 +20,53 @@
 #define RENUM 10000
 #define SHA256_DIGEST_LENGTH 32
 
+using namespace std;
+
 int bendmain()
 {
 
     FILE *file;
 
+    //pbc_param_t param;
 
     int i;
     pairing_t pairing; // 定义配对对象
     element_t P;       // 定义生成元元素
-    element_t Q, R, a, b, c;
+    element_t Q, H, R, a, b, c;
     element_t BP;
     element_t a1, b1, c1;
     double relative_time;
-    // 1. 初始化配对参数（使用预定义的 Type A 参数）
-    const char *param_str =
-        "type a\n"
-        "q 8780710799663312522437781984754049815806883199414208211022683396663570522207602206790247281104613111\n"
-        "h 120160122648911460793888213667405342048029544012513118202832259291762929507923\n"
-        "r 730750818665451621361119245571504901405976559617\n"
-        "exp2 159\n"
-        "exp1 107\n"
-        "sign1 1\n"
-        "sign0 1\n";
+    
 
-    pairing_init_set_buf(pairing, param_str, strlen(param_str)); // 从字符串加载参数[6]
+    // 加载 PBC 参数文件，初始化 pairing 对象
+    FILE *fp = fopen("../param/d224.param", "r");
+    if (!fp)
+    {
+        printf("param file open fail\n");
+        return 1;
+    }
+    char param[10240];
+    size_t count = fread(param, 1, sizeof(param), fp);
+    fclose(fp);
+    pairing_init_set_str(pairing, param);
 
-
-    // // 加载 PBC 参数文件，初始化 pairing 对象
-    // FILE *fp = fopen("../param/a.param", "r");
-    // if (!fp)
-    // {
-    //     printf("param file open fail\n");
-    //     return 1;
-    // }
-    // char param[1024];
-    // size_t count = fread(param, 1, sizeof(param), fp);
-    // fclose(fp);
-    // pairing_init_set_str(pairing, param);
+    if (!pairing_is_symmetric(pairing))
+    {
+        printf("[Asymmetric] Pairing is an asymmetric pairing.\n");
+    }
+    else
+    {
+        printf("[Symmetric] Pairing is an symmetric pairing.\n");
+    }
+    
 
     // 2. 生成椭圆曲线生成元（G1群的基点）
     element_init_G1(P, pairing); // 初始化G1群元素
     element_random(P);           // 随机生成G1群的生成元[3,11]
     element_init_G1(Q, pairing); // 先初始化 generator_q
     element_random(Q);           // 然后才能使用
+    element_init_G2(H, pairing); // 先初始化 generator_q
+    element_random(H);           // 然后才能使用
     element_init_G1(R, pairing);
     element_init_Zr(a, pairing);
     element_init_Zr(b, pairing);
@@ -76,6 +79,8 @@ int bendmain()
     element_random(a1);
     element_random(b1);
     element_init_GT(BP, pairing);
+
+
 
     clock_t start_time, end_time;
 
@@ -109,6 +114,8 @@ int bendmain()
     relative_time = time_point_mul_G1 / time_point_mul_G1;
     fprintf(file, "relative_time:：%.6f \n", relative_time);
     fclose(file);
+
+        
 
     // G1元素点加耗时
     start_time = clock();
@@ -246,12 +253,11 @@ int bendmain()
     fprintf(file, "relative_time:：%.6f \n", relative_time);
     fclose(file);
 
-
     // Bp运算耗时
     start_time = clock();
     for (i = 1; i < RENUM; i++)
     {
-        pairing_apply(BP, Q, R, pairing);
+        pairing_apply(BP, Q, H, pairing);
     }
     end_time = clock();
     double time_BP_G1_G1_GT = end_time - start_time;
@@ -292,6 +298,9 @@ int bendmain()
     element_clear(a1);
     element_clear(b1);
     element_clear(c1);
+    element_clear(BP);
+
+
     pairing_clear(pairing);
 
     return 1;

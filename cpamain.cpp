@@ -24,7 +24,7 @@ int cpamain()
 {
     pairing_t pairing; 
 
-    FILE *fp = fopen("../param/a.param", "r");
+    FILE *fp = fopen("../param/d224.param", "r");
     if (!fp)
     {
         printf("param file open fail\n");
@@ -34,7 +34,7 @@ int cpamain()
         printf("param file open succ\n");
     }
 
-    char param[1024];
+    char param[10240];
     size_t count = fread(param, 1, sizeof(param), fp);
     fclose(fp); 
     if (count == 0)
