@@ -29,6 +29,7 @@ add_executable(PbcBendmarkingCmake
         ccamap.cpp
         ccamain.cpp
         bendmarkingmain.cpp
+        robustnesstest.cpp
 )
 
 # 添加头文件搜索路径

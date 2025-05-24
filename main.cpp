@@ -16,10 +16,10 @@
 #include "ccamap.h"
 #include "ccamain.h"
 #include "bendmarkingmain.h"
+#include "robustnesstest.h"
+#include "cpamaptozr.h"
 
 using namespace std;
-
-
 
 
 int main()
@@ -48,6 +48,16 @@ int main()
     int bendtest;
     bendtest = bendmain();
     if (bendtest){
+        cout << "bendtest scheme test is successful !" << endl;
+    }
+    else{
+        cout << "bendtest scheme test is false !" << endl;
+    }
+
+    // Bendmarking scheme test
+    int robustnesstest;
+    robustnesstest = robustnesstestmain();
+    if (robustnesstest){
         cout << "bendtest scheme test is successful !" << endl;
     }
     else{
