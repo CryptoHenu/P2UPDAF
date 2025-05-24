@@ -41,9 +41,9 @@ make
 ```
 
 
-## contributors <a name = "contributors"></a>
+## Contributors <a name = "contributors"></a>
 
 - [Ziyi Dong](https://github.com/ZIYIDONG)
-- [Xiuling Li](https://github.com/ZIYIDONG)
-- [Shuo Liu](https://github.com/ZIYIDONG)
-- [Jicheng Cui](https://github.com/ZIYIDONG)
+- [rain-alin](https://github.com/rain-alin)
+- [mo-shengl](https://github.com/mo-shengl)
+- [cui82](https://github.com/cui82)
