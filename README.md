@@ -41,7 +41,7 @@ make
 ```
 
 
-## contributors <a name = "usage"></a>
+## contributors <a name = "contributors"></a>
 
 - [Ziyi Dong](https://github.com/ZIYIDONG)
 - [Xiuling Li](https://github.com/ZIYIDONG)
