@@ -1,12 +1,11 @@
 /*
  * @Coding: UTF-8
  * @Author: Ziyi Dong
- * @Created: 05-22-2025
- * @Last Modified: 05-22-2025
- * @Copyright: © 2023-2024 MyCompany Inc. All Rights Reserved.
- * @License: MIT (详见项目根目录的 LICENSE 文件)
- * @Contact: zhangsan@example.com
- * @Desc: 此模块用于处理用户认证逻辑.
+ * @Created: 05-14-2025
+ * @Last Modified: 05-24-2025
+ * @Copyright: © 2025 Ziyi Dong. All rights reserved.
+ * @License: GPL v3.0
+ * @Contact: dongziyics@gmail.com
  */
 #include "wots.h"
 #include "hash.h"

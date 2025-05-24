@@ -1,9 +1,9 @@
 /*
  * @Coding: UTF-8
- * @Author: Ziyi Dong
+ * @Author: Ziyi Dong, Shuo Liu, Jicheng Cui
  * @Created: 05-14-2025
- * @Last Modified: 05-22-2025
- * @Copyright: © 2023-2024 Ziyi Dong. All rights reserved.
+ * @Last Modified: 05-24-2025
+ * @Copyright: © 2025 Ziyi Dong. All rights reserved.
  * @License: GPL v3.0
  * @Contact: dongziyics@gmail.com
  */
