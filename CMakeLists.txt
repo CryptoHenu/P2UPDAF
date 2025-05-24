@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 #项目名字
-project(PbcBendmarkingCmake)
+project(ECR-TDPDS)
 
 #设置编译版本
 set(CMAKE_CXX_STANDARD 20)
@@ -14,7 +14,7 @@ set(LINK_DIR ${CMAKE_SOURCE_DIR}/lib)
 
 
 #编译文件
-add_executable(PbcBendmarkingCmake
+add_executable(ECR-TDPDS
         main.cpp
         cpakeygen.cpp
         cpadec.cpp
@@ -33,13 +33,13 @@ add_executable(PbcBendmarkingCmake
 )
 
 # 添加头文件搜索路径
-target_include_directories(PbcBendmarkingCmake PRIVATE ${INC_DIR})
+target_include_directories(ECR-TDPDS PRIVATE ${INC_DIR})
 # 添加库文件搜索路径
-target_link_directories(PbcBendmarkingCmake PRIVATE ${LINK_DIR})
+target_link_directories(ECR-TDPDS PRIVATE ${LINK_DIR})
 
 
 # 链接库
-target_link_libraries(PbcBendmarkingCmake PRIVATE
+target_link_libraries(ECR-TDPDS PRIVATE
         pbc
         gmp
         ssl
