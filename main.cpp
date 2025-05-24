@@ -15,8 +15,10 @@
 #include "ccaenc.h"
 #include "ccamap.h"
 #include "ccamain.h"
+#include "bendmarkingmain.h"
 
 using namespace std;
+
 
 
 
@@ -40,6 +42,16 @@ int main()
     }
     else{
         cout << "CCA scheme test is false !" << endl;
+    }
+
+    // Bendmarking scheme test
+    int bendtest;
+    bendtest = bendmain();
+    if (bendtest){
+        cout << "bendtest scheme test is successful !" << endl;
+    }
+    else{
+        cout << "bendtest scheme test is false !" << endl;
     }
 
     return 0;

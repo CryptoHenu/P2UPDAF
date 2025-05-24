@@ -28,6 +28,7 @@ add_executable(PbcBendmarkingCmake
         ccakeygen.cpp
         ccamap.cpp
         ccamain.cpp
+        bendmarkingmain.cpp
 )
 
 # 添加头文件搜索路径
