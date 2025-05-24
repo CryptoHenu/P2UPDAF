@@ -160,7 +160,7 @@ int ccamain()
     element_init_GT(PT_Alice, pairing);
     element_init_GT(PT_Bob, pairing);
 
-    Ciphertext PCT;
+    ccaCiphertext PCT;
     element_init_G1(PCT.C1, pairing);
     element_init_GT(PCT.C2, pairing);
     element_init_G1(PCT.C3, pairing);
@@ -199,7 +199,7 @@ int ccamain()
     element_init_Zr(k3, pairing);
     element_random(k3);
 
-    Rj rj_bob;
+    ccaRj rj_bob;
     element_init_G1(rj_bob.u, pairing);
     element_init_GT(rj_bob.v, pairing);
     element_init_GT(rj_bob.w, pairing);
@@ -209,7 +209,7 @@ int ccamain()
     element_printf("rj_bob.v = %B\n", rj_bob.v);
     element_printf("rj_bob.w = %B\n", rj_bob.w);
 
-    ReCiphertext RCT;
+    ccaReCiphertext RCT;
     element_init_G1(RCT.C1, pairing);
     element_init_GT(RCT.C2, pairing);
     element_init_G1(RCT.C3, pairing);

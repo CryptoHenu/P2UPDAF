@@ -1,4 +1,5 @@
 #include "pbc.h"
+#include "cpastruct.h"
 #include "ccastruct.h"
 #include "ccakeygen.h"
 
@@ -70,7 +71,7 @@ void ccaTimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_param
 
 
 // RK, X generation function
-void ccaRkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, Ciphertext PCT, element_t &rk, element_t &X)
+void ccaRkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, ccaCiphertext PCT, element_t &rk, element_t &X)
 {
     element_t Q, temp;
     element_init_G1(Q, pairing);
@@ -89,7 +90,7 @@ void ccaRkGen(pairing_t pairing, pkg_params pkg_params, element_t user_Alice_Pub
 }
 
 // Rj generation function
-void ccaRjGen(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Alice_Priv, element_t user_Pub, element_t rk, element_t X, element_t k3, Rj &rj)
+void ccaRjGen(pairing_t pairing, pkg_params pkg_params, UserPrivateKey User_Alice_Priv, element_t user_Pub, element_t rk, element_t X, element_t k3, ccaRj &rj)
 {
     element_t temp1, temp2;
     element_init_Zr(temp1, pairing);

@@ -1,9 +1,10 @@
 #include "pbc.h"
 #include "ccaenc.h"
 #include "ccastruct.h"
+#include "cpastruct.h"
 
 // Encryption function
-void ccaEnc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, element_t Time_Pub, element_t vk, element_t PT, Ciphertext &PCT)
+void ccaEnc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_t user_Alice_Pub, UserPrivateKey User_Alice_Priv, element_t Time_Pub, element_t vk, element_t PT, ccaCiphertext &PCT)
 {
 
     element_t k1, k2;
@@ -88,7 +89,7 @@ void ccaEnc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, eleme
 
 
 // Re-Encryption function
-void ccaReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, pkg_params pkg_params, element_t vk, ReCiphertext &RCT)
+void ccaReEnc(pairing_t pairing, ccaCiphertext PCT, element_t rk, pkg_params pkg_params, element_t vk, ccaReCiphertext &RCT)
 {
 
     element_t RK1, r, temp;

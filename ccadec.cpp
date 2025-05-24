@@ -1,9 +1,10 @@
 #include "ccadec.h"
 #include "pbc.h"
 #include "ccastruct.h"
+#include "cpastruct.h"
 
 // Dec1 decryption function
-void ccaDec1(pairing_t pairing, UserPrivateKey User_Priv, Rj rj, element_t& X)
+void ccaDec1(pairing_t pairing, UserPrivateKey User_Priv, ccaRj rj, element_t& X)
 {
     element_t temp1, temp2;
     element_init_GT(temp1, pairing);
@@ -24,7 +25,7 @@ void ccaDec1(pairing_t pairing, UserPrivateKey User_Priv, Rj rj, element_t& X)
 }
 
 // Dec2 decryption function
-void ccaDec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTrapDoor St , Rj rj, element_t X, element_t& PT_Bob)
+void ccaDec2(pairing_t pairing, UserPrivateKey User_Priv, ccaReCiphertext RCT, TimeTrapDoor St , ccaRj rj, element_t X, element_t& PT_Bob)
 {
     element_t temp1, temp2, temp3, temp4;
     element_init_GT(temp1, pairing);
@@ -56,7 +57,7 @@ void ccaDec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, Time
 
 
 // Sender decryption function
-void ccaSenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, UserPrivateKey User_Alice_Priv, TimeTrapDoor St, Ciphertext PCT, element_t &PT_Alice)
+void ccaSenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, UserPrivateKey User_Alice_Priv, TimeTrapDoor St, ccaCiphertext PCT, element_t &PT_Alice)
 {
     element_t temp1, temp2, temp3, temp4;
     element_init_GT(temp1, pairing);

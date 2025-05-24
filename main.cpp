@@ -8,7 +8,7 @@
 #include "cpadec.h"
 #include "cpaenc.h"
 #include "cpamaptozr.h"
-#include "ccamain.h"
+#include "cpamain.h"
 #include "ccastruct.h"
 #include "ccakeygen.h"
 #include "ccadec.h"
