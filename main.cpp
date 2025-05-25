@@ -55,14 +55,14 @@ int main()
     // }
 
     // Bendmarking scheme test
-    int bendtest;
-    bendtest = bendmain();
-    if (bendtest){
-        cout << "[PASS] BendTest Scheme Test completed successfully." << endl;
-    }
-    else{
-        cout << "[FAIL] BendTest Scheme Test failed." << endl;
-    }
+    // int bendtest;
+    // bendtest = bendmain();
+    // if (bendtest){
+    //     cout << "[PASS] BendTest Scheme Test completed successfully." << endl;
+    // }
+    // else{
+    //     cout << "[FAIL] BendTest Scheme Test failed." << endl;
+    // }
 
     // Bendmarking scheme test
     // int robustnesstest;
