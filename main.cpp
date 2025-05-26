@@ -28,9 +28,19 @@
 #include "bendmarking.h"
 #include "robustnesstest.h"
 #include "cpamaptozr.h"
+#include "robust_test.h"
 
 using namespace std;
 
+#define ROBUST_TEST_RECEIVER_NUMBER_100 100
+#define ROBUST_TEST_RECEIVER_NUMBER_300 300
+#define ROBUST_TEST_RECEIVER_NUMBER_500 500
+#define ROBUST_TEST_RECEIVER_NUMBER_1000 1000
+#define ROBUST_TEST_RECEIVER_NUMBER_3000 3000
+#define ROBUST_TEST_RECEIVER_NUMBER_5000 5000
+#define ROBUST_TEST_RECEIVER_NUMBER_10000 100000
+
+#define ROBUST_TEST_TRADE_NUMBER_100 100
 
 int main()
 {
@@ -57,24 +67,48 @@ int main()
     // }
 
     // Bendmarking scheme test
-    int bendmarking_result;
-    bendmarking_result = bendmarking();
-    if (bendmarking_result){
-        cout << "[PASS] BendTest Scheme Test completed successfully." << endl;
-    }
-    else{
-        cout << "[FAIL] BendTest Scheme Test failed." << endl;
-    }
-
-    // // Robustnesstest scheme test
-    // int robustnesstest;
-    // robustnesstest = robustnesstestmain();
-    // if (robustnesstest){
-    //     cout << "bendtest scheme test is successful !" << endl;
+    // int bendmarking_result;
+    // bendmarking_result = bendmarking();
+    // if (bendmarking_result){
+    //     cout << "[PASS] BendTest Scheme Test completed successfully." << endl;
     // }
     // else{
-    //     cout << "bendtest scheme test is false !" << endl;
+    //     cout << "[FAIL] BendTest Scheme Test failed." << endl;
     // }
+
+
+
+    // Robustnesstest scheme test
+    
+    FILE *file;
+    file = fopen("robust_test.txt", "w"); // 覆写模式
+    if (file == NULL) {
+        perror("无法打开文件");
+        exit(1);
+    }
+    fprintf(file, "=== 测试开始 ===\n");
+    fclose(file);
+
+    robutstTest(ROBUST_TEST_RECEIVER_NUMBER_100);
+    printf("Robustness test with 100 receivers completed.\n");
+
+    robutstTest(ROBUST_TEST_RECEIVER_NUMBER_300);
+    printf("Robustness test with 300 receivers completed.\n");
+
+    robutstTest(ROBUST_TEST_RECEIVER_NUMBER_500);
+    printf("Robustness test with 500 receivers completed.\n");
+
+    robutstTest(ROBUST_TEST_RECEIVER_NUMBER_1000);
+    printf("Robustness test with 1000 receivers completed.\n");
+
+    robutstTest(ROBUST_TEST_RECEIVER_NUMBER_3000);
+    printf("Robustness test with 3000 receivers completed.\n");
+
+    robutstTest(ROBUST_TEST_RECEIVER_NUMBER_5000);
+    printf("Robustness test with 5000 receivers completed.\n");
+
+    robutstTest(ROBUST_TEST_RECEIVER_NUMBER_10000);
+    printf("Robustness test with 10000 receivers completed.\n");
 
     return 0;
 
