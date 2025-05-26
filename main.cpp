@@ -35,26 +35,26 @@ using namespace std;
 int main()
 {
     //CPA scheme test
-    int cpatest;
-    cpatest = cpamain();
-    if (cpatest){
-        cout << "CPA scheme test is successful !" << endl;
-    }
-    else{
-        cout << "CPA scheme test is false !" << endl;
-    }
-
-    // CCA scheme test
-    // int ccatest;
-    // ccatest = ccamain();
-    // if (ccatest){
-    //     cout << "CCA scheme test is successful !" << endl;
+    // int cpatest;
+    // cpatest = cpamain();
+    // if (cpatest){
+    //     cout << "CPA scheme test is successful !" << endl;
     // }
     // else{
-    //     cout << "CCA scheme test is false !" << endl;
+    //     cout << "CPA scheme test is false !" << endl;
     // }
 
-    // Bendmarking scheme test
+    // CCA scheme test
+    int ccatest;
+    ccatest = ccamain();
+    if (ccatest){
+        cout << "CCA scheme test is successful !" << endl;
+    }
+    else{
+        cout << "CCA scheme test is false !" << endl;
+    }
+
+    // // Bendmarking scheme test
     // int bendtest;
     // bendtest = bendmain();
     // if (bendtest){

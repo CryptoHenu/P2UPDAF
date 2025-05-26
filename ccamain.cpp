@@ -21,6 +21,7 @@
 #include "ccadec.h"
 #include "ccakeygen.h"
 #include "ccamap.h"
+#include "sha.h"
 
 using namespace std;
 
@@ -180,6 +181,56 @@ int ccamain()
     
     printf("message生成: \n");
     print_hex("Message", message, WOTS_N);
+    printf("\n");
+
+     // 计算总字节长度
+    element_t elements[6];
+    // 初始化元素到对应群组
+    element_init_G1(elements[0], pairing);   // 第1个元素：G1
+    element_init_GT(elements[1], pairing);   // 第2个元素：GT
+    element_init_G1(elements[2], pairing);   // 第3个元素：G1
+    element_init_GT(elements[3], pairing);   // 第4个元素：GT
+    element_init_GT(elements[4], pairing);   // 第5个元素：GT
+    element_init_G1(elements[5], pairing);   // 第6个元素：G1
+
+    element_set(elements[0] ,PCT.C1);
+    element_set(elements[1] ,PCT.C2);
+    element_set(elements[2] ,PCT.C3);
+    element_set(elements[3] ,PCT.C4);
+    element_set(elements[4] ,PCT.C5);
+    element_set(elements[5] ,PCT.C6);
+
+    size_t total_len = 0;
+    for (int i = 0; i < 6; i++) {
+        total_len += element_length_in_bytes(elements[i]);
+    }
+
+    // 分配缓冲区
+    unsigned char *buffer = (unsigned char *)malloc(total_len);
+    if (!buffer) {
+        perror("内存分配失败");
+        exit(1);
+    }
+
+    // 序列化所有元素到缓冲区
+    size_t offset = 0;
+    for (int i = 0; i < 6; i++) {
+        int len = element_to_bytes(buffer + offset, elements[i]);
+        if (len != element_length_in_bytes(elements[i])) {
+            fprintf(stderr, "序列化错误：元素 %d\n", i);
+            free(buffer);
+            exit(1);
+        }
+        offset += len;
+    }
+
+    SHA256(buffer, total_len, message); // hash to 256bit
+
+    // 打印哈希结果（16进制）
+    printf("SHA-256哈希值: ");
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+        printf("%02x", message[i]);
+    }
     printf("\n");
 
     printf("sig生成: \n");
