@@ -28,7 +28,7 @@ add_executable(ECR-TDPDS
         ccakeygen.cpp
         ccamap.cpp
         ccamain.cpp
-        bendmarkingmain.cpp
+        bendmarking.cpp
         robustnesstest.cpp
 )
 

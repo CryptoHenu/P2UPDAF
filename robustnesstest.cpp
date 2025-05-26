@@ -22,15 +22,6 @@
 using namespace std;
 using namespace std::chrono;
 
-// -*- coding: utf-8 -*-
-
-/*
- *
- *Author:  Ziyi Dong
- *
- */
-
-
 void performanceTest(pairing_t pairing,
                      element_t pkg_priv,
                      pkg_params pkg_params,
@@ -42,14 +33,26 @@ void performanceTest(pairing_t pairing,
                      element_t PT,
                      element_t user_Bob_Pub,
                      UserPrivateKey User_Bob_Priv,
-                     TimeTrapDoor Time_St)
+                     TimeTrapDoor Time_St,
+                     FILE *file
+                    )
 {
-    int Number[] = {100, 300, 500, 1000, 2000}; // 测试规模
+    int Number[] = {100, 300, 500, 1000, 2000, 5000, 10000}; // 测试规模
 
-    for (int n = 0; n < 5; n++)
+    for (int n = 0; n < 7; n++)
     {
         int num_users = Number[n];
         cout << "\n=== 测试用户数: " << num_users << "人 ===" << endl;
+
+
+        file = fopen("robustnesstest.txt", "a"); // 续写模式
+        if (file == NULL) {
+            perror("无法打开文件。");
+            exit(1);
+        }
+        fprintf(file, "\n=== 测试用户数：%d ===: \n", num_users);
+        fclose(file);
+        
 
         // 初始化各阶段的时间统计器
         duration<double> keygen_time(0), enc_time(0), rkgen_time(0),
@@ -76,6 +79,8 @@ void performanceTest(pairing_t pairing,
             element_clear(temp_priv.K);
         }
 
+
+        
         // === 密文加密 + RK + Rj + ReEnc + 解密 ===
         for (int i = 0; i < num_users; i++)
         {
@@ -191,18 +196,100 @@ void performanceTest(pairing_t pairing,
         element_clear(PCT.C6);
 
         // === 输出每阶段总耗时 ===
+
+
+        // === 私钥生成总耗时:===
         cout << "私钥生成总耗时: " << keygen_time.count() << " 秒" << endl;
+
+        file = fopen("robustnesstest.txt", "a"); // 续写模式
+        if (file == NULL) {
+            perror("无法打开文件。");
+            exit(1);
+        }
+        fprintf(file, "私钥生成总耗时: %.6f\n", keygen_time.count());
+        fclose(file);
+
+        // === 加密总耗时:===
         cout << "加密总耗时: " << enc_time.count() << " 秒" << endl;
+
+        file = fopen("robustnesstest.txt", "a"); // 续写模式
+        if (file == NULL) {
+            perror("无法打开文件。");
+            exit(1);
+        }
+        fprintf(file, "加密总耗时: %.6f\n", enc_time.count());
+        fclose(file);
+
+        // === RK生成总耗时:===
         cout << "RK生成总耗时: " << rkgen_time.count() << " 秒" << endl;
+
+        file = fopen("robustnesstest.txt", "a"); // 续写模式
+        if (file == NULL) {
+            perror("无法打开文件。");
+            exit(1);
+        }
+        fprintf(file, "RK生成总耗时: %.6f\n", rkgen_time.count());
+        fclose(file);
+
+        // === RJ生成总耗时:===
         cout << "Rj生成总耗时: " << rjgen_time.count() << " 秒" << endl;
+
+        file = fopen("robustnesstest.txt", "a"); // 续写模式
+        if (file == NULL) {
+            perror("无法打开文件。");
+            exit(1);
+        }
+        fprintf(file, "Rj生成总耗时: %.6f\n", rjgen_time.count());
+        fclose(file);
+
+        // === 重加密总耗时:===
         cout << "重加密总耗时: " << reenc_time.count() << " 秒" << endl;
+
+        file = fopen("robustnesstest.txt", "a"); // 续写模式
+        if (file == NULL) {
+            perror("无法打开文件。");
+            exit(1);
+        }
+        fprintf(file, "重加密总耗时:  %.6f\n", reenc_time.count());
+        fclose(file);
+
+        // === "接收者解密总耗时: "===
         cout << "接收者解密总耗时: " << dec_time.count() << " 秒" << endl;
+
+        file = fopen("robustnesstest.txt", "a"); // 续写模式
+        if (file == NULL) {
+            perror("无法打开文件。");
+            exit(1);
+        }
+        fprintf(file, "接收者解密总耗时: %.6f\n", dec_time.count());
+        fclose(file);
+
+        // === "发送者解密总耗时: "===
         cout << "发送者解密总耗时: " << sender_dec_time.count() << " 秒" << endl;
+
+        file = fopen("robustnesstest.txt", "a"); // 续写模式
+        if (file == NULL) {
+            perror("无法打开文件。");
+            exit(1);
+        }
+        fprintf(file, "发送者解密总耗时: %.6f\n", sender_dec_time.count());
+        fclose(file);
+
     }
 }
 
 int robustnesstestmain()
 {
+    FILE *file;
+    file = fopen("robustnesstest.txt", "w"); // 覆写模式
+    if (file == NULL) {
+        perror("无法打开文件");
+        exit(1);
+    }
+
+    fprintf(file, "=== 测试开始 ===\n");
+    fclose(file);
+
     pairing_t pairing;
 
     // 加载 PBC 参数文件，初始化 pairing 对象
@@ -333,7 +420,7 @@ int robustnesstestmain()
                     user_Alice_Pub, User_Alice_Priv,
                     Time_Pub, vk, PT,
                     user_Bob_Pub, User_Bob_Priv,
-                    Time_St);
+                    Time_St, file);
 
     return 1;
 }

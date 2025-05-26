@@ -25,7 +25,7 @@
 #include "ccaenc.h"
 #include "ccamap.h"
 #include "ccamain.h"
-#include "bendmarkingmain.h"
+#include "bendmarking.h"
 #include "robustnesstest.h"
 #include "cpamaptozr.h"
 
@@ -34,6 +34,8 @@ using namespace std;
 
 int main()
 {
+
+    
     //CPA scheme test
     // int cpatest;
     // cpatest = cpamain();
@@ -45,26 +47,26 @@ int main()
     // }
 
     // CCA scheme test
-    int ccatest;
-    ccatest = ccamain();
-    if (ccatest){
-        cout << "CCA scheme test is successful !" << endl;
-    }
-    else{
-        cout << "CCA scheme test is false !" << endl;
-    }
-
-    // // Bendmarking scheme test
-    // int bendtest;
-    // bendtest = bendmain();
-    // if (bendtest){
-    //     cout << "[PASS] BendTest Scheme Test completed successfully." << endl;
+    // int ccatest;
+    // ccatest = ccamain();
+    // if (ccatest){
+    //     cout << "CCA scheme test is successful !" << endl;
     // }
     // else{
-    //     cout << "[FAIL] BendTest Scheme Test failed." << endl;
+    //     cout << "CCA scheme test is false !" << endl;
     // }
 
     // Bendmarking scheme test
+    int bendmarking_result;
+    bendmarking_result = bendmarking();
+    if (bendmarking_result){
+        cout << "[PASS] BendTest Scheme Test completed successfully." << endl;
+    }
+    else{
+        cout << "[FAIL] BendTest Scheme Test failed." << endl;
+    }
+
+    // // Robustnesstest scheme test
     // int robustnesstest;
     // robustnesstest = robustnesstestmain();
     // if (robustnesstest){

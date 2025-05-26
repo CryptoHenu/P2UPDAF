@@ -9,12 +9,10 @@
  * @Contact: dongziyics@gmail.com
  */
 
+#ifndef BENDMARKING_H
+#define BENDMARKING_H
 
-
-#ifndef BENDMARKINGMAIN_H
-#define BENDMARKINGMAIN_H
-
-int bendmain();
+int bendmarking();
 
 
 #endif

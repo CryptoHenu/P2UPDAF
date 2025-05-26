@@ -29,15 +29,15 @@ void ccaPrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_para
     element_add(privatekey.K, privatekey.K, pkg_params.h);
     element_pow_zn(privatekey.K, privatekey.K, inv);
 
-    if (inv == 0)
-    {
-        printf("No inverse exists!\n");
-    }
-    else
-    {
-        printf("Modular inverse: ");
-        element_printf("%B\n", inv);
-    }
+    // if (inv == 0)
+    // {
+    //     printf("No inverse exists!\n");
+    // }
+    // else
+    // {
+    //     printf("Modular inverse: ");
+    //     element_printf("%B\n", inv);
+    // }
     //element_printf("privatekey.r = %B\n", privatekey.r);
     //element_printf("privatekey.K = %B\n", privatekey.K);
 
