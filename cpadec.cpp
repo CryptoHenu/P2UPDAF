@@ -5,7 +5,7 @@
  * @Last Modified: 05-24-2025
  * @Copyright: © 2025 Ziyi Dong. All rights reserved.
  * @License: GPL v3.0
- * @Contact: dongziyics@gmail.com
+ * @Contact: ziyidong.cs@gmail.com
  */
 #include "pbc.h"
 #include "cpadec.h"
@@ -37,7 +37,6 @@ void SenderDec(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, Us
     element_clear(temp3);
     element_clear(temp4);
 
-    element_printf("PT_Alice in dec = %B\n", PT_Alice);     
 }
 
 // Dec1 decryption function
@@ -78,6 +77,5 @@ void Dec2(pairing_t pairing, UserPrivateKey User_Priv, ReCiphertext RCT, TimeTra
     element_clear(temp1);
     element_clear(temp2);
 
-    element_printf("PT_Bob = %B\n", PT_Bob); 
 
 }

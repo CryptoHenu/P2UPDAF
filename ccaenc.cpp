@@ -5,7 +5,7 @@
  * @Last Modified: 05-24-2025
  * @Copyright: © 2025 Ziyi Dong. All rights reserved.
  * @License: GPL v3.0
- * @Contact: dongziyics@gmail.com
+ * @Contact: ziyidong.cs@gmail.com
  */
 
 
@@ -90,12 +90,7 @@ void ccaEnc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, eleme
 
     // element_clear(result);
 
-    //cout << "Enc success:" << endl;
-    //element_printf("PCT.C1 = %B\n", PCT.C1);
-    //element_printf("PCT.C2 = %B\n", PCT.C2);
-    //element_printf("PCT.C3 = %B\n", PCT.C3);
-    //element_printf("PCT.C4 = %B\n", PCT.C4);
-    //element_printf("PCT.C5 = %B\n", PCT.C5);
+
 }
 
 

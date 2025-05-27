@@ -5,7 +5,7 @@
  * @Last Modified: 05-24-2025
  * @Copyright: © 2025 Ziyi Dong. All rights reserved.
  * @License: GPL v3.0
- * @Contact: dongziyics@gmail.com
+ * @Contact: ziyidong.cs@gmail.com
  */
 
 #include "cpakeygen.h"
@@ -25,18 +25,6 @@ void PrivatekeyGen(pairing_t pairing, element_t pkg_priv, pkg_params pkg_params,
     element_pow_zn(privatekey.K, privatekey.K, privatekey.r);
     element_add(privatekey.K, privatekey.K, pkg_params.h);
     element_pow_zn(privatekey.K, privatekey.K, inv);
-
-    if (inv == 0)
-    {
-        printf("No inverse exists!\n");
-    }
-    else
-    {
-        printf("Modular inverse: ");
-        element_printf("%B\n", inv);
-    }
-    element_printf("privatekey.r = %B\n", privatekey.r);
-    element_printf("privatekey.K = %B\n", privatekey.K);
 
     element_clear(diff);
     element_clear(inv);
@@ -58,17 +46,6 @@ void TimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_params, 
     element_add(Time_St.K, Time_St.K, ts_params.h);
     element_pow_zn(Time_St.K, Time_St.K, inv);
 
-    if (inv == 0)
-    {
-        printf("No inverse exists!\n");
-    }
-    else
-    {
-        printf("Modular inverse: ");
-        element_printf("%B\n", inv);
-    }
-    element_printf("Time_St.r = %B\n", Time_St.r);
-    element_printf("Time_St.K = %B\n", Time_St.K);
 
     element_clear(diff);
     element_clear(inv);

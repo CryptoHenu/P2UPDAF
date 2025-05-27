@@ -29,8 +29,7 @@ add_executable(ECR-TDPDS
         ccamap.cpp
         ccamain.cpp
         bendmarking.cpp
-        robustnesstest.cpp
-        robust_test.cpp
+        robust_receiver_test.cpp
 )
 
 # 添加头文件搜索路径

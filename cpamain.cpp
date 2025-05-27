@@ -5,9 +5,9 @@
  * @Last Modified: 05-24-2025
  * @Copyright: © 2025 Ziyi Dong. All rights reserved.
  * @License: GPL v3.0
- * @Contact: dongziyics@gmail.com
+ * @Contact: ziyidong.cs@gmail.com
  */
-#include "cpamain.h"
+
 #include <stdio.h>
 #include <iostream>
 #include <string.h>
@@ -18,41 +18,37 @@
 #include "cpadec.h"
 #include "cpaenc.h"
 #include "cpamaptozr.h"
+#include "cpamain.h"
 
 
 int cpamain()
 {
     pairing_t pairing; 
 
-    FILE *fp = fopen("../param/d224.param", "r");
+    FILE *fp = fopen("../param/a.param", "r");
     if (!fp)
     {
-        printf("param file open fail\n");
+        printf("[FAIL] Param file open fail.\n");
         return 1;
-    }
-    else{
-        printf("param file open succ\n");
     }
 
     char param[10240];
     size_t count = fread(param, 1, sizeof(param), fp);
     fclose(fp); 
-    if (count == 0)
+    if (!count)
     {
-        printf("write fail\n");
+        printf("[FAIL] Parameters write fail.\n");
     }
-    else{
-        printf("write Succ\n");
-    }
+
     
     pairing_init_set_str(pairing, param); 
     if (!pairing_is_symmetric(pairing))
     {
-        printf("is a asys\n");
+        printf("[Asymmetric] Pairing is an asymmetric pairing.\n");
     }
     else
     {
-        printf("is a sys\n");
+        printf("[Symmetric] Pairing is an symmetric pairing.\n");
     }
 
     element_t ts_priv, pkg_priv;
@@ -72,8 +68,6 @@ int cpamain()
     
     id_to_zr(pairing, Time, Time_Pub);
     
-
-
     element_t user_Bob_Pub;
     element_init_Zr(user_Bob_Pub, pairing);
     element_random(user_Bob_Pub);

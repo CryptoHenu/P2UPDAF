@@ -5,7 +5,7 @@
  * @Last Modified: 05-24-2025
  * @Copyright: © 2025 Ziyi Dong. All rights reserved.
  * @License: GPL v3.0
- * @Contact: dongziyics@gmail.com
+ * @Contact: ziyidong.cs@gmail.com
  */
 
 #include <stdio.h>
@@ -49,32 +49,26 @@ int ccamain()
     FILE *fp = fopen("../param/a.param", "r");
     if (!fp)
     {
-        printf("param file open fail\n");
+        printf("[FAIL] Param file open fail.\n");
         return 1;
-    }
-    else{
-        printf("param file open succ\n");
     }
 
     char param[1024];
     size_t count = fread(param, 1, sizeof(param), fp);
     fclose(fp); 
-    if (count == 0)
+    if (!count)
     {
-        printf("write fail\n");
-    }
-    else{
-        printf("write Succ\n");
+        printf("[FAIL] Parameters write fail.\n");
     }
     
     pairing_init_set_str(pairing, param); 
     if (!pairing_is_symmetric(pairing))
     {
-        printf("is a asys\n");
+        printf("[Asymmetric] Pairing is an asymmetric pairing.\n");
     }
     else
     {
-        printf("is a sys\n");
+        printf("[Symmetric] Pairing is an symmetric pairing.\n");
     }
 
     uint8_t sk_seed[WOTS_N] = {1};
@@ -85,14 +79,9 @@ int ccamain()
     uint8_t sig[WOTS_LEN][WOTS_N];
 
     // out put seed of sk, and msg
-    printf("sk种子生成: \n");
-    print_hex("Seed (sk_seed)", sk_seed, WOTS_N);
-    printf("\n");
 
-    printf("pk1生成: \n");
     wots_keygen(pk1, sk_seed);
     //print_hex("Public key (wots_keygen)", pk1, WOTS_LEN * WOTS_N);
-    printf("\n");
 
     element_t ts_priv, pkg_priv;
     element_init_Zr(ts_priv, pairing);
@@ -179,13 +168,10 @@ int ccamain()
     ccaEnc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, vk, PT, PCT);
 
     
-    printf("message生成: \n");
-    print_hex("Message", message, WOTS_N);
-    printf("\n");
 
-     // 计算总字节长度
+     // calculate SHA-256 hash of the ciphertext
     element_t elements[6];
-    // 初始化元素到对应群组
+    
     element_init_G1(elements[0], pairing);   // 第1个元素：G1
     element_init_GT(elements[1], pairing);   // 第2个元素：GT
     element_init_G1(elements[2], pairing);   // 第3个元素：G1
@@ -205,19 +191,19 @@ int ccamain()
         total_len += element_length_in_bytes(elements[i]);
     }
 
-    // 分配缓冲区
+    // 
     unsigned char *buffer = (unsigned char *)malloc(total_len);
     if (!buffer) {
-        perror("内存分配失败");
+        perror("[FAIL] Memory allocation failed.");
         exit(1);
     }
 
-    // 序列化所有元素到缓冲区
+    // 
     size_t offset = 0;
     for (int i = 0; i < 6; i++) {
         int len = element_to_bytes(buffer + offset, elements[i]);
         if (len != element_length_in_bytes(elements[i])) {
-            fprintf(stderr, "序列化错误：元素 %d\n", i);
+            fprintf(stderr, "Serialization error: Element %d\n", i);
             free(buffer);
             exit(1);
         }
@@ -226,25 +212,15 @@ int ccamain()
 
     SHA256(buffer, total_len, message); // hash to 256bit
 
-    // 打印哈希结果（16进制）
-    printf("SHA-256哈希值: ");
-    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-        printf("%02x", message[i]);
-    }
-    printf("\n");
 
-    printf("sig生成: \n");
     wots_sign(sig, message, sk_seed);
     //print_hex("Signature (wots_sign)", sig, WOTS_LEN * WOTS_N);
-    printf("\n");
 
     element_t rk, PX;
     element_init_G1(rk, pairing);
     element_init_GT(PX, pairing);
 
     ccaRkGen(pairing, pkg_params, user_Alice_Pub, User_Alice_Priv, PCT, rk, PX);
-    element_printf("rk = %B\n", rk); 
-    element_printf("PX = %B\n", PX);  
 
     element_t k3;
     element_init_Zr(k3, pairing);
@@ -256,9 +232,6 @@ int ccamain()
     element_init_GT(rj_bob.w, pairing);
 
     ccaRjGen(pairing, pkg_params, User_Alice_Priv, user_Bob_Pub, rk, PX, k3, rj_bob);
-    element_printf("rj_bob.u = %B\n", rj_bob.u);
-    element_printf("rj_bob.v = %B\n", rj_bob.v);
-    element_printf("rj_bob.w = %B\n", rj_bob.w);
 
     ccaReCiphertext RCT;
     element_init_G1(RCT.C1, pairing);
@@ -271,10 +244,8 @@ int ccamain()
     element_init_GT(RCT.C32, pairing);
 
 
-    printf("pk2生成: \n");
     wots_pk_from_sig(pk2, sig, message);
     //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
-    printf("\n");
 
     int receiversuccess = 1;
     for (int i = 0; i < WOTS_LEN; i++) {
@@ -290,10 +261,7 @@ int ccamain()
     element_t X;
     element_init_GT(X, pairing);
 
-    printf("pk2生成: \n");
     wots_pk_from_sig(pk2, sig, message);
-    //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
-    printf("\n");
 
     ccaDec1(pairing, User_Bob_Priv, rj_bob, X);
     element_printf("PX = %B\n", PX);
@@ -302,10 +270,7 @@ int ccamain()
     ccaDec2(pairing, User_Bob_Priv, RCT, Time_St , rj_bob, X, PT_Bob);
 
 
-    printf("pk2生成: \n");
     wots_pk_from_sig(pk2, sig, message);
-    //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
-    printf("\n");
 
     int sendersuccess = 1;
     for (int i = 0; i < WOTS_LEN; i++) {
@@ -318,12 +283,7 @@ int ccamain()
     
     ccaSenderDec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
 
-    // element_printf("PX       = %B\n", PX);
-    // element_printf("X        = %B\n", X);
-    // element_printf("PT       = %B\n", PT);
-    // element_printf("PT_Alice = %B\n", PT_Alice);
-    // element_printf("PT_Bob   = %B\n", PT_Bob);
-
+    // clear memory
     element_clear(pkg_priv);
     element_clear(pkg_params.g);
     element_clear(pkg_params.h);

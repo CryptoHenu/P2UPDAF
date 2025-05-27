@@ -5,7 +5,7 @@
  * @Last Modified: 05-24-2025
  * @Copyright: © 2025 Ziyi Dong. All rights reserved.
  * @License: GPL v3.0
- * @Contact: dongziyics@gmail.com
+ * @Contact: ziyidong.cs@gmail.com
  */
 
 #include <stdio.h>
@@ -23,23 +23,23 @@
 #include "ccakeygen.h"
 #include "ccamap.h"
 #include "sha.h"
-#include "robust_test.h"
+#include "robust_receiver_test.h"
 
 
 using namespace std;
 
 // main function
-int robutstTest(int number)
+int robustReceiverTest(int number)
 {
     int i;
     FILE *file;
-    file = fopen("robust_test.txt", "a");
+    file = fopen("robust_receiver_test.txt", "a");
     if (file == NULL) {
-        perror("无法打开文件");
+        perror("[FAIL] Failed to open robust_receiver_test.txt");
         exit(1);
     }
-    printf("=== 测试开始, Receiver Number %d ===\n", number);
-    fprintf(file, "=== 测试开始, Receiver Number %d ===\n", number);
+    printf("=== Test Start, Receiver Number %d ===\n", number);
+    fprintf(file, "=== Test Start, Receiver Number %d ===\n", number);
     fclose(file);
 
 
@@ -104,7 +104,6 @@ int robutstTest(int number)
     element_init_Zr(user_Bob_Pub, pairing);
     element_random(user_Bob_Pub);
 
-    // 定义NUMBER个接收者的公钥数组
     element_t receiver_publickey[number];
     for (i = 0; i < number; i++)
     {
@@ -112,15 +111,12 @@ int robutstTest(int number)
         element_random(receiver_publickey[i]);
     }
 
-    // 定义NUMBER个接收者的私钥结构体数组
     UserPrivateKey receiver_privatekey[number];
     for (i = 0; i < number; i++)
     {
         element_init_Zr(receiver_privatekey[i].r, pairing);
         element_init_G1(receiver_privatekey[i].K, pairing);
     }
-
-
 
     pkg_params pkg_params; 
     ts_params ts_params; 
@@ -173,54 +169,54 @@ int robutstTest(int number)
     element_init_GT(PCT.C5, pairing);
     element_init_G1(PCT.C6, pairing);
 
-    // 发送者密钥生成耗时
+    // Time-consuming to generate the sender's private key
     start_time = clock();
     wots_keygen(pk1, sk_seed);
     ccaPrivatekeyGen(pairing, pkg_priv, pkg_params, user_Alice_Pub, User_Alice_Priv);
     end_time = clock();
-    double sender_keygen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; // 转换为毫ms
-    printf("发送者私钥生成耗时: %.6f ms\n", sender_keygen_time);
-    file = fopen("robust_test.txt", "a"); // 续写模式
-    fprintf(file, "发送者私钥生成耗时: %.6f ms\n", sender_keygen_time);
+    double sender_keygen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    printf("Time-consuming to generate the sender's private key: %.6f ms\n", sender_keygen_time);
+    file = fopen("robust_receiver_test.txt", "a"); 
+    fprintf(file, "Time-consuming to generate the sender's private key: %.6f ms\n", sender_keygen_time);
     fclose(file);
 
-    // 接收者密钥生成耗时
+    // Receiver key generation time
     start_time = clock();
     for(i = 0; i < number; i++) {
         ccaPrivatekeyGen(pairing, pkg_priv, pkg_params, receiver_publickey[i], receiver_privatekey[i]);;
     }
     end_time = clock();
-    double receiver_keygen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; // 转换为毫ms
-    printf("接收者私钥生成耗时: %.6f ms\n", receiver_keygen_time);
-    file = fopen("robust_test.txt", "a"); // 续写模式
-    fprintf(file, "接收者私钥生成耗时: %.6f ms\n", receiver_keygen_time);
+    double receiver_keygen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    printf("Time-consuming to generate the receiver's private key: %.6f ms\n", receiver_keygen_time);
+    file = fopen("robust_receiver_test.txt", "a"); 
+    fprintf(file, "Time-consuming to generate the receiver's private key: %.6f ms\n", receiver_keygen_time);
     fclose(file);
 
     ccaPrivatekeyGen(pairing, pkg_priv, pkg_params, user_Bob_Pub, User_Bob_Priv);
  
-    // 时间陷阱门生成耗时
+    // Time trap gate generation time
     start_time = clock();
     ccaTimeTrapDoorGen(pairing, ts_priv, ts_params, Time_Pub, Time_St);
     end_time = clock();
-    double time_trapdoor_gen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; // 转换为毫ms
-    printf("时间陷阱门生成耗时: %.6f ms\n", time_trapdoor_gen_time);
-    file = fopen("robust_test.txt", "a"); // 续写模式
-    fprintf(file, "时间陷阱门生成耗时: %.6f ms\n", time_trapdoor_gen_time);
+    double time_trapdoor_gen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    printf("Time trap gate generation time: %.6f ms\n", time_trapdoor_gen_time);
+    file = fopen("robust_receiver_test.txt", "a");
+    fprintf(file, "Time trap gate generation time: %.6f ms\n", time_trapdoor_gen_time);
     fclose(file);
 
 
-    // 发送者加密耗时
+    // Sender encryption time
     start_time = clock();
     ccaEnc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, vk, PT, PCT);
-    // 计算总字节长度
+    // Calculate the total byte length
     element_t elements[6];
-    // 初始化元素到对应群组
-    element_init_G1(elements[0], pairing);   // 第1个元素：G1
-    element_init_GT(elements[1], pairing);   // 第2个元素：GT
-    element_init_G1(elements[2], pairing);   // 第3个元素：G1
-    element_init_GT(elements[3], pairing);   // 第4个元素：GT
-    element_init_GT(elements[4], pairing);   // 第5个元素：GT
-    element_init_G1(elements[5], pairing);   // 第6个元素：G1
+    //Initialize elements to the corresponding groups
+    element_init_G1(elements[0], pairing);   
+    element_init_GT(elements[1], pairing);  
+    element_init_G1(elements[2], pairing);  
+    element_init_GT(elements[3], pairing); 
+    element_init_GT(elements[4], pairing); 
+    element_init_G1(elements[5], pairing);  
 
     element_set(elements[0] ,PCT.C1);
     element_set(elements[1] ,PCT.C2);
@@ -233,18 +229,18 @@ int robutstTest(int number)
     for (int i = 0; i < 6; i++) {
         total_len += element_length_in_bytes(elements[i]);
     }
-    // 分配缓冲区
+    // Allocating Buffers
     unsigned char *buffer = (unsigned char *)malloc(total_len);
     if (!buffer) {
-        perror("内存分配失败");
+        perror("Memory allocation failed");
         exit(1);
     }
-    // 序列化所有元素到缓冲区
+    // Serialize all elements into a buffer
     size_t offset = 0;
     for (int i = 0; i < 6; i++) {
         int len = element_to_bytes(buffer + offset, elements[i]);
         if (len != element_length_in_bytes(elements[i])) {
-            fprintf(stderr, "序列化错误：元素 %d\n", i);
+            fprintf(stderr, "Serialization error: Element %d\n", i);
             free(buffer);
             exit(1);
         }
@@ -253,13 +249,13 @@ int robutstTest(int number)
     SHA256(buffer, total_len, message); // hash to 256bit
     wots_sign(sig, message, sk_seed);
     end_time = clock();
-    double sender_enc_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; // 转换为毫ms
-    printf("发送者加密耗时: %.6f ms\n", sender_enc_time);
-    file = fopen("robust_test.txt", "a"); // 续写模式
-    fprintf(file, "发送者加密耗时: %.6f ms\n", sender_enc_time);
+    double sender_enc_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    printf("Sender encryption time: %.6f ms\n", sender_enc_time);
+    file = fopen("robust_receiver_test.txt", "a"); 
+    fprintf(file, "Sender encryption time: %.6f ms\n", sender_enc_time);
     fclose(file);
 
-    // RKGen耗时
+    // RK generation time
     start_time = clock();
     element_t rk, PX;
     element_init_G1(rk, pairing);
@@ -284,10 +280,10 @@ int robutstTest(int number)
     }
 
     end_time = clock();
-    double rk_gen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; // 转换为毫ms
-    printf("RK生成耗时: %.6f ms\n", rk_gen_time);
-    file = fopen("robust_test.txt", "a"); // 续写模式
-    fprintf(file, "RK生成耗时: %.6f ms\n", rk_gen_time);
+    double rk_gen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    printf("RK generation time: %.6f ms\n", rk_gen_time);
+    file = fopen("robust_receiver_test.txt", "a");
+    fprintf(file, "RK generation time: %.6f ms\n", rk_gen_time);
     fclose(file);
 
     ccaReCiphertext RCT;
@@ -300,7 +296,7 @@ int robutstTest(int number)
     element_init_G1(RCT.RK2, pairing);
     element_init_GT(RCT.C32, pairing);
 
-    // ReEnc耗时
+    // ReEnc time
     start_time = clock();
     wots_pk_from_sig(pk2, sig, message);
     int receiversuccess = 1;
@@ -313,14 +309,14 @@ int robutstTest(int number)
     printf("WOTS+ verification %s\n", receiversuccess ? "passed" : "failed");
     ccaReEnc(pairing, PCT, rk, pkg_params, vk, RCT);
     end_time = clock();
-    double reenc_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; // 转换为毫ms
-    printf("ReEnc耗时: %.6f ms\n", reenc_time);
-    file = fopen("robust_test.txt", "a"); // 续写模式
-    fprintf(file, "ReEnc耗时: %.6f ms\n", reenc_time);
+    double reenc_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    printf("ReEnc time: %.6f ms\n", reenc_time);
+    file = fopen("robust_receiver_test.txt", "a");
+    fprintf(file, "ReEnc time: %.6f ms\n", reenc_time);
     fclose(file);
 
 
-    // 接收者解密耗时
+    // Decryption time for the receiver
     start_time = clock();
     wots_pk_from_sig(pk2, sig, message);
     int sendersuccess = 1;
@@ -336,17 +332,15 @@ int robutstTest(int number)
     ccaDec1(pairing, User_Bob_Priv, rj_bob, X);
     ccaDec2(pairing, User_Bob_Priv, RCT, Time_St , rj_bob, X, PT_Bob);
     end_time = clock();
-    double receiver_dec_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; // 转换为毫ms
-    printf("接收者解密耗时: %.6f ms\n", receiver_dec_time);
-    file = fopen("robust_test.txt", "a"); // 续写模式   
-    fprintf(file, "接收者解密耗时: %.6f ms\n", receiver_dec_time);
+    double receiver_dec_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; 
+    printf("Decryption time for the receiver: %.6f ms\n", receiver_dec_time);
+    file = fopen("robust_receiver_test.txt", "a"); 
+    fprintf(file, "Decryption time for the receiver: %.6f ms\n", receiver_dec_time);
     fclose(file);
 
-    // 发送者解密耗时
+    // Decryption time for sender
     start_time = clock();
-    printf("pk2生成: \n");
     wots_pk_from_sig(pk2, sig, message);
-    //print_hex("Recovered public key (wots_pk_from_sig)", pk2, WOTS_LEN * WOTS_N);
     printf("\n");
 
     sendersuccess = 1;
@@ -360,10 +354,10 @@ int robutstTest(int number)
     
     ccaSenderDec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
     end_time = clock();
-    double sender_dec_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; // 转换为毫ms
-    printf("发送者解密耗时: %.6f ms\n", sender_dec_time);
-    file = fopen("robust_test.txt", "a"); // 续写模式
-    fprintf(file, "发送者解密耗时: %.6f ms\n\n", sender_dec_time);
+    double sender_dec_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    printf("Decryption time for sender: %.6f ms\n", sender_dec_time);
+    file = fopen("robust_receiver_test.txt", "a");
+    fprintf(file, "Decryption time for sender: %.6f ms\n\n", sender_dec_time);
     fclose(file);
 
 

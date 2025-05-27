@@ -222,7 +222,7 @@ int bendmarking()
     double time_pow_GT = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
     file = fopen("bendmarking_output.txt", "a");
 
-    fprintf(file, "Ztime_pow_GT: %.6f ms, ", time_pow_GT);
+    fprintf(file, "time_pow_GT: %.6f ms, ", time_pow_GT);
     relative_time = time_pow_GT / time_point_mul_G1;
     fprintf(file, "relative_time: %.6f \n", relative_time);
     fclose(file);
@@ -247,7 +247,6 @@ int bendmarking()
     char Alice[] = "sender.alice@gmail.com";
     element_t user_Alice_Pub;
     element_init_Zr(user_Alice_Pub, pairing);
-    // SHA256((unsigned char*)Alice, strlen(Alice), digest);
     start_time = clock();
     for (i = 1; i < RENUM; i++)
     {

@@ -5,7 +5,7 @@
  * @Last Modified: 05-24-2025
  * @Copyright: © 2025 Ziyi Dong. All rights reserved.
  * @License: GPL v3.0
- * @Contact: dongziyics@gmail.com
+ * @Contact: ziyidong.cs@gmail.com
  */
 #include "pbc.h"
 #include "cpaenc.h"
@@ -82,12 +82,6 @@ void Enc(pairing_t pairing, pkg_params pkg_params, ts_params ts_params, element_
     element_clear(temp7);
 
     // element_clear(result);
-
-    element_printf("PCT.C1 = %B\n", PCT.C1);
-    element_printf("PCT.C2 = %B\n", PCT.C2);
-    element_printf("PCT.C3 = %B\n", PCT.C3);
-    element_printf("PCT.C4 = %B\n", PCT.C4);
-    element_printf("PCT.C5 = %B\n", PCT.C5);
 }
 
 
@@ -111,10 +105,5 @@ void ReEnc(pairing_t pairing, Ciphertext PCT, element_t rk, ReCiphertext &RCT)
     //  RCT.C5 = PCT.C5;
     element_set(RCT.C5, PCT.C5);
 
-    element_printf("RCT.C1 = %B\n", RCT.C1);
-    element_printf("RCT.C2 = %B\n", RCT.C2);
-    element_printf("RCT.C3 = %B\n", RCT.C3);
-    element_printf("RCT.C4 = %B\n", RCT.C4);
-    element_printf("RCT.C5 = %B\n", RCT.C5);
 
 }
