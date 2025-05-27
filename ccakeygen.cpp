@@ -60,19 +60,6 @@ void ccaTimeTrapDoorGen(pairing_t pairing, element_t ts_priv, ts_params ts_param
     element_add(Time_St.K, Time_St.K, ts_params.h);
     element_pow_zn(Time_St.K, Time_St.K, inv);
 
-    if (inv == 0)
-    {
-        printf("No inverse exists!\n");
-    }
-    else
-    {
-        printf("Modular inverse: ");
-        element_printf("%B\n", inv);
-    }
-    //cout << "TimeTrapDoor generation succ:" << endl;
-    //element_printf("Time_St.r = %B\n", Time_St.r);
-    //element_printf("Time_St.K = %B\n", Time_St.K);
-
     element_clear(diff);
     element_clear(inv);
 }

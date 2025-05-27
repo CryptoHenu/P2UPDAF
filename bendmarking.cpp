@@ -26,6 +26,14 @@ int bendmarking()
 {
 
     FILE *file;
+    file = fopen("bendmarking_output.txt", "w");
+    if (!file)
+    {
+        perror("[Fail] Bendmarking_output.txt open fail.\n");
+        exit(1);
+    }
+    fprintf(file, "=== Bendmarking Test Start === \n");
+    fclose(file);
 
     int i;
     pairing_t pairing;
@@ -84,7 +92,7 @@ int bendmarking()
     }
     end_time = clock();
     double time_point_mul_G1 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
-    file = fopen("bendmarking_output.txt", "w");
+    file = fopen("bendmarking_output.txt", "a");
     if (!file)
     {
         perror("[Fail] Bendmarking_output.txt open fail.\n");
@@ -259,6 +267,17 @@ int bendmarking()
     fprintf(file, "time_hash: %.6f ms, ", time_hash);
     relative_time = time_hash / time_point_mul_G1;
     fprintf(file, "relative_time: %.6f \n", relative_time);
+    fclose(file);
+
+
+
+    file = fopen("bendmarking_output.txt", "a");
+    if (!file)
+    {
+        perror("[Fail] Bendmarking_output.txt open fail.\n");
+        exit(1);
+    }
+    fprintf(file, "=== Bendmarking Test End === \n");
     fclose(file);
 
     // clear memory

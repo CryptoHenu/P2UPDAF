@@ -24,22 +24,24 @@
 #include "ccamap.h"
 #include "sha.h"
 #include "robust_receiver_test.h"
+#include "robust_trade_test.h"
 
 
 using namespace std;
 
 // main function
-int robustReceiverTest(int receiver_number)
+int robustTradeTest(int trade_number, int receiver_number)
 {
-    int i;
+    int i, j;
+    int sign_flan = 0;
     FILE *file;
-    file = fopen("robust_receiver_test.txt", "a");
+    file = fopen("robust_trade_test.txt", "a");
     if (file == NULL) {
-        perror("[FAIL] Failed to open robust_receiver_test.txt");
+        perror("[FAIL] Failed to open robust_trade_test.txt");
         exit(1);
     }
-    printf("=== Test Start, Receiver Number %d ===\n", receiver_number);
-    fprintf(file, "=== Test Start, Receiver Number %d ===\n", receiver_number);
+    printf("=== Test Start, Trade Number %d, Receiver Number %d ===\n", trade_number, receiver_number);
+    fprintf(file, "=== Test Start, Receiver Number %d,  Receiver Number %d ===\n", trade_number, receiver_number);
     fclose(file);
 
 
@@ -74,7 +76,7 @@ int robustReceiverTest(int receiver_number)
     }
 
     uint8_t sk_seed[WOTS_N] = {1};
-    uint8_t message[WOTS_N] = {0x12};
+    uint8_t message[WOTS_N] = {1};
 
     uint8_t pk1[WOTS_LEN][WOTS_N];
     uint8_t pk2[WOTS_LEN][WOTS_N];
@@ -171,118 +173,146 @@ int robustReceiverTest(int receiver_number)
 
     // Time-consuming to generate the sender's private key
     start_time = clock();
-    wots_keygen(pk1, sk_seed);
     ccaPrivatekeyGen(pairing, pkg_priv, pkg_params, user_Alice_Pub, User_Alice_Priv);
+    for (i = 0; i < trade_number; i++) {
+        wots_keygen(pk1, sk_seed);  // ??
+    }
     end_time = clock();
     double sender_keygen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
     printf("Time-consuming to generate the sender's private key: %.6f ms\n", sender_keygen_time);
-    file = fopen("robust_receiver_test.txt", "a"); 
+    file = fopen("robust_trade_test.txt", "a"); 
     fprintf(file, "Time-consuming to generate the sender's private key: %.6f ms\n", sender_keygen_time);
     fclose(file);
+
+
 
     // Receiver key generation time
     start_time = clock();
     for(i = 0; i < receiver_number; i++) {
-        ccaPrivatekeyGen(pairing, pkg_priv, pkg_params, receiver_publickey[i], receiver_privatekey[i]);;
+        ccaPrivatekeyGen(pairing, pkg_priv, pkg_params, receiver_publickey[i], receiver_privatekey[i]);
     }
     end_time = clock();
     double receiver_keygen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
     printf("Time-consuming to generate the receiver's private key: %.6f ms\n", receiver_keygen_time);
-    file = fopen("robust_receiver_test.txt", "a"); 
+    file = fopen("robust_trade_test.txt", "a"); 
     fprintf(file, "Time-consuming to generate the receiver's private key: %.6f ms\n", receiver_keygen_time);
     fclose(file);
 
     ccaPrivatekeyGen(pairing, pkg_priv, pkg_params, user_Bob_Pub, User_Bob_Priv);
  
+
     // Time trap gate generation time
     start_time = clock();
-    ccaTimeTrapDoorGen(pairing, ts_priv, ts_params, Time_Pub, Time_St);
+    for(i = 0; i < trade_number; i++) {
+        ccaTimeTrapDoorGen(pairing, ts_priv, ts_params, Time_Pub, Time_St);
+    }
     end_time = clock();
     double time_trapdoor_gen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
     printf("Time trap gate generation time: %.6f ms\n", time_trapdoor_gen_time);
-    file = fopen("robust_receiver_test.txt", "a");
+    file = fopen("robust_trade_test.txt", "a");
     fprintf(file, "Time trap gate generation time: %.6f ms\n", time_trapdoor_gen_time);
     fclose(file);
 
 
     // Sender encryption time
     start_time = clock();
-    ccaEnc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, vk, PT, PCT);
-    // Calculate the total byte length
-    element_t elements[6];
-    //Initialize elements to the corresponding groups
-    element_init_G1(elements[0], pairing);   
-    element_init_GT(elements[1], pairing);  
-    element_init_G1(elements[2], pairing);  
-    element_init_GT(elements[3], pairing); 
-    element_init_GT(elements[4], pairing); 
-    element_init_G1(elements[5], pairing);  
+    for(i = 0; i < trade_number; i++) {
+        ccaEnc(pairing, pkg_params, ts_params, user_Alice_Pub, User_Alice_Priv, Time_Pub, vk, PT, PCT);
+        // Calculate the total byte length
+        element_t elements[6];
+        //Initialize elements to the corresponding groups
+        element_init_G1(elements[0], pairing);   
+        element_init_GT(elements[1], pairing);  
+        element_init_G1(elements[2], pairing);  
+        element_init_GT(elements[3], pairing); 
+        element_init_GT(elements[4], pairing); 
+        element_init_G1(elements[5], pairing);  
 
-    element_set(elements[0] ,PCT.C1);
-    element_set(elements[1] ,PCT.C2);
-    element_set(elements[2] ,PCT.C3);
-    element_set(elements[3] ,PCT.C4);
-    element_set(elements[4] ,PCT.C5);
-    element_set(elements[5] ,PCT.C6);
-
-    size_t total_len = 0;
-    for (int i = 0; i < 6; i++) {
-        total_len += element_length_in_bytes(elements[i]);
-    }
-    // Allocating Buffers
-    unsigned char *buffer = (unsigned char *)malloc(total_len);
-    if (!buffer) {
-        perror("Memory allocation failed");
-        exit(1);
-    }
-    // Serialize all elements into a buffer
-    size_t offset = 0;
-    for (int i = 0; i < 6; i++) {
-        int len = element_to_bytes(buffer + offset, elements[i]);
-        if (len != element_length_in_bytes(elements[i])) {
-            fprintf(stderr, "Serialization error: Element %d\n", i);
-            free(buffer);
+        element_set(elements[0] ,PCT.C1);
+        element_set(elements[1] ,PCT.C2);
+        element_set(elements[2] ,PCT.C3);
+        element_set(elements[3] ,PCT.C4);
+        element_set(elements[4] ,PCT.C5);
+        element_set(elements[5] ,PCT.C6);
+        size_t total_len = 0;
+        for (j = 0; j < 6; j++) {
+            total_len += element_length_in_bytes(elements[j]);
+        }
+        // Allocating Buffers
+        unsigned char *buffer = (unsigned char *)malloc(total_len);
+        if (!buffer) {
+            perror("Memory allocation failed");
             exit(1);
         }
-        offset += len;
+        // Serialize all elements into a buffer
+        size_t offset = 0;
+        for (j = 0; j < 6; j++) {
+            int len = element_to_bytes(buffer + offset, elements[j]);
+            if (len != element_length_in_bytes(elements[j])) {
+                fprintf(stderr, "Serialization error: Element %d\n", j);
+                free(buffer);
+                exit(1);
+            }
+            offset += len;
+        }
+        SHA256(buffer, total_len, message); // hash to 256bit
+        wots_sign(sig, message, sk_seed);
+        free(buffer);
+
+        element_clear(elements[0]);
+        element_clear(elements[1]);
+        element_clear(elements[2]);
+        element_clear(elements[3]);
+        element_clear(elements[4]);
+        element_clear(elements[5]);
     }
-    SHA256(buffer, total_len, message); // hash to 256bit
-    wots_sign(sig, message, sk_seed);
     end_time = clock();
     double sender_enc_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
     printf("Sender encryption time: %.6f ms\n", sender_enc_time);
-    file = fopen("robust_receiver_test.txt", "a"); 
+    file = fopen("robust_trade_test.txt", "a"); 
     fprintf(file, "Sender encryption time: %.6f ms\n", sender_enc_time);
     fclose(file);
 
-    // RK generation time
-    start_time = clock();
-    element_t rk, PX;
-    element_init_G1(rk, pairing);
-    element_init_GT(PX, pairing);
 
-    ccaRkGen(pairing, pkg_params, user_Alice_Pub, User_Alice_Priv, PCT, rk, PX);
-    element_printf("rk = %B\n", rk); 
-    element_printf("PX = %B\n", PX);  
-
-    element_t k3;
-    element_init_Zr(k3, pairing);
-    element_random(k3);
-
-    ccaRj rj_bob;
-    element_init_G1(rj_bob.u, pairing);
-    element_init_GT(rj_bob.v, pairing);
-    element_init_GT(rj_bob.w, pairing);
-
-    for (i = 0; i < receiver_number; i++)
-    {
-        ccaRjGen(pairing, pkg_params, User_Alice_Priv, receiver_publickey[i], rk, PX, k3, rj_bob);
+    element_t rk[trade_number];
+    for (i = 0; i < trade_number; i++) {
+        element_init_G1(rk[i], pairing);
+    }
+    element_t PX[trade_number];
+    for (i = 0; i < trade_number; i++) {
+        element_init_GT(PX[i], pairing);
+    }
+    element_t X[trade_number];
+    for (i = 0; i < trade_number; i++) {
+        element_init_GT(X[i], pairing);
+    }
+    ccaRj rj_bob[trade_number];
+    for (i = 0; i < trade_number; i++) {
+        element_init_G1(rj_bob[i].u, pairing);
+        element_init_GT(rj_bob[i].v, pairing);
+        element_init_GT(rj_bob[i].w, pairing);
     }
 
+    // RK Rj generation time
+    start_time = clock();
+    for(i = 0; i < trade_number; i++) {
+
+        ccaRkGen(pairing, pkg_params, user_Alice_Pub, User_Alice_Priv, PCT, rk[i], PX[i]);
+
+        element_t k3;
+        element_init_Zr(k3, pairing);
+        element_random(k3);
+
+        for (j = 0; j < receiver_number; j++)
+        {
+            ccaRjGen(pairing, pkg_params, User_Alice_Priv, receiver_publickey[i], rk[i], PX[i], k3, rj_bob[i]);
+        }
+
+    }
     end_time = clock();
     double rk_gen_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
     printf("RK generation time: %.6f ms\n", rk_gen_time);
-    file = fopen("robust_receiver_test.txt", "a");
+    file = fopen("robust_trade_test.txt", "a");
     fprintf(file, "RK generation time: %.6f ms\n", rk_gen_time);
     fclose(file);
 
@@ -298,65 +328,68 @@ int robustReceiverTest(int receiver_number)
 
     // ReEnc time
     start_time = clock();
-    wots_pk_from_sig(pk2, sig, message);
-    int receiversuccess = 1;
-    for (int i = 0; i < WOTS_LEN; i++) {
-        if (memcmp(pk1[i], pk2[i], WOTS_N) != 0) {
-            receiversuccess = 0;
-            break;
+    for(i = 0; i < trade_number; i++){
+        wots_pk_from_sig(pk2, sig, message);
+        int receiversuccess = 1;
+        for (j = 0; j < WOTS_LEN; j++) {
+            if (memcmp(pk1[j], pk2[j], WOTS_N) != 0) {
+                receiversuccess = 0;
+                break;
+            }
         }
+        printf("WOTS+ verification %s\n", receiversuccess ? "passed" : "failed");
+        ccaReEnc(pairing, PCT, rk[i], pkg_params, vk, RCT);
     }
-    printf("WOTS+ verification %s\n", receiversuccess ? "passed" : "failed");
-    ccaReEnc(pairing, PCT, rk, pkg_params, vk, RCT);
     end_time = clock();
     double reenc_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
     printf("ReEnc time: %.6f ms\n", reenc_time);
-    file = fopen("robust_receiver_test.txt", "a");
+    file = fopen("robust_trade_test.txt", "a");
     fprintf(file, "ReEnc time: %.6f ms\n", reenc_time);
     fclose(file);
 
 
     // Decryption time for the receiver
     start_time = clock();
-    wots_pk_from_sig(pk2, sig, message);
-    int sendersuccess = 1;
-    for (int i = 0; i < WOTS_LEN; i++) {
-        if (memcmp(pk1[i], pk2[i], WOTS_N) != 0) {
-            sendersuccess = 0;
-            break;
+    for(i = 0; i < trade_number; i++){
+        wots_pk_from_sig(pk2, sig, message);
+        int sign_flan = 1;
+        for (j = 0; j < WOTS_LEN; j++) {
+            if (memcmp(pk1[j], pk2[j], WOTS_N) != 0) {
+                sign_flan = 0;
+                break;
+            }
         }
+        printf("WOTS+ verification %s\n", sign_flan ? "passed" : "failed");
+        element_t X;
+        element_init_GT(X, pairing);
+        ccaDec1(pairing, User_Bob_Priv, rj_bob[i], X);
+        ccaDec2(pairing, User_Bob_Priv, RCT, Time_St , rj_bob[i], X, PT_Bob);
     }
-    printf("WOTS+ verification %s\n", sendersuccess ? "passed" : "failed");
-    element_t X;
-    element_init_GT(X, pairing);
-    ccaDec1(pairing, User_Bob_Priv, rj_bob, X);
-    ccaDec2(pairing, User_Bob_Priv, RCT, Time_St , rj_bob, X, PT_Bob);
     end_time = clock();
     double receiver_dec_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000; 
     printf("Decryption time for the receiver: %.6f ms\n", receiver_dec_time);
-    file = fopen("robust_receiver_test.txt", "a"); 
+    file = fopen("robust_trade_test.txt", "a"); 
     fprintf(file, "Decryption time for the receiver: %.6f ms\n", receiver_dec_time);
     fclose(file);
 
     // Decryption time for sender
     start_time = clock();
-    wots_pk_from_sig(pk2, sig, message);
-    printf("\n");
-
-    sendersuccess = 1;
-    for (int i = 0; i < WOTS_LEN; i++) {
-        if (memcmp(pk1[i], pk2[i], WOTS_N) != 0) {
-            sendersuccess = 0;
-            break;
+    for(i = 0; i < trade_number; i++){
+        wots_pk_from_sig(pk2, sig, message);
+        sign_flan = 1;
+        for (j = 0; j < WOTS_LEN; j++) {
+            if (memcmp(pk1[j], pk2[j], WOTS_N) != 0) {
+                sign_flan = 0;
+                break;
+            }
         }
+        printf("WOTS+ verification %s\n", sign_flan ? "passed" : "failed");
+        ccaSenderDec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
     }
-    printf("WOTS+ verification %s\n", sendersuccess ? "passed" : "failed");
-    
-    ccaSenderDec(pairing, pkg_params, ts_params, User_Alice_Priv, Time_St, PCT, PT_Alice);
     end_time = clock();
     double sender_dec_time = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
     printf("Decryption time for sender: %.6f ms\n", sender_dec_time);
-    file = fopen("robust_receiver_test.txt", "a");
+    file = fopen("robust_trade_test.txt", "a");
     fprintf(file, "Decryption time for sender: %.6f ms\n\n", sender_dec_time);
     fclose(file);
 
@@ -400,13 +433,24 @@ int robustReceiverTest(int receiver_number)
     element_clear(ts_params.e_g_g);
     element_clear(ts_params.e_g_h);
 
-    element_clear(rk);
-    element_clear(PX);
-    element_clear(X);
+    for(i = 0; i < receiver_number; i++) {
+        element_clear(receiver_publickey[i]);
+        element_clear(receiver_privatekey[i].r);
+        element_clear(receiver_privatekey[i].K);
+    }
+    for (i = 0; i < trade_number; i++) {
+        element_clear(rk[i]);
+        element_clear(PX[i]);
+        element_clear(X[i]);
+    }
+    for (i = 0; i < trade_number; i++) {
+        element_clear(rj_bob[i].u);
+        element_clear(rj_bob[i].v);
+        element_clear(rj_bob[i].w);
+    }
 
-    element_clear(rj_bob.u);
-    element_clear(rj_bob.v);
-    element_clear(rj_bob.w);
+
+
 
     element_clear(vk);
     element_clear(sk);

@@ -26,9 +26,10 @@
 #include "ccamain.h"
 #include "bendmarking.h"
 #include "cpamaptozr.h"
-#include "robust_receiver_test.h"
 #include "ccamain.h"
 #include "pbc.h"
+#include "robust_receiver_test.h"
+#include "robust_trade_test.h"
 
 using namespace std;
 
@@ -44,13 +45,11 @@ using namespace std;
 #define ROBUST_TEST_TREADE_NUMBER_30 30
 #define ROBUST_TEST_TREADE_NUMBER_50 50
 #define ROBUST_TEST_TREADE_NUMBER_100 100
-#define ROBUST_TEST_TREADE_NUMBER_200 200
-
 
 int main()
 {
 
-    // CPA scheme test
+    // CPA Scheme Test
     int cpatest;
     cpatest = cpamain();
     if (cpatest){
@@ -60,7 +59,7 @@ int main()
         cout << "[FAIL] CPA Scheme Test failed." << endl;
     }
 
-    // CCA scheme test
+    // CCA Scheme Test
     int ccatest;
     ccatest = ccamain();
     if (ccatest){
@@ -70,7 +69,7 @@ int main()
         cout << "[FAIL] CCA Scheme Test failed." << endl;
     }
 
-    // Bendmarking scheme test
+    // Bendmarking Scheme Test
     int bendmarking_result;
     bendmarking_result = bendmarking();
     if (bendmarking_result){
@@ -111,6 +110,13 @@ int main()
     robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_10000);
     printf("Robustness test with 10000 receivers completed.\n");
 
+    robust_receiver_file = fopen("robust_receiver_test.txt", "a");
+    if (robust_receiver_file == NULL) {
+        perror("[Fail] Unable to open robust_receiver_test.txt.");
+        exit(1);
+    }
+    fprintf(robust_receiver_file, "=== Robust Receiver Test End ===\n");
+    fclose(robust_receiver_file);
 
     // Robust Trade Test
 
@@ -122,6 +128,28 @@ int main()
     }
     fprintf(robust_trade_file, "=== Robust Trade Test Start ===\n");
     fclose(robust_trade_file);
+
+    robustTradeTest(ROBUST_TEST_TREADE_NUMBER_10, ROBUST_TEST_RECEIVER_NUMBER_100);
+    printf("Robustness test with 10 trade, 100 receivers completed.\n");
+
+    robustTradeTest(ROBUST_TEST_TREADE_NUMBER_30, ROBUST_TEST_RECEIVER_NUMBER_100);
+    printf("Robustness test with 30 trade, 100 receivers completed.\n");
+
+    robustTradeTest(ROBUST_TEST_TREADE_NUMBER_50, ROBUST_TEST_RECEIVER_NUMBER_100);
+    printf("Robustness test with 50 trade, 100 receivers completed.\n");
+
+    robustTradeTest(ROBUST_TEST_TREADE_NUMBER_100, ROBUST_TEST_RECEIVER_NUMBER_100);
+    printf("Robustness test with 100 trade, 100 receivers completed.\n");
+
+    robust_trade_file = fopen("robust_trade_test.txt", "a");
+    if (robust_trade_file == NULL) {
+        perror("[Fail] Unable to open robust_trade_test.txt.");
+        exit(1);
+    }
+    fprintf(robust_trade_file, "=== Robust Trade Test End ===\n");
+    fclose(robust_trade_file);
+
+    printf("=== All Tests Completed ===\n");
 
     return 0;
 
