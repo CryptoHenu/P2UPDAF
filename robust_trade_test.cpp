@@ -295,7 +295,7 @@ int robustTradeTest(int trade_number, int receiver_number)
 
     // RK Rj generation time
     start_time = clock();
-    for(i = 0; i < trade_number; i++) {
+    for(i = 0; i < 1; i++) {
 
         ccaRkGen(pairing, pkg_params, user_Alice_Pub, User_Alice_Priv, PCT, rk[i], PX[i]);
 

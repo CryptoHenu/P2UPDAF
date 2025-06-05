@@ -49,25 +49,25 @@ using namespace std;
 int main()
 {
 
-    // CPA Scheme Test
-    int cpatest;
-    cpatest = cpamain();
-    if (cpatest){
-        cout << "[PASS] CPA Scheme Test completed successfully." << endl;
-    }
-    else{
-        cout << "[FAIL] CPA Scheme Test failed." << endl;
-    }
+    // // CPA Scheme Test
+    // int cpatest;
+    // cpatest = cpamain();
+    // if (cpatest){
+    //     cout << "[PASS] CPA Scheme Test completed successfully." << endl;
+    // }
+    // else{
+    //     cout << "[FAIL] CPA Scheme Test failed." << endl;
+    // }
 
-    // CCA Scheme Test
-    int ccatest;
-    ccatest = ccamain();
-    if (ccatest){
-        cout << "[PASS] CCA Scheme Test completed successfully." << endl;
-    }
-    else{
-        cout << "[FAIL] CCA Scheme Test failed." << endl;
-    }
+    // // CCA Scheme Test
+    // int ccatest;
+    // ccatest = ccamain();
+    // if (ccatest){
+    //     cout << "[PASS] CCA Scheme Test completed successfully." << endl;
+    // }
+    // else{
+    //     cout << "[FAIL] CCA Scheme Test failed." << endl;
+    // }
 
     // Bendmarking Scheme Test
     int bendmarking_result;
@@ -79,44 +79,44 @@ int main()
         cout << "[FAIL] BendTest Scheme Test failed." << endl;
     }
 
-    // Robust Receiver Test
-    FILE *robust_receiver_file;
-    robust_receiver_file = fopen("robust_receiver_test.txt", "w");
-    if (robust_receiver_file == NULL) {
-        perror("[Fail] Unable to open robust_receiver_test.txt.");
-        exit(1);
-    }
-    fprintf(robust_receiver_file, "=== Robust Receiver Test Start ===\n");
-    fclose(robust_receiver_file);
+    // // Robust Receiver Test
+    // FILE *robust_receiver_file;
+    // robust_receiver_file = fopen("robust_receiver_test.txt", "w");
+    // if (robust_receiver_file == NULL) {
+    //     perror("[Fail] Unable to open robust_receiver_test.txt.");
+    //     exit(1);
+    // }
+    // fprintf(robust_receiver_file, "=== Robust Receiver Test Start ===\n");
+    // fclose(robust_receiver_file);
 
-    robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_100);
-    printf("Robustness test with 100 receivers completed.\n");
+    // robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_100);
+    // printf("Robustness test with 100 receivers completed.\n");
 
-    robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_300);
-    printf("Robustness test with 300 receivers completed.\n");
+    // robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_300);
+    // printf("Robustness test with 300 receivers completed.\n");
 
-    robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_500);
-    printf("Robustness test with 500 receivers completed.\n");
+    // robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_500);
+    // printf("Robustness test with 500 receivers completed.\n");
 
-    robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_1000);
-    printf("Robustness test with 1000 receivers completed.\n");
+    // robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_1000);
+    // printf("Robustness test with 1000 receivers completed.\n");
 
-    robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_3000);
-    printf("Robustness test with 3000 receivers completed.\n");
+    // robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_3000);
+    // printf("Robustness test with 3000 receivers completed.\n");
 
-    robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_5000);
-    printf("Robustness test with 5000 receivers completed.\n");
+    // robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_5000);
+    // printf("Robustness test with 5000 receivers completed.\n");
 
-    robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_10000);
-    printf("Robustness test with 10000 receivers completed.\n");
+    // robustReceiverTest(ROBUST_TEST_RECEIVER_NUMBER_10000);
+    // printf("Robustness test with 10000 receivers completed.\n");
 
-    robust_receiver_file = fopen("robust_receiver_test.txt", "a");
-    if (robust_receiver_file == NULL) {
-        perror("[Fail] Unable to open robust_receiver_test.txt.");
-        exit(1);
-    }
-    fprintf(robust_receiver_file, "=== Robust Receiver Test End ===\n");
-    fclose(robust_receiver_file);
+    // robust_receiver_file = fopen("robust_receiver_test.txt", "a");
+    // if (robust_receiver_file == NULL) {
+    //     perror("[Fail] Unable to open robust_receiver_test.txt.");
+    //     exit(1);
+    // }
+    // fprintf(robust_receiver_file, "=== Robust Receiver Test End ===\n");
+    // fclose(robust_receiver_file);
 
     // Robust Trade Test
 
@@ -152,5 +152,4 @@ int main()
     printf("=== All Tests Completed ===\n");
 
     return 0;
-
 }

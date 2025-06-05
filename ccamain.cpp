@@ -169,7 +169,7 @@ int ccamain()
 
     
 
-     // calculate SHA-256 hash of the ciphertext
+    // calculate SHA-256 hash of the ciphertext
     element_t elements[6];
     
     element_init_G1(elements[0], pairing);   // 第1个元素：G1
