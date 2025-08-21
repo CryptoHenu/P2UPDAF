@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/ECR-TDPDS",
+            "program": "${workspaceFolder}/build/P2UPDAF",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
