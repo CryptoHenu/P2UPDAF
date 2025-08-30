@@ -74,16 +74,20 @@ int bendmarking()
     element_t a1, b1, c1;
     double relative_time;
 
-    FILE *fp = fopen("../param/d201.param", "r");
-    if (!fp)
-    {
-        printf("[Fail] Param file open fail.\n");
-        return 1;
-    }
-    char param[10240];
-    size_t count = fread(param, 1, sizeof(param), fp);
-    fclose(fp);
-    pairing_init_set_str(pairing, param);
+    // FILE *fp = fopen("../param/d201.param", "r");
+    // if (!fp)
+    // {
+    //     printf("[Fail] Param file open fail.\n");
+    //     return 1;
+    // }
+    // char param[10240];
+    // size_t count = fread(param, 1, sizeof(param), fp);
+    // fclose(fp);
+    // pairing_init_set_str(pairing, param);
+
+    pbc_param_t param;
+    pbc_param_init_a_gen(param, 160, 3072);
+    pairing_init_pbc_param(pairing, param);
 
     if (!pairing_is_symmetric(pairing))
     {
@@ -270,7 +274,7 @@ int bendmarking()
     start_time = clock();
     for (i = 1; i < RENUM; i++)
     {
-        pairing_apply(BP, Q, H, pairing);
+        pairing_apply(BP, P, Q, pairing);
     }
     end_time = clock();
     double time_BP_G1_G1_GT = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
