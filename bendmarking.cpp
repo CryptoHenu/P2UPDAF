@@ -7,7 +7,7 @@
  * @License: GPL v3.0
  * @Contact: ziyidong.cs@gmail.com
  */
-
+#include <vector>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -18,10 +18,189 @@
 #include "bendmarking.h"
 #include "cpamaptozr.h"
 
-#define RENUM 10000
+#define RENUM 5
 #define SHA256_DIGEST_LENGTH 32
 
 using namespace std;
+// 将字符串按长度附加到 buf
+inline void append_str_with_len(vector<unsigned char>& buf, const string& s) {
+    uint32_t len = s.size();
+    buf.insert(buf.end(), (unsigned char*)&len, (unsigned char*)&len + sizeof(len));
+    buf.insert(buf.end(), s.begin(), s.end());
+}
+
+// 将字节数组按长度附加到 buf
+inline void append_with_len(vector<unsigned char>& buf, const unsigned char* data, size_t len) {
+    uint32_t l = len;
+    buf.insert(buf.end(), (unsigned char*)&l, (unsigned char*)&l + sizeof(l));
+    buf.insert(buf.end(), data, data + len);
+}
+
+// 将 buf hash 后映射到 Zr
+inline void map_bytes_to_Zr(element_t out, pairing_t pairing, const vector<unsigned char>& buf) {
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256(buf.data(), buf.size(), hash);
+    element_from_hash(out, hash, SHA256_DIGEST_LENGTH);
+}
+
+// 将 buf hash 后映射到 G1
+inline void map_bytes_to_G1(element_t out, pairing_t pairing, const vector<unsigned char>& buf) {
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256(buf.data(), buf.size(), hash);
+    element_from_hash(out, hash, SHA256_DIGEST_LENGTH);
+}
+
+
+// 通用序列化 lambda
+// 全局函数
+void serialize_element(std::vector<unsigned char>& buf, element_t e) {
+    int len = element_length_in_bytes(e);
+    std::vector<unsigned char> tmp(len);
+    element_to_bytes(tmp.data(), e);
+    append_with_len(buf, tmp.data(), len);
+}
+
+
+// H1: {0,1}^* -> G1
+void H1(element_t result, pairing_t pairing, const char* str) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H1");
+    append_str_with_len(buf, str);
+    map_bytes_to_G1(result, pairing, buf);
+}
+
+// H2: {0,1}^* -> Zp*
+void H2(element_t result, pairing_t pairing, const char* str) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H2");
+    append_str_with_len(buf, str);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H3: {0,1}^* × Zp* × Zp* × Zp* × Zp* -> Zp*
+void H3(element_t result, pairing_t pairing, const char* str,
+         element_t a, element_t b, element_t c, element_t d) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H3");
+    append_str_with_len(buf, str);
+
+    serialize_element(buf, a);
+    serialize_element(buf, b);
+    serialize_element(buf, c);
+    serialize_element(buf, d);
+
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H4: Zp* × Zp* × Zp* -> Zp*
+void H4(element_t result, pairing_t pairing, element_t a, element_t b, element_t c) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H4");
+    serialize_element(buf, a);
+    serialize_element(buf, b);
+    serialize_element(buf, c);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H5: Zp* × Zp* -> Zp*
+void H5(element_t result, pairing_t pairing, element_t a, element_t b) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H5");
+    serialize_element(buf, a);
+    serialize_element(buf, b);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H6: Zp* -> Zp*
+void H6(element_t result, pairing_t pairing, element_t a) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H6");
+    serialize_element(buf, a);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H7: Zp* × Zp* × Zp* × Zp* × Zp* -> Zp*
+void H7(element_t result, pairing_t pairing, element_t a, element_t b, element_t c, element_t d, element_t e) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H7");
+    serialize_element(buf, a);
+    serialize_element(buf, b);
+    serialize_element(buf, c);
+    serialize_element(buf, d);
+    serialize_element(buf, e);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H8: G1 -> Zr
+void H8(element_t result, pairing_t pairing, element_t g1) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H8");
+    serialize_element(buf, g1);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H9: {0,1}^* × G1 × G1 -> Zr
+void H9(element_t result, pairing_t pairing, const char* str, element_t g1_1, element_t g1_2) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H9");
+    append_str_with_len(buf, str);
+    serialize_element(buf, g1_1);
+    serialize_element(buf, g1_2);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H10: str1,str2,str3, G1,G1,G1 -> Zr
+void H10(element_t result, pairing_t pairing,
+         const char* str1, const char* str2, const char* str3,
+         element_t g1_1, element_t g1_2, element_t g1_3) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H10");
+    append_str_with_len(buf, str1);
+    append_str_with_len(buf, str2);
+    append_str_with_len(buf, str3);
+    serialize_element(buf, g1_1);
+    serialize_element(buf, g1_2);
+    serialize_element(buf, g1_3);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H11: G1 -> Zr
+void H11(element_t result, pairing_t pairing, element_t g1) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H11");
+    serialize_element(buf, g1);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+// H12: G1 × G1 -> Zr
+void H12(element_t result, pairing_t pairing, element_t g1_1, element_t g1_2) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H12");
+    serialize_element(buf, g1_1);
+    serialize_element(buf, g1_2);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+
+// H13: string -> G1
+void H13(element_t result, pairing_t pairing, const char* str) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H13");
+    append_str_with_len(buf, str);
+    map_bytes_to_G1(result, pairing, buf);
+}
+
+// H14: str1, str2, G1 -> Zr
+void H14(element_t result, pairing_t pairing, const char* str1, const char* str2, element_t g1) {
+    std::vector<unsigned char> buf;
+    append_str_with_len(buf, "H14");
+    append_str_with_len(buf, str1);
+    append_str_with_len(buf, str2);
+    serialize_element(buf, g1);
+    map_bytes_to_Zr(result, pairing, buf);
+}
+
+
 
 
 void binary_string_to_G1(element_t g1, const char* binary_str, pairing_t pairing) {
@@ -137,6 +316,7 @@ int bendmarking()
     relative_time = time_point_mul_G1 / time_point_mul_G1;
     fprintf(file, "relative_time: %.6f \n", relative_time);
     fclose(file);
+    printf("time_point_mul_G1: %.6f ms\n", time_point_mul_G1);
 
     // time_point_add_G1
     start_time = clock();
@@ -537,7 +717,228 @@ int bendmarking()
     element_clear(c1);
     element_clear(BP);
 
+    element_t d, e,g1_1, g1_2, g1_3, result;
+    element_init_Zr(a, pairing);
+    element_init_Zr(b, pairing);
+    element_init_Zr(c, pairing);
+    element_init_Zr(d, pairing);
+    element_init_Zr(e, pairing);
+    element_init_G1(g1_1, pairing);
+    element_init_G1(g1_2, pairing);
+    element_init_G1(g1_3, pairing);
+    element_init_Zr(result, pairing);
+    element_random(a);
+    element_random(b);
+    element_random(c);
+    element_random(d);
+    element_random(e);
+    element_random(g1_1);
+    element_random(g1_2);
+    element_random(g1_3);
+
+    char str1[] = "0101010101010101";
+    char str2[] = "01010101010101010101010101010101";
+    char str3[] = "010101010101010101010101010101010101010101010101";
+
+    // ===== H1 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H1(g1_1, pairing, str1);   // H1: {0,1}* -> G1
+    }
+    end_time = clock();
+    double time_H1 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H1: %.6f ms, ", time_H1);
+    relative_time = time_H1 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H2 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H2(result, pairing, str1);  // H2: {0,1}* -> Zp*
+    }
+    end_time = clock();
+    double time_H2 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H2: %.6f ms, ", time_H2);
+    relative_time = time_H2 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H3 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H3(result, pairing, str1, a, b, c, d);  // H3: {0,1}* × Zp* × Zp* × Zp* × Zp* -> Zp*
+    }
+    end_time = clock();
+    double time_H3 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H3: %.6f ms, ", time_H3);
+    relative_time = time_H3 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H4 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H4(result, pairing, a, b, c);  // H4: Zp* × Zp* × Zp* -> Zp*
+    }
+    end_time = clock();
+    double time_H4 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H4: %.6f ms, ", time_H4);
+    relative_time = time_H4 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H5 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H5(result, pairing, a, b);  // H5: Zp* × Zp* -> Zp*
+    }
+    end_time = clock();
+    double time_H5 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H5: %.6f ms, ", time_H5);
+    relative_time = time_H5 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H6 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H6(result, pairing, a);   // H6: Zp* -> Zp*
+    }
+    end_time = clock();
+    double time_H6 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H6: %.6f ms, ", time_H6);
+    relative_time = time_H6 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H7 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H7(result, pairing, a, b, c, d,e);
+    }
+    end_time = clock();
+    double time_H7 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H7: %.6f ms, ", time_H7);
+    relative_time = time_H7 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H8 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H8(result, pairing, g1_1);
+    }
+    end_time = clock();
+    double time_H8 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H8: %.6f ms, ", time_H8);
+    relative_time = time_H8 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H9 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H9(result, pairing, str1, g1_1, g1_2);
+    }
+    end_time = clock();
+    double time_H9 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H9: %.6f ms, ", time_H9);
+    relative_time = time_H9 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H10 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H10(result, pairing, str1, str2, str3, g1_1, g1_2, g1_3);
+    }
+    end_time = clock();
+    double time_H10 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H10: %.6f ms, ", time_H10);
+    relative_time = time_H10 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H11 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H11(result, pairing, g1_1);
+    }
+    end_time = clock();
+    double time_H11 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H11: %.6f ms, ", time_H11);
+    relative_time = time_H11 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H12 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H12(result, pairing, g1_1, g1_2);
+    }
+    end_time = clock();
+    double time_H12 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H12: %.6f ms, ", time_H12);
+    relative_time = time_H12 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+
+    
+    // ===== H13 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H13(result, pairing, str1);
+    }
+    end_time = clock();
+    double time_H13 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H13: %.6f ms, ", time_H13);
+    relative_time = time_H13 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // ===== H14 =====
+    start_time = clock();
+    for (i = 0; i < RENUM; i++) {
+        H14(result, pairing, str1, str2, g1_1);
+    }
+    end_time = clock();
+    double time_H14 = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+    file = fopen("bendmarking_output.txt", "a");
+    fprintf(file, "time_H14: %.6f ms, ", time_H14);
+    relative_time = time_H14 / time_point_mul_G1;
+    fprintf(file, "relative_time: %.6f\n", relative_time);
+    fclose(file);
+
+    // 清理元素
+    element_clear(a);
+    element_clear(b);
+    element_clear(c);
+    element_clear(d);
+    element_clear(g1_1);
+    element_clear(g1_2);
+    element_clear(g1_3);
+    element_clear(result);
+
+    
+
     pairing_clear(pairing);
+
+    
 
     return 1;
 }
